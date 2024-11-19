@@ -10,9 +10,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private boolean isRunning = true;		// condicao de parada do game
 	private Thread thread;
-	private final int LENGTH = 160;			// eixo x
-	private final int HEIGHT = 120;			// eixo y
-	private final int SCALE = 4;			// escala da janela
+	private final int LENGTH = 1760;		// eixo x
+	private final int HEIGHT = 990;			// eixo y
 	
 	private BufferedImage image;
 	private BufferedImage player;
@@ -21,8 +20,8 @@ public class Game extends Canvas implements Runnable {
 	
 	public Game () {
 		sheet = new Spritesheet ("/spritesheet.png");
-		player = sheet.getSprite (0, 0, 16, 16);
-		setPreferredSize (new Dimension (LENGTH*SCALE, HEIGHT*SCALE));
+		player = sheet.getSprite (0, 0, 225, 225);
+		setPreferredSize (new Dimension (LENGTH, HEIGHT));
 		initFrame ();
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	}
@@ -64,7 +63,7 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		g = image.getGraphics ();
-		g.setColor (new Color (200, 0, 100));
+		g.setColor (new Color (255, 255, 255));
 		g.fillRect (0, 0, LENGTH, HEIGHT);
 		
 		/* renderizando o jogo */
@@ -74,7 +73,7 @@ public class Game extends Canvas implements Runnable {
 		/**/
 		g.dispose ();
 		g = bs.getDrawGraphics ();
-		g.drawImage (image, 0, 0, LENGTH*SCALE, HEIGHT*SCALE, null);
+		g.drawImage (image, 0, 0, LENGTH, HEIGHT, null);
 		bs.show ();
 	}
 	
