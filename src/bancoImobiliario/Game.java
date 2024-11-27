@@ -2,25 +2,29 @@ package bancoImobiliario;
 
 import java.awt.*;
 import java.awt.image.*;
+
 import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
 	
-	public static JFrame frame;
+	public static JFrame frame;				// janela
+	private BufferedImage image;			// imagem na janela
+	private Thread thread;
+	//private RenderScreen screen;
 	
 	private boolean isRunning = true;		// condicao de parada do game
-	private Thread thread;
+	
 	private final int LENGTH = 1760;		// eixo x
 	private final int HEIGHT = 990;			// eixo y
 	
-	private BufferedImage image;
-	private BufferedImage player;
+	private Spritesheet spritesheetMap;
 	
-	private Spritesheet sheet;
+	private BufferedImage map;
 	
 	public Game () {
-		sheet = new Spritesheet ("/spritesheet.png");
-		player = sheet.getSprite (0, 0, 225, 225);
+		spritesheetMap = new Spritesheet ("/tabuleiro.png");
+		map = spritesheetMap.getSpritesheet ();
+		//screen = new RenderScreen();
 		setPreferredSize (new Dimension (LENGTH, HEIGHT));
 		initFrame ();
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -51,10 +55,6 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	public void tick () {
-		
-	}
-	
 	public void render () {
 		BufferStrategy bs = this.getBufferStrategy ();
 		Graphics g;
@@ -63,12 +63,12 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		g = image.getGraphics ();
-		g.setColor (new Color (255, 255, 255));
+		g.setColor (new Color (255, 0, 155));
 		g.fillRect (0, 0, LENGTH, HEIGHT);
 		
 		/* renderizando o jogo */
 		
-		g.drawImage(player, 20, 20, null);
+		g.drawImage(map, 770, 0, null);
 		
 		/**/
 		g.dispose ();
@@ -96,7 +96,6 @@ public class Game extends Canvas implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				tick ();
 				render ();
 				frames++;
 				delta--;
