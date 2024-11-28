@@ -7,7 +7,10 @@ import javax.swing.JFrame;
 
 public class ScreenData extends Canvas {
 	
+	private static final long serialVersionUID = 1L;
+
 	public static JFrame frame;				// janela
+	public BufferStrategy bs;
 	
 	private final int LENGTH = 1760;		// eixo x
 	private final int HEIGHT = 990;			// eixo y
@@ -18,11 +21,14 @@ public class ScreenData extends Canvas {
 	private BufferedImage map;
 	
 	public ScreenData () {
-		spritesheetMap = new Spritesheet ("/tabuleiro.png");
-		map = spritesheetMap.getSpritesheet ();
 		setPreferredSize (new Dimension (LENGTH, HEIGHT));
 		initFrame ();
+		this.createBufferStrategy (3);
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		
+		spritesheetMap = new Spritesheet ("/tabuleiro.png");
+		
+		map = spritesheetMap.getSpritesheet ();
 	}
 	
 	// inicializa janela do jogo
@@ -52,4 +58,10 @@ public class ScreenData extends Canvas {
 		return this.HEIGHT;
 	}
 	
+	public void getBS() {
+		bs = getBufferStrategy();
+		if (bs == null) {
+			this.createBufferStrategy (3);
+		}
+	}
 }
