@@ -1,43 +1,15 @@
 package bancoImobiliario;
 
-import java.awt.*;
-import java.awt.image.*;
-
-import javax.swing.JFrame;
-
-public class Game extends Canvas implements Runnable {
+public class Game implements Runnable {
 	
-	public static JFrame frame;				// janela
-	private BufferedImage image;			// imagem na janela
 	private Thread thread;
-	//private RenderScreen screen;
+	private RenderScreen screen;
 	
-	private boolean isRunning = true;		// condicao de parada do game
+	private boolean isRunning = true;		//condicao de parada do game
 	
-	private final int LENGTH = 1760;		// eixo x
-	private final int HEIGHT = 990;			// eixo y
-	
-	private Spritesheet spritesheetMap;
-	
-	private BufferedImage map;
 	
 	public Game () {
-		spritesheetMap = new Spritesheet ("/tabuleiro.png");
-		map = spritesheetMap.getSpritesheet ();
-		//screen = new RenderScreen();
-		setPreferredSize (new Dimension (LENGTH, HEIGHT));
-		initFrame ();
-		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	}
-	
-	public void initFrame () {
-		frame = new JFrame ("BANCO MOBILHARO");
-		frame.add (this);
-		frame.setResizable (false);
-		frame.pack ();
-		frame.setLocationRelativeTo (null);
-		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		frame.setVisible (true);
+		screen = new RenderScreen();
 	}
 	
 	public synchronized void start () {
@@ -55,27 +27,6 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	public void render () {
-		BufferStrategy bs = this.getBufferStrategy ();
-		Graphics g;
-		if (bs == null) {
-			this.createBufferStrategy (3);		// melhora a performance de renderizacao
-			return;
-		}
-		g = image.getGraphics ();
-		g.setColor (new Color (255, 0, 155));
-		g.fillRect (0, 0, LENGTH, HEIGHT);
-		
-		/* renderizando o jogo */
-		
-		g.drawImage(map, 770, 0, null);
-		
-		/**/
-		g.dispose ();
-		g = bs.getDrawGraphics ();
-		g.drawImage (image, 0, 0, LENGTH, HEIGHT, null);
-		bs.show ();
-	}
 	
 	// laço principal do jogo
 	public void run () {
@@ -96,7 +47,7 @@ public class Game extends Canvas implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				render ();
+				screen.gameScreen();
 				frames++;
 				delta--;
 			}
