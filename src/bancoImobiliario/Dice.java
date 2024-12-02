@@ -19,4 +19,8 @@ public class Dice {
 			isEqual = false;
 		}
 	}
+	
+	public boolean get_isEqual() {
+		return isEqual;
+	}
 }
