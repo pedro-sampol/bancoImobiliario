@@ -16,7 +16,9 @@ public class Screen extends Canvas{
 		
 		/* renderizando o jogo */
 		
-		g.drawImage(s.getMap(), 770, 0, null);
+		//g.drawImage(s.getMap(), 770, 0, null);
+		g.drawImage(s.getProperty(), 770, 0, null);
+		
 		//g.fillOval(ALLBITS, ABORT, WIDTH, HEIGHT);
 		
 		/**/
