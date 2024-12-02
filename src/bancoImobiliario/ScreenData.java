@@ -23,6 +23,9 @@ public class ScreenData extends Canvas {
 	private Spritesheet spritesheetProperty;
 	private BufferedImage property;
 	
+	private Spritesheet spritesheetHub;
+	private BufferedImage hub;
+	
 	public ScreenData () {
 		setPreferredSize (new Dimension (LENGTH, HEIGHT));
 		initFrame ();
@@ -31,9 +34,12 @@ public class ScreenData extends Canvas {
 		
 		spritesheetMap = new Spritesheet ("/tabuleiro.png");
 		spritesheetProperty = new Spritesheet ("/telaImoveis.png");
+		spritesheetHub = new Spritesheet ("/hub.png");
+		
 		
 		map = spritesheetMap.getSpritesheet ();
 		property = spritesheetProperty.getSpritesheet ();
+		hub = spritesheetHub.getSpritesheet ();
 	}
 	
 	// inicializa janela do jogo
@@ -57,6 +63,10 @@ public class ScreenData extends Canvas {
 	
 	public BufferedImage getProperty () {
 		return this.property;
+	}
+	
+	public BufferedImage getHub () {
+		return this.hub;
 	}
 	
 	public int getLength () {
