@@ -7,9 +7,11 @@ public class Game implements Runnable {
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
+	private Dice dice;
 	
 	public Game () {
 		screen = new RenderScreen();
+		dice = new Dice();
 	}
 	
 	public synchronized void start () {
