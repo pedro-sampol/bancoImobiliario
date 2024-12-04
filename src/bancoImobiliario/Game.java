@@ -48,7 +48,7 @@ public class Game implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				screen.gameScreen();
+				screen.gameScreen();			// funcao render
 				frames++;
 				delta--;
 			}

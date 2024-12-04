@@ -1,11 +1,12 @@
 package bancoImobiliario;
 
-
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Scanner;
 import java.io.IOException;
 
 public class Player {
+	private int x,y;
 	private int position;
 	private int money;
 	private Boolean inJail;
@@ -13,9 +14,9 @@ public class Player {
 	private int getOutCards;
 	private int noPlayTime;
 	private int repeatedDice;
-	private Spritesheet sprite;
+	private BufferedImage sprite;
 	
-	public Player() {
+	public Player(BufferedImage p) {
 		this.position = 0;
 		this.money = 200;
 		this.inJail = Boolean.valueOf(false);
@@ -23,6 +24,7 @@ public class Player {
 		this.getOutCards = 0;
 		this.noPlayTime = 0;
 		this.repeatedDice = 0;
+		this.sprite = p;
 	}
 	
 	public Player(String linha) {
@@ -40,7 +42,7 @@ public class Player {
 		this.repeatedDice = Integer.valueOf(info[6]);
 	}
 	
-		//funcoes que retornam informações do estado atual de uma variavel do player
+	//funcoes que retornam informações do estado atual de uma variavel do player
 	public int getPosition() {
 		return this.position;
 	}
@@ -59,7 +61,7 @@ public class Player {
 	public int getNoPlayTime() {
 		return this.noPlayTime;
 	}	
-	public Spritesheet getSprite() {
+	public BufferedImage getSprite() {
 		return this.sprite;
 	}
 	public int getRepeatedDice() {

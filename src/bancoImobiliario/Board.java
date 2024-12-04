@@ -1,16 +1,23 @@
 package bancoImobiliario;
 
+import java.awt.image.BufferedImage;
+
 public class Board {
 	Constants cnst = new Constants();
 	Square[] squares;
 	Player[] players;
 	
+	private Spritesheet spritesheet;
+	private BufferedImage spritePlayer;
+	
 	public Board() {
 		players = new Player[6];
 		squares = new Square[36];
+		spritesheet = new Spritesheet("/personagens.png");
 		
-		for (int i=0; i<6; i++) {
-			players[i] = new Player();
+		for (int i = 0; i < 6; i++) {
+			spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
+			players[i] = new Player(spritePlayer);
 		}
 		
 		squares[0] = new Square(0, cnst.CORNER);
@@ -50,4 +57,9 @@ public class Board {
 		squares[34] = new Property(34, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
 		squares[35] = new Company(35, cnst.COMPANY, 100, 50, 200);
 	}
+	
+	public BufferedImage playerSprite (int i) {
+		return players[i].getSprite();
+	}
+	
 }
