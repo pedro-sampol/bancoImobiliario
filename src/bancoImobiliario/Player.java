@@ -1,107 +1,137 @@
 package bancoImobiliario;
 
+
+import java.io.File;
+import java.util.Scanner;
+import java.io.IOException;
+
 public class Player {
-	private int posicao;
-	private int dinheiro;
-	private Boolean preso;
-	private int tempoPrisao;
-	private int sairPrisao;
-	private int tempSemJogar;
-	private int dadosRepetidos;
+	private int position;
+	private int money;
+	private Boolean inJail;
+	private int timeInPrision;
+	private int getOutCards;
+	private int noPlayTime;
+	private int repeatedDice;
 	private Spritesheet sprite;
 	
-	public Player(Spritesheet sprite) {
-			this.posicao = 0;
-			this.dinheiro = 200;
-			this.preso = Boolean.valueOf(false);
-			this.tempoPrisao =  0;
-			this.sairPrisao = 0;
-			this.dadosRepetidos = 0;
-			this.sprite = sprite;
+	public Player() {
+		this.position = 0;
+		this.money = 200;
+		this.inJail = Boolean.valueOf(false);
+		this.timeInPrision =  0;
+		this.getOutCards = 0;
+		this.noPlayTime = 0;
+		this.repeatedDice = 0;
+	}
+	
+	public Player(Save save) {
+		String info[];
+		String separador = " ";
+		
+		try {
+			String linha = save.reader.readLine();
+			
+			info = linha.split(separador);
+			
+			this.position = Integer.valueOf(info[0]);
+			this.money = Integer.valueOf(info[1]);
+			this.inJail = Boolean.valueOf(info[2]);
+			this.timeInPrision =  Integer.valueOf(info[3]);
+			this.getOutCards = Integer.valueOf(info[4]);
+			this.noPlayTime = Integer.valueOf(info[5]);
+			this.repeatedDice = Integer.valueOf(info[6]);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
 	
 		//funcoes que retornam informações do estado atual de uma variavel do player
-		public int obtemPosicao() {
-			return this.posicao;
-		}
-		public int obtemDinheiro() {
-			return this.dinheiro;
-		}
-		public Boolean estaPreso() {
-			return this.preso;
-		}
-		public int obtemTempoPrisao() {
-			return this.tempoPrisao;
-		}
-		public int numSairPrisao() {
-			return this.sairPrisao;
-		}
-		public int obtemTempoSemJogar() {
-			return this.tempSemJogar;
-		}	
-		public Spritesheet obtemSprite() {
-			return this.sprite;
-		}
+	public int getPosition() {
+		return this.position;
+	}
+	public int getMoney() {
+		return this.money;
+	}
+	public Boolean isInJail() {
+		return this.inJail;
+	}
+	public int getTimeInPrision() {
+		return this.timeInPrision;
+	}
+	public int getGetOutCards() {
+		return this.getOutCards;
+	}
+	public int getNoPlayTime() {
+		return this.noPlayTime;
+	}	
+	public Spritesheet getSprite() {
+		return this.sprite;
+	}
+	public int getRepeatedDice() {
+		return this.repeatedDice;
+	}
+	
+	// verifica se o player tem dinheiro suficiente para uma compra
+	// retorna true se sim, false se não
+	public Boolean hasMoney(int valor) {
+		if(this.money >= valor)
+			return Boolean.valueOf(true);
+		else
+			return Boolean.valueOf(false);
+	}
+	
+	// altera a quantidade de dinheiro que o player possui
+	public void changeMoney(int valor) {
+		this.money += valor;
+	}
+	
+	//move o player num casas para frente
+	//retorna true se o player passou ou parou na casa inicial, false se nao
+	public Boolean move(int num) {
+		Boolean retorno;
 		
-		// verifica se o player tem dinheiro suficiente para uma compra
-		// retorna true se sim, false se não
-		public Boolean temDinheiro(int valor) {
-				if(this.dinheiro >= valor)
-					return Boolean.valueOf(true);
-				else
-					return Boolean.valueOf(false);
-		}
-		
-		// altera a quantidade de dinheiro que o player possui
-		public void alteraDinheiro(int valor) {
-				this.dinheiro += valor;
-		}
-		
-		//move o player num casas para frente
-		//retorna true se o player passou ou parou na casa inicial, false se nao
-		public Boolean move(int num) {
-			Boolean retorno;
+		//player passou ou parou no inicio
+		if(this.position + num >= 36)
+			retorno = Boolean.valueOf(true);
+		else
+			retorno = Boolean.valueOf(false);	
 			
-			//player passou ou parou no inicio
-			if(this.posicao + num >= 36)
-				retorno = Boolean.valueOf(true);
-			else
-				retorno = Boolean.valueOf(false);	
-				
-			//atualiza posicao do player (tabuleiro é circular com 36 casas)
-			this.posicao = (this.posicao + num) % 36;
-			return retorno;
-		}
+		//atualiza posicao do player (tabuleiro é circular com 36 casas)
+		this.position = (this.money + num) % 36;
+		return retorno;
+	}
+	
+	//player recebe uma carta de fuga da prisao
+	public void increaseGetOutCards() {
+		this.getOutCards++;
+	}
+	
+	//player saiu da prisao
+	//se carta == true -> remove uma carta de fuga da prisao
+	public void getOutOfPrision(Boolean carta) {
+		if(carta.equals(true))
+			this.getOutCards--;
 		
-		//player recebe uma carta de fuga da prisao
-		public void aumentaCartaFuga() {
-			this.sairPrisao++;
-		}
-		
-		//player saiu da prisao
-		//se carta == true -> remove uma carta de fuga da prisao
-		public void fugirPrisao(Boolean carta) {
-			if(carta.equals(true))
-				this.sairPrisao--;
-			
-			this.preso = Boolean.valueOf(false);
-		}
-		
-		//caso os dados sejam repetidos, aumenta a contagem de dados
-		//retorna true se foram jogados dados repetidos 3 vezes seguidas em um turno
-		public Boolean repeticao(Dice dado) {
-			if(dado.isEqual) {
-				if(this.dadosRepetidos == 2) {
-					this.resetaDadosRepetidos();
-					return true;
-				}
-				this.dadosRepetidos++;
+		this.inJail = Boolean.valueOf(false);
+	}
+	
+	//caso os dados sejam repetidos, aumenta a contagem de dados
+	//retorna true se foram jogados dados repetidos 3 vezes seguidas em um turno
+	public Boolean repeatedDice(Dice dado) {
+		if(dado.isEqual) {
+			if(this.repeatedDice == 2) {
+				this.resetRepeatedDice();
+				return true;
 			}
-			return false;
+			this.repeatedDice++;
 		}
-		
-		//reseta o num de dados repetidos (usado no fim de um turno)
-		public void resetaDadosRepetidos() {
-			this.dadosRepetidos = 0;
-		}
+		return false;
+	}
+	
+	//reseta o num de dados repetidos (usado no fim de um turno)
+	public void resetRepeatedDice() {
+		this.repeatedDice = 0;
+	}
 }
