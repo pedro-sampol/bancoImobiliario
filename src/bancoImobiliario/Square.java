@@ -8,6 +8,10 @@ public class Square {
 		
 	}
 	
+	public Square(int index) {
+		this.index = index;
+	}
+	
 	public Square(int index, int type) {
 		this.index = index;
 		this.type = type;
