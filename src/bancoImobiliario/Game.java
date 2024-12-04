@@ -29,7 +29,6 @@ public class Game implements Runnable {
 		}
 	}
 	
-	
 	// laço principal do jogo
 	public void run () {
 		int frames;
