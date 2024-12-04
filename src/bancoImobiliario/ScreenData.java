@@ -2,14 +2,16 @@ package bancoImobiliario;
 
 import java.awt.*;
 import java.awt.image.*;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class ScreenData extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
 
-	public static JFrame frame;				// janela
+	public JFrame frame;				// janela
 	public BufferStrategy bs;
 	
 	private final int LENGTH = 1760;		// eixo x
@@ -17,42 +19,54 @@ public class ScreenData extends Canvas {
 	
 	private BufferedImage image;
 	
-	private Spritesheet spritesheetMap;
 	private BufferedImage map;
-	
-	private Spritesheet spritesheetProperty;
 	private BufferedImage property;
-	
-	private Spritesheet spritesheetHub;
 	private BufferedImage hub;
+	
+	public boolean screenSelector;
+	public int menuSelector;
 	
 	public ScreenData () {
 		setPreferredSize (new Dimension (LENGTH, HEIGHT));
 		initFrame ();
 		this.createBufferStrategy (3);
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		
-		spritesheetMap = new Spritesheet ("/tabuleiro.png");
-		spritesheetProperty = new Spritesheet ("/telaImoveis.png");
-		spritesheetHub = new Spritesheet ("/hub.png");
-		
-		
-		map = spritesheetMap.getSpritesheet ();
-		property = spritesheetProperty.getSpritesheet ();
-		hub = spritesheetHub.getSpritesheet ();
+		initMaps ();
+		screenSelector = false;
 	}
 	
 	// inicializa janela do jogo
 	public void initFrame () {
-		frame = new JFrame ("BANCO MOBILHARO");
-		frame.add (this);
-		frame.setResizable (false);
-		frame.pack ();
-		frame.setLocationRelativeTo (null);
-		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-		frame.setVisible (true);
+		frame = new JFrame("Banco Imobiliario");
+		frame.add(this);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 	
+	// inicializa sprites dos mapas
+	public void initMaps () {
+		try {
+			map = ImageIO.read (getClass().getResource("/tabuleiro.png"));
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+
+		try {
+			property = ImageIO.read (getClass().getResource("/telaImoveis.png"));
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+
+		try {
+			hub = ImageIO.read (getClass().getResource("/hub.png"));
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
+	}
+
 	public BufferedImage getImage () {
 		return this.image;
 	}
@@ -83,4 +97,9 @@ public class ScreenData extends Canvas {
 			this.createBufferStrategy (3);
 		}
 	}
+	
+	public boolean getScreen () {
+		return this.screenSelector;
+	}
+	
 }
