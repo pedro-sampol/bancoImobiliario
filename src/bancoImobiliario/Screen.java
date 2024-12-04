@@ -1,7 +1,6 @@
 package bancoImobiliario;
 
 import java.awt.*;
-import java.awt.image.*;
 
 public class Screen extends Canvas {
 	
@@ -18,6 +17,7 @@ public class Screen extends Canvas {
 		
 		
 		g.drawImage(s.getHub(), 0, 0, null);
+
 		if (s.getScreen()) {
 			g.drawImage(s.getMap(), 770, 0, null);
 		} else if (!s.getScreen()) {

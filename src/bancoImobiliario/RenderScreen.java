@@ -49,6 +49,4 @@ public class RenderScreen extends Canvas implements KeyListener {
 
 	}
 
-
-
 }

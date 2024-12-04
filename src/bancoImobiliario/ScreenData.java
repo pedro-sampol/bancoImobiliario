@@ -41,9 +41,9 @@ public class ScreenData extends Canvas {
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		frame.setLocationRelativeTo (null);
+		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+		frame.setVisible (true);
 	}
 	
 	// inicializa sprites dos mapas
@@ -53,13 +53,11 @@ public class ScreenData extends Canvas {
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
-
 		try {
 			property = ImageIO.read (getClass().getResource("/telaImoveis.png"));
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
-
 		try {
 			hub = ImageIO.read (getClass().getResource("/hub.png"));
 		} catch (IOException e) {
