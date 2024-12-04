@@ -9,7 +9,6 @@ import java.io.IOException;
 public class Save {
 	
 	public File save;
-	public BufferedReader reader;
 	
 	public Save (){
 		try {
@@ -17,15 +16,13 @@ public class Save {
 			this.save = new File("./save/save.txt");
 			if(!save.exists())
 				this.save.createNewFile();
-			
-			this.reader = new BufferedReader(new FileReader("./save/save.txt"));
-
-			
 		} catch (IOException e) { //verifica se nao ouve algum erro
 			e.printStackTrace();
 		}
 		
 	}
+	
+	
 	public void saveGame(Player players[]) {
 		try {
 			//cria um FileWriter
@@ -45,6 +42,22 @@ public class Save {
 			
 			
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadGame (Player players[]) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
+			
+			String linha;
+			for(int i = 0; i < 6; i++) {
+				linha = reader.readLine();
+				players[i] = new Player(linha);
+			}
+			
+			reader.close();
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}

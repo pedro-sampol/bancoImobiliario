@@ -25,26 +25,19 @@ public class Player {
 		this.repeatedDice = 0;
 	}
 	
-	public Player(Save save) {
+	public Player(String linha) {
 		String info[];
 		String separador = " ";
 		
-		try {
-			String linha = save.reader.readLine();
+		info = linha.split(separador);
 			
-			info = linha.split(separador);
-			
-			this.position = Integer.valueOf(info[0]);
-			this.money = Integer.valueOf(info[1]);
-			this.inJail = Boolean.valueOf(info[2]);
-			this.timeInPrision =  Integer.valueOf(info[3]);
-			this.getOutCards = Integer.valueOf(info[4]);
-			this.noPlayTime = Integer.valueOf(info[5]);
-			this.repeatedDice = Integer.valueOf(info[6]);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.position = Integer.valueOf(info[0]);
+		this.money = Integer.valueOf(info[1]);
+		this.inJail = Boolean.valueOf(info[2]);
+		this.timeInPrision =  Integer.valueOf(info[3]);
+		this.getOutCards = Integer.valueOf(info[4]);
+		this.noPlayTime = Integer.valueOf(info[5]);
+		this.repeatedDice = Integer.valueOf(info[6]);
 	}
 	
 		//funcoes que retornam informações do estado atual de uma variavel do player
