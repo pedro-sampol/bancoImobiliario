@@ -66,17 +66,6 @@ public class Game implements Runnable {
 	}
 	
 	public static void main (String[] args) {
-		Save save = new Save();
-		Player players[] = new Player[6];
-		for (int i = 0; i < 6; i++) {
-			players[i] = new Player();
-		}
-		
-		
-		players[0] = new Player(save);
-		
-		System.out.println(players[0].getPosition());
-		System.out.println(players[0].getMoney());
 		Game game = new Game ();
 		game.start ();
 	}
