@@ -1,7 +1,5 @@
 package bancoImobiliario;
 
-import java.awt.image.BufferedImage;
-
 public class Board {
 	Constants cnst = new Constants();
 	Square[] squares;

@@ -12,4 +12,11 @@ public class Constants {
 	public int RED    = 3;
 	public int PURPLE = 4;
 	public int GREEN  = 5;
+	
+	public int MAINMENU 	= 0;
+	public int RULES 		= 1;
+	public int BOARD 		= 2;
+	public int PROPERTIES 	= 3;
+	public int PAUSE 		= 4;
+	public int WIN 			= 5;
 }
