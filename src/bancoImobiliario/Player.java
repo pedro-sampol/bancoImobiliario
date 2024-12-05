@@ -9,132 +9,173 @@ public class Player {
 	private int x,y;					// coordenadas
 	private int position;				// indice no mapa
 	private int money;					// dinheiro atual
-	private Boolean inJail;				// esta preso?
+	private boolean bankrupt;			// player faliu ou nao
+	private int numProprieties;			// numero de propriedades/companhias que o player possui
+	private boolean proprietiesOwned[] = new boolean[36];	// vetor indicando quais as propriedades que o player possui
+	private boolean inJail;				// esta preso
 	private int timeInPrision;			// tempo em turnos preso
-	private int getOutCards;			// quantas cartas de sair da prisao?
-	private int noPlayTime;				// ???
-	private int repeatedDice;			// quantas vezes seguidas os dados reptiram o valor
+	private int getOutCards;			// quantidade cartas de sair da prisao
+	private int noPlayTime;				// Player não pode jogar n rodadas
+	private int repeatedDice;			// quantas vezes seguidas os dados foram iguais
 	private BufferedImage sprite;		// sprite do personagem
 	
+	//cria o player com os valores iniciais basicos do jogo
 	public Player(BufferedImage p, int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.position = 0;
-		this.money = 200;
-		this.inJail = Boolean.valueOf(false);
-		this.timeInPrision =  0;
-		this.getOutCards = 0;
-		this.noPlayTime = 0;
-		this.repeatedDice = 0;
-		this.sprite = p;
+		position = 0;
+		money = 200;
+		bankrupt = false;
+		numProprieties = 0;
+		inJail = false;
+		timeInPrision =  0;
+		getOutCards = 0;
+		noPlayTime = 0;
+		repeatedDice = 0;
+		sprite = p;
+		
+		//player sem nenhuma propriedade inicialmente
+		for(int i = 0; i < 36; i++)
+			proprietiesOwned[i] = false;
 	}
 	
-	public Player(String linha) {
+	//cria o player a partir de uma save do jogo, com valores passados pela linha
+	public Player(String linha, BufferedImage p) {
 		String info[];
 		String separador = " ";
 		
 		info = linha.split(separador);
-			
-		this.position = Integer.valueOf(info[0]);
-		this.money = Integer.valueOf(info[1]);
-		this.inJail = Boolean.valueOf(info[2]);
-		this.timeInPrision =  Integer.valueOf(info[3]);
-		this.getOutCards = Integer.valueOf(info[4]);
-		this.noPlayTime = Integer.valueOf(info[5]);
-		this.repeatedDice = Integer.valueOf(info[6]);
+		
+		x = Integer.valueOf(info[0]);
+		y = Integer.valueOf(info[1]);
+		position = Integer.valueOf(info[2]);
+		money = Integer.valueOf(info[3]);
+		bankrupt = Boolean.valueOf(info[4]);
+		numProprieties = Integer.valueOf(info[5]);
+		inJail = Boolean.valueOf(info[6]);
+		timeInPrision =  Integer.valueOf(info[7]);
+		getOutCards = Integer.valueOf(info[8]);
+		noPlayTime = Integer.valueOf(info[9]);
+		repeatedDice = Integer.valueOf(info[10]);
+		
+		//atualiza o vetor que controla as propriedades do player
+		for(int i = 0; i < 36; i++)
+			proprietiesOwned[i] = Boolean.valueOf(info[11 + i]);
+		
+		sprite = p;
 	}
 	
 	//funcoes que retornam informações do estado atual de uma variavel do player
 	public int getX() {
-		return this.x;
+		return x;
 	}
 	public int getY() {
-		return this.y;
+		return y;
 	}
 	public int getPosition() {
-		return this.position;
+		return position;
 	}
 	public int getMoney() {
-		return this.money;
+		return money;
 	}
-	public Boolean isInJail() {
-		return this.inJail;
+	public boolean isBankrupt() {
+		return bankrupt;
+	}
+	public int getNumProprieties() {
+		return numProprieties;
+	}
+	public boolean getOwned(int index) {
+		return proprietiesOwned[index];
+	}
+	public boolean isInJail() {
+		return inJail;
 	}
 	public int getTimeInPrision() {
-		return this.timeInPrision;
+		return timeInPrision;
 	}
 	public int getGetOutCards() {
-		return this.getOutCards;
+		return getOutCards;
 	}
 	public int getNoPlayTime() {
-		return this.noPlayTime;
+		return noPlayTime;
 	}	
 	public BufferedImage getSprite() {
-		return this.sprite;
+		return sprite;
 	}
 	public int getRepeatedDice() {
-		return this.repeatedDice;
+		return repeatedDice;
+	}
+	
+	//altera a variavel bankrupt do player para ser igual a state
+	public void setBankrupt(boolean state) {
+		bankrupt = state;
+	}
+	
+	// altera a quantidade de dinheiro que o player possui
+	public void setMoney(int valor) {
+		money = valor;
+	}
+	
+	public boolean setOwned(int index, boolean bool) {
+		return proprietiesOwned[index] = bool;
 	}
 	
 	// verifica se o player tem dinheiro suficiente para uma compra
 	// retorna true se sim, false se não
-	public Boolean hasMoney(int valor) {
-		if(this.money >= valor)
-			return Boolean.valueOf(true);
+	public boolean hasMoney(int valor) {
+		if(money >= valor)
+			return true;
 		else
-			return Boolean.valueOf(false);
+			return false;
 	}
 	
-	// altera a quantidade de dinheiro que o player possui
-	public void changeMoney(int valor) {
-		this.money += valor;
-	}
+
 	
 	//move o player num casas para frente
 	//retorna true se o player passou ou parou na casa inicial, false se nao
-	public Boolean move(int num) {
-		Boolean retorno;
+	public boolean move(int num) {
+		boolean retorno;
 		
 		//player passou ou parou no inicio
-		if(this.position + num >= 36)
-			retorno = Boolean.valueOf(true);
+		if(position + num >= 36)
+			retorno = true;
 		else
-			retorno = Boolean.valueOf(false);	
+			retorno = false;	
 			
 		//atualiza posicao do player (tabuleiro é circular com 36 casas)
-		this.position = (this.money + num) % 36;
+		position = (money + num) % 36;
 		return retorno;
 	}
 	
 	//player recebe uma carta de fuga da prisao
 	public void increaseGetOutCards() {
-		this.getOutCards++;
+		getOutCards++;
 	}
 	
 	//player saiu da prisao
 	//se carta == true -> remove uma carta de fuga da prisao
-	public void getOutOfPrision(Boolean carta) {
-		if(carta.equals(true))
-			this.getOutCards--;
+	public void getOutOfPrision(boolean carta) {
+		if(carta)
+			getOutCards--;
 		
-		this.inJail = Boolean.valueOf(false);
+		inJail = false;
 	}
 	
 	//caso os dados sejam repetidos, aumenta a contagem de dados
 	//retorna true se foram jogados dados repetidos 3 vezes seguidas em um turno
-	public Boolean repeatedDice(Dice dado) {
+	public boolean repeatedDice(Dice dado) {
 		if(dado.isEqual) {
-			if(this.repeatedDice == 2) {
-				this.resetRepeatedDice();
+			if(repeatedDice == 2) {
+				resetRepeatedDice();
 				return true;
 			}
-			this.repeatedDice++;
+			repeatedDice++;
 		}
 		return false;
 	}
 	
 	//reseta o num de dados repetidos (usado no fim de um turno)
 	public void resetRepeatedDice() {
-		this.repeatedDice = 0;
+		repeatedDice = 0;
 	}
 }

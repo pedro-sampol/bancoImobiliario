@@ -1,8 +1,8 @@
 package bancoImobiliario;
 
 public class Company extends Local {
-	int multiplier;
-	int price;
+	private int multiplier;
+	private int price;
 	
 	public Company() {
 		multiplier = 1;
@@ -16,5 +16,8 @@ public class Company extends Local {
 	
 	public int getMultiplier() {
 		return multiplier;
+	}
+	public int getPrice() {
+		return price;
 	}
 }

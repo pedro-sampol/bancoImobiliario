@@ -9,13 +9,18 @@ public class PlayerCtrl {
 	private Spritesheet spritesheet;
 	private BufferedImage spritePlayer;
 	
-	public PlayerCtrl () {
+	public PlayerCtrl (boolean loadSave, Save save) {
 		p = new Player[6];
 		spritesheet = new Spritesheet("/personagens.png");
 		
-		for (int i = 0; i < 6; i++) {
-			spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
-			p[i] = new Player(spritePlayer, 0, 0);
+		//cria players a partir do arquivo de save
+		if(loadSave)
+			save.loadPLayers(p, spritesheet);
+		else { //cria os players da forma padão
+			for (int i = 0; i < 6; i++) {
+				spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
+				p[i] = new Player(spritePlayer, 0, 0);
+			}
 		}
 	}
 	

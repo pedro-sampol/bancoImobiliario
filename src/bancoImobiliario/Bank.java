@@ -1,0 +1,127 @@
+package bancoImobiliario;
+
+public class Bank {
+	
+	//dá amount Money para o player
+	public void giveMoney(Player player, int amount) {
+		player.setMoney(player.getMoney() + amount);
+	}
+	
+	//retira amount Money do player
+	// se o player não tiver o dinheiro
+	//		-Tenta hipotecar/vender suas propriedades e companhias
+	//		-Se ainda não tiver dinheiro
+	//			-Player vai a falencia
+	// se o player tiver dinheir
+	public void takeMoney(Player player, int amount) {
+		
+		//tenta hipotecar/vender as propriedades do player
+		while(!player.hasMoney(amount) && player.getNumProprieties() > 0) {
+			//abre parte de hipoteca e tals
+		}
+		
+		//player sem dinheiro suficinete -> falencia
+		if(!player.hasMoney(player.getMoney() + amount))
+			player.setBankrupt(true);
+		
+		//player com dinheiro suficiente -> remove amount do dinheiro que ele possui
+		player.setMoney(player.getMoney() - amount);
+	}
+	
+	//retira dinheiro de p2 e adiciona para p1
+	//se p2 não tiver o suficiente
+	//	P2 vai a falencia
+	//	p1 recebe todo o restante do dinheiro de p2
+	public void exchangeMoney(Player p1, Player p2, int amount) {
+		
+		//player2 sem dinheiro suficiente para a troca
+		this.takeMoney(p2, amount);
+		if(p2.isBankrupt())
+			this.giveMoney(p1, p2.getMoney());
+		else
+			this.giveMoney(p1, amount);
+	}
+	
+	//vende uma casa de uma propriedade e entrega o dinheiro para o player
+	public void sellHouse(Player player, Property property) {
+		this.giveMoney(player, property.getHousePrice());
+		property.setNHouses(property.getNHouses() - 1);
+	}
+	
+	//vende uma propriedade (e todas as suas casas) e entrega o dinheiro para o player
+	public void sellProperty(Player player, Square property) {
+		Property aux = (Property) property;
+		
+		//vende todas as casas da propriedade
+		while(aux.getNHouses() > 0)
+			this.sellHouse(player, aux);
+		
+		//player perde a propriedade
+		player.setOwned(property.getIndex(), false);
+		
+		//player ganha o dinheiro da propriedade
+		this.giveMoney(player, aux.getValue());
+		
+		//propiedade sem dono
+		aux.setOwner(-1);
+		aux.setBought(false);
+	}
+	
+	//vende uma companhia e entrega o dinheiro ao player
+	public void sellCompany(Player player, Square comp) {
+		Company aux = (Company) comp;
+
+		//player perde a company
+		player.setOwned(aux.getIndex(), false);
+		
+		//player ganha o dinheiro da company
+		this.giveMoney(player, aux.getValue());
+		
+		//company sem dono
+		aux.setOwner(-1);
+		aux.setBought(false);
+	}
+	
+	//Player compra uma company
+	// se nao tiver dinheiro retorna false, ao contrario retorna true
+	public boolean buyCompany(Player player, Square comp, int id) {
+		Company aux = (Company) comp;
+		
+		//player sem dinheiro para a compra
+		if(!player.hasMoney(aux.getValue()))
+			return false;
+			
+		//player compra a company
+		player.setOwned(aux.getIndex(), true);
+		
+		//player perde o dinheiro da company
+		this.takeMoney(player, aux.getValue());
+		
+		//company com dono
+		aux.setOwner(id);
+		aux.setBought(true);
+		
+		return true;
+	}
+	
+	//Player compra uma company
+	// se nao tiver dinheiro retorna false, ao contrario retorna true
+	public boolean buyProperty(Player player, Square property, int id) {
+		Property aux = (Property) property;
+		
+		//player sem dinheiro para a compra
+		if(!player.hasMoney(aux.getValue()))
+			return false;
+		
+		//player compra a propriedade
+		player.setOwned(property.getIndex(), true);
+		
+		//player perde o dinheiro da propriedade
+		this.takeMoney(player, aux.getValue());
+		
+		//propiedade com dono
+		aux.setOwner(id);
+		aux.setBought(true);
+		return true;
+	}
+}

@@ -4,7 +4,7 @@ public class Board {
 	Constants cnst = new Constants();
 	Square[] squares;
 	
-	public Board() {
+	public Board(boolean loadSave, Save save) {
 		squares = new Square[36];
 		
 		squares[0] = new Square(0, cnst.CORNER);
@@ -43,6 +43,10 @@ public class Board {
 		squares[33] = new Destiny(33, cnst.DESTINY);
 		squares[34] = new Property(34, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
 		squares[35] = new Company(35, cnst.COMPANY, 100, 50, 200);
+		
+		//atualiza os quadrados para retornar ao estado salvo na save
+		if(loadSave)
+			save.loadSquares(squares);
 	}
 	
 }
