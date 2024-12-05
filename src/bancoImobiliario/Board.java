@@ -48,4 +48,5 @@ public class Board {
 		if(loadSave)
 			save.loadSquares(squares);
 	}
+	
 }

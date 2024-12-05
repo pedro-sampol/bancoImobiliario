@@ -1,39 +1,23 @@
 package bancoImobiliario;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class RenderScreen extends Canvas implements KeyListener {
+public class RenderScreen extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
 	private ScreenData sData;
 	private Screen s;
+	private Commands commands;
 	
 	public RenderScreen () {
 		sData = new ScreenData ();
 		s = new Screen ();
-		sData.frame.addKeyListener(this);
+		commands = new Commands(sData);
 	}
 	
-	public void gameScreen () {
+	public void gameScreen (PlayerCtrl p) {
 		sData.getBS();
-		s.printGame (sData);
+		s.printGame (sData, p, commands);
 	}
-	
-	public void keyTyped(KeyEvent e) {}
-
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			sData.screenSelector = !sData.screenSelector;
-		}
-
-	}
-
-	public void keyReleased(KeyEvent e) {
-
-	}
-
-
 
 }

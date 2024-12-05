@@ -1,6 +1,9 @@
 package bancoImobiliario;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Scanner;
+import java.io.IOException;
 
 public class Player {
 	private int x,y;					// coordenadas

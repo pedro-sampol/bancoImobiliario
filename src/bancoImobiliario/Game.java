@@ -4,6 +4,9 @@ public class Game implements Runnable {
 	
 	private Thread thread;
 	private RenderScreen screen;
+	private PlayerCtrl p;
+	private Board board;
+	
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
@@ -12,6 +15,8 @@ public class Game implements Runnable {
 	public Game () {
 		screen = new RenderScreen();
 		dice = new Dice();
+		p = new PlayerCtrl();
+		board = new Board();
 	}
 	
 	public synchronized void start () {
@@ -48,7 +53,7 @@ public class Game implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				screen.gameScreen();
+				screen.gameScreen(p);			// funcao render
 				frames++;
 				delta--;
 			}
