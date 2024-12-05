@@ -1,21 +1,22 @@
 package bancoImobiliario;
 
-
-import java.io.File;
-import java.util.Scanner;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 public class Player {
-	private int position;
-	private int money;
-	private Boolean inJail;
-	private int timeInPrision;
-	private int getOutCards;
-	private int noPlayTime;
-	private int repeatedDice;
-	private Spritesheet sprite;
+	private int x,y;					// coordenadas
+	private int position;				// indice no mapa
+	private int money;					// dinheiro atual
+	private Boolean inJail;				// esta preso
+	private int timeInPrision;			// tempo em turnos preso
+	private int getOutCards;			// quantidade cartas de sair da prisao
+	private int noPlayTime;				// Player não pode jogar n rodadas
+	private int repeatedDice;			// quantas vezes seguidas os dados foram iguais
+	private BufferedImage sprite;		// sprite do personagem
 	
-	public Player() {
+	//cria o player com os valores iniciais basicos do jogo
+	public Player(BufferedImage p, int x, int y) {
+		this.x = x;
+		this.y = y;
 		this.position = 0;
 		this.money = 200;
 		this.inJail = Boolean.valueOf(false);
@@ -23,24 +24,35 @@ public class Player {
 		this.getOutCards = 0;
 		this.noPlayTime = 0;
 		this.repeatedDice = 0;
+		this.sprite = p;
 	}
 	
-	public Player(String linha) {
+	//cria o player a partir de uma save do jogo, com valores passados pela linha
+	public Player(String linha, BufferedImage p) {
 		String info[];
 		String separador = " ";
 		
 		info = linha.split(separador);
-			
-		this.position = Integer.valueOf(info[0]);
-		this.money = Integer.valueOf(info[1]);
-		this.inJail = Boolean.valueOf(info[2]);
-		this.timeInPrision =  Integer.valueOf(info[3]);
-		this.getOutCards = Integer.valueOf(info[4]);
-		this.noPlayTime = Integer.valueOf(info[5]);
-		this.repeatedDice = Integer.valueOf(info[6]);
+		
+		this.x = Integer.valueOf(info[0]);
+		this.y = Integer.valueOf(info[1]);
+		this.position = Integer.valueOf(info[2]);
+		this.money = Integer.valueOf(info[3]);
+		this.inJail = Boolean.valueOf(info[4]);
+		this.timeInPrision =  Integer.valueOf(info[5]);
+		this.getOutCards = Integer.valueOf(info[6]);
+		this.noPlayTime = Integer.valueOf(info[7]);
+		this.repeatedDice = Integer.valueOf(info[8]);
+		this.sprite = p;
 	}
 	
-		//funcoes que retornam informações do estado atual de uma variavel do player
+	//funcoes que retornam informações do estado atual de uma variavel do player
+	public int getX() {
+		return this.x;
+	}
+	public int getY() {
+		return this.y;
+	}
 	public int getPosition() {
 		return this.position;
 	}
@@ -59,7 +71,7 @@ public class Player {
 	public int getNoPlayTime() {
 		return this.noPlayTime;
 	}	
-	public Spritesheet getSprite() {
+	public BufferedImage getSprite() {
 		return this.sprite;
 	}
 	public int getRepeatedDice() {

@@ -9,10 +9,6 @@ public class Board {
 		players = new Player[6];
 		squares = new Square[36];
 		
-		for (int i=0; i<6; i++) {
-			players[i] = new Player();
-		}
-		
 		squares[0] = new Square(0, cnst.CORNER);
 		squares[1] = new Property(1, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
 		squares[2] = new Destiny(2, cnst.DESTINY);
