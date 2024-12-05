@@ -6,7 +6,7 @@ public class Screen extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
 
-	public void printGame (ScreenData s, Board b, int i) {
+	public void printGame (ScreenData s, PlayerCtrl p, int i) {
 		Graphics g;
 	
 		g = s.getImage().getGraphics ();				//acessa image
@@ -25,17 +25,17 @@ public class Screen extends Canvas {
 		}
 		
 		if (i == 0) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		} else if (i == 1) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		} else if (i == 2) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		} else if (i == 3) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		} else if (i == 4) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		} else if (i == 5) {
-			g.drawImage(b.playerSprite(i), 0, 210, null);
+			g.drawImage(p.playerSprite(i), 0, 210, null);
 		}
 		
 		//g.fillOval(ALLBITS, ABORT, WIDTH, HEIGHT);

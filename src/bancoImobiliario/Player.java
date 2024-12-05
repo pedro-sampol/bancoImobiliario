@@ -6,17 +6,19 @@ import java.util.Scanner;
 import java.io.IOException;
 
 public class Player {
-	private int x,y;
-	private int position;
-	private int money;
-	private Boolean inJail;
-	private int timeInPrision;
-	private int getOutCards;
-	private int noPlayTime;
-	private int repeatedDice;
-	private BufferedImage sprite;
+	private int x,y;					// coordenadas
+	private int position;				// indice no mapa
+	private int money;					// dinheiro atual
+	private Boolean inJail;				// esta preso?
+	private int timeInPrision;			// tempo em turnos preso
+	private int getOutCards;			// quantas cartas de sair da prisao?
+	private int noPlayTime;				// ???
+	private int repeatedDice;			// quantas vezes seguidas os dados reptiram o valor
+	private BufferedImage sprite;		// sprite do personagem
 	
-	public Player(BufferedImage p) {
+	public Player(BufferedImage p, int x, int y) {
+		this.x = x;
+		this.y = y;
 		this.position = 0;
 		this.money = 200;
 		this.inJail = Boolean.valueOf(false);
@@ -43,6 +45,12 @@ public class Player {
 	}
 	
 	//funcoes que retornam informações do estado atual de uma variavel do player
+	public int getX() {
+		return this.x;
+	}
+	public int getY() {
+		return this.y;
+	}
 	public int getPosition() {
 		return this.position;
 	}

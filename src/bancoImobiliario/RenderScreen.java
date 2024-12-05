@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 public class RenderScreen extends Canvas implements KeyListener {
 	
 	private static final long serialVersionUID = 1L;
-	private Board board;
+	private PlayerCtrl p;
 	private ScreenData sData;
 	private Screen s;
 	private int playerSelected;
@@ -16,13 +16,13 @@ public class RenderScreen extends Canvas implements KeyListener {
 		sData = new ScreenData ();
 		s = new Screen ();
 		sData.frame.addKeyListener(this);
-		board = new Board();
+		p = new PlayerCtrl();
 		playerSelected = 0;
 	}
 	
 	public void gameScreen () {
 		sData.getBS();
-		s.printGame (sData, board, playerSelected);
+		s.printGame (sData, p, playerSelected);
 	}
 	
 	public void keyTyped(KeyEvent e) {}
