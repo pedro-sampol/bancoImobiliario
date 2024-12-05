@@ -16,8 +16,8 @@ public class Game implements Runnable {
 		screen = new RenderScreen();
 		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
-		p = new PlayerCtrl();
-		board = new Board();
+		//p = new PlayerCtrl();
+		//board = new Board();
 	}
 	
 	public synchronized void start () {
