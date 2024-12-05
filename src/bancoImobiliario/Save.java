@@ -35,11 +35,23 @@ public class Save {
 				writer.append(String.valueOf(players[i].getY() + " "));
 				writer.append(String.valueOf(players[i].getPosition() + " "));
 				writer.append(String.valueOf(players[i].getMoney() + " "));
+				writer.append(String.valueOf(players[i].isBankrupt() + " "));
+				writer.append(String.valueOf(players[i].getNumProprieties() + " "));
 				writer.append(String.valueOf(players[i].isInJail() + " "));
 				writer.append(String.valueOf(players[i].getTimeInPrision() + " "));
 				writer.append(String.valueOf(players[i].getGetOutCards() + " "));
 				writer.append(String.valueOf(players[i].getNoPlayTime() + " "));
-				writer.append(String.valueOf(players[i].getRepeatedDice() + "\n"));
+				writer.append(String.valueOf(players[i].getRepeatedDice() + " "));
+				
+				//grava o arquivo
+				writer.flush();
+				
+				//salva o vetor que controla as propriedades que o player possui
+				for(int j = 0; j < 36; j++)
+					writer.append(String.valueOf(players[i].getOwned(j)));
+				writer.append("\n");
+				
+				writer.flush();
 			}
 			
 			//percorre todas as casas e verifica quais podem necessitar de alteração
