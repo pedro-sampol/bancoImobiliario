@@ -4,16 +4,17 @@ public class Game implements Runnable {
 	
 	private Thread thread;
 	private RenderScreen screen;
+	
 	private PlayerCtrl p;
 	private Board board;
-	
+	private Dice dice;
+	private Commands commands;
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
-	private Dice dice;
-	
 	public Game () {
 		screen = new RenderScreen();
+		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
 		p = new PlayerCtrl();
 		board = new Board();
@@ -53,7 +54,7 @@ public class Game implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				screen.gameScreen(p);			// funcao render
+				screen.gameScreen(p, commands);			// funcao render
 				frames++;
 				delta--;
 			}
