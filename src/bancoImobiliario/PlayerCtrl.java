@@ -27,5 +27,5 @@ public class PlayerCtrl {
 	public Player getPlayer (int index) {
 		return p[index];
 	}
-	
+
 }

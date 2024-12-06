@@ -7,6 +7,7 @@ import java.io.IOException;
 public class Screen extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
+
 	private Font fontBig;
 	private Font fontMedium;
 	private Font fontSmall;

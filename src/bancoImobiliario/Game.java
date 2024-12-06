@@ -3,13 +3,17 @@ package bancoImobiliario;
 public class Game implements Runnable {
 	
 	private Thread thread;
-	private RenderScreen screen;
 	
+	private RenderScreen screen;
 	private PlayerCtrl p;
 	private Board board;
 	private Dice dice;
 	private Commands commands;
 	private Save save;
+	private GameCtrl g;
+	private Player players[];
+	
+	private Spritesheet player_sprite;
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
@@ -20,6 +24,7 @@ public class Game implements Runnable {
 		dice = new Dice();
 		p = new PlayerCtrl(false, save);
 		board = new Board(false, save);
+		g = new GameCtrl();
 	}
 	
 	public synchronized void start () {
@@ -39,6 +44,7 @@ public class Game implements Runnable {
 	
 	// laço principal do jogo
 	public void run () {
+		Player current_player;
 		int frames;
 		long now, lastTime;
 		double amountOfTicks, nsPerTick, delta, timer;
@@ -65,6 +71,51 @@ public class Game implements Runnable {
 				System.out.println ("FPS: " + frames);
 				frames = 0;
 				timer += 1000;
+			}
+			
+			// jogo em si
+			if (g.isGameOn() && !g.isPaused()) {
+				
+			}
+			
+		}
+		
+		// jogo em si
+		int player_index = 5;
+		while (board.getPlayersOn() > 1) {
+			// pega o player atual
+			player_index = (player_index + 1)%6;
+			current_player = board.getPlayer(player_index);
+			
+			// caso em que o player esta impedido de jogar
+			if (current_player.getNoPlayTime() > 0) {
+				// current_player.noPlayTime--;
+				continue;
+			}
+			// caso em que o player esta na cadeia
+			if (current_player.isInJail()) {
+				if (current_player.getTimeInPrision() < 3) {
+					dice.rollDice();
+					if (dice.getIsEqual()) {
+						// current_player.inJail = false
+						// current_player.timeInPrison = 0
+					}
+				}
+				else {
+					// escolhe se quer pagar para sair ou rolar os dados
+				}
+			}
+			// verifica se saiu da cadeia
+			if (current_player.isInJail()) {
+				// current_player.timeInPrison++
+				continue;
+			}
+			
+			// acoes normais
+			dice.rollDice();
+			if (current_player.repeatedDice(dice)) {
+				// move player para a cadeia
+				continue;
 			}
 			
 		}
