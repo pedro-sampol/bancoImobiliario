@@ -4,11 +4,9 @@ public class Board {
 	private Constants cnst = new Constants();
 	private Square[] squares;
 	private Player[] players;
-	private int players_on;
 	
 	public Board(boolean loadSave, Save save) {
 		squares = new Square[36];
-		players_on = 6;
 		
 		squares[0] = new Square(0, cnst.CORNER);
 		squares[1] = new Property(1, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
@@ -57,8 +55,5 @@ public class Board {
 	}
 	public Player getPlayer(int index) {
 		return players[index];
-	}
-	public int getPlayersOn() {
-		return players_on;
 	}
 }

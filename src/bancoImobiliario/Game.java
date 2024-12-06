@@ -8,7 +8,7 @@ public class Game implements Runnable {
 	private Board board;
 	private Save save;
 	private GameCtrl g;
-	private Player players[];
+	public Constants c;
 	
 	private Spritesheet player_sprite;
 	
@@ -24,6 +24,7 @@ public class Game implements Runnable {
 		p = new PlayerCtrl(false, save);
 		board = new Board(false, save);
 		g = new GameCtrl();
+		c = new Constants();
 	}
 	
 	public synchronized void start () {
@@ -55,6 +56,11 @@ public class Game implements Runnable {
 		frames = 0;
 		timer = System.currentTimeMillis ();
 		
+		
+		boolean load = false;
+		int player_index = 0;
+		current_player = p.getPlayer(0);
+		
 		while (isRunning) {
 			now = System.nanoTime ();
 			delta += (now - lastTime) / nsPerTick;
@@ -72,16 +78,40 @@ public class Game implements Runnable {
 				timer += 1000;
 			}
 			
+			// no momento certo chama startGame()
+			
 			// jogo em si
 			if (g.isGameOn() && !g.isPaused()) {
+				
+				// inicializa o game
+				if (g.getCurrentState() == c.START_GAME) {
+					p = new PlayerCtrl(load, save);
+					g.setCurrentState(c.MIDDLE_GAME);
+				}
+				
+				// pega o proximo player
+				if (g.getCurrentState() == c.GET_NEXT_PLAYER) {
+					current_player = p.getPlayer(player_index);
+					g.setCurrentState(c.MIDDLE_GAME);
+				}
+				
+				// caso em que o player esta impedido de jogar
+				if (current_player.getNoPlayTime() > 0) {
+					current_player.setNoPlayTime(current_player.getNoPlayTime() - 1);
+					g.setCurrentState(c.END_TURN);
+				}
+				
+				// caso em que o player esta na cadeia
+				else if (current_player.isInJail()) {
+					
+				}
 				
 			}
 			
 		}
 		
 		// jogo em si
-		int player_index = 5;
-		while (board.getPlayersOn() > 1) {
+		while (g.getPlayersOn() > 1) {
 			// pega o player atual
 			player_index = (player_index + 1)%6;
 			current_player = board.getPlayer(player_index);

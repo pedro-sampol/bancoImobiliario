@@ -19,4 +19,9 @@ public class Constants {
 	public int PROPERTIES 	= 3;
 	public int PAUSE 		= 4;
 	public int WIN 			= 5;
+	
+	public int START_GAME = 0;
+	public int GET_NEXT_PLAYER = 1;
+	public int MIDDLE_GAME = 2;
+	public int END_TURN = 3;
 }
