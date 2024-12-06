@@ -163,8 +163,8 @@ public class Player {
 	
 	//caso os dados sejam repetidos, aumenta a contagem de dados
 	//retorna true se foram jogados dados repetidos 3 vezes seguidas em um turno
-	public boolean repeatedDice(Dice dado) {
-		if(dado.isEqual) {
+	public Boolean repeatedDice(Dice dado) {
+		if(dado.getIsEqual()) {
 			if(repeatedDice == 2) {
 				resetRepeatedDice();
 				return true;

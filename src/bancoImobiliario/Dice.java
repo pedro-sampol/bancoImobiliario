@@ -3,9 +3,9 @@ package bancoImobiliario;
 import java.util.Random;
 
 public class Dice {
-	boolean isEqual;
-	int value1;
-	int value2;
+	private boolean isEqual;
+	private int value1;
+	private int value2;
 	
 	public void rollDice() {
 		Random random = new Random();
@@ -20,7 +20,16 @@ public class Dice {
 		}
 	}
 	
-	public boolean get_isEqual() {
+	public boolean getIsEqual() {
 		return isEqual;
+	}
+	public int getValue1() {
+		return value1;
+	}
+	public int getValue2() {
+		return value2;
+	}
+	public int getTotalValue() {
+		return value1 + value2;
 	}
 }
