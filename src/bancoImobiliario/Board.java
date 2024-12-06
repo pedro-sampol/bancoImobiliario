@@ -6,14 +6,9 @@ public class Board {
 	private Player[] players;
 	private int players_on;
 	
-	public Board() {
-		players = new Player[6];
+	public Board(boolean loadSave, Save save) {
 		squares = new Square[36];
 		players_on = 6;
-		
-		for (int i=0; i<6; i++) {
-			players[i] = new Player();
-		}
 		
 		squares[0] = new Square(0, cnst.CORNER);
 		squares[1] = new Property(1, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
@@ -51,6 +46,10 @@ public class Board {
 		squares[33] = new Destiny(33, cnst.DESTINY);
 		squares[34] = new Property(34, cnst.PROPERTY, cnst.ORANGE, 70, 10, 50, 150, 450, 625, 750, 100);
 		squares[35] = new Company(35, cnst.COMPANY, 100, 50, 200);
+		
+		//atualiza os quadrados para retornar ao estado salvo na save
+		if(loadSave)
+			save.loadSquares(squares);
 	}
 	
 	public Square getSquare(int index) {
@@ -62,6 +61,4 @@ public class Board {
 	public int getPlayersOn() {
 		return players_on;
 	}
-	
-	
 }

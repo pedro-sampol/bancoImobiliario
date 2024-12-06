@@ -31,4 +31,8 @@ public class Property extends Local {
 	public int getRend(int index) {
 		return rent[index];
 	}
+	
+	public void setNHouses(int n) {
+		this.n_houses = n;
+	}
 }

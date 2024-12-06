@@ -22,9 +22,7 @@ public class ScreenData extends Canvas {
 	private BufferedImage map;
 	private BufferedImage property;
 	private BufferedImage hub;
-	
-	public boolean screenSelector;
-	public int menuSelector;
+
 	
 	public ScreenData () {
 		setPreferredSize (new Dimension (LENGTH, HEIGHT));
@@ -32,7 +30,6 @@ public class ScreenData extends Canvas {
 		this.createBufferStrategy (3);
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		initMaps ();
-		screenSelector = false;
 	}
 	
 	// inicializa janela do jogo
@@ -41,9 +38,9 @@ public class ScreenData extends Canvas {
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+		frame.setLocationRelativeTo (null);
+		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+		frame.setVisible (true);
 	}
 	
 	// inicializa sprites dos mapas
@@ -53,13 +50,11 @@ public class ScreenData extends Canvas {
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
-
 		try {
 			property = ImageIO.read (getClass().getResource("/telaImoveis.png"));
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
-
 		try {
 			hub = ImageIO.read (getClass().getResource("/hub.png"));
 		} catch (IOException e) {
@@ -96,10 +91,5 @@ public class ScreenData extends Canvas {
 		if (bs == null) {
 			this.createBufferStrategy (3);
 		}
-	}
-	
-	public boolean getScreen () {
-		return this.screenSelector;
-	}
-	
+	}	
 }
