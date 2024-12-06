@@ -5,21 +5,21 @@ import java.awt.*;
 public class RenderScreen extends Canvas {
 	
 	private static final long serialVersionUID = 1L;
-	private ScreenData sData;
-	private Screen s;
+	private ScreenData screenData;
+	private Screen screen;
 	
 	public RenderScreen () {
-		this.sData = new ScreenData ();
-		this.s = new Screen ();
+		screenData = new ScreenData ();
+		screen = new Screen ();
 	}
 	
-	public void gameScreen (PlayerCtrl p, Commands commands) {
-		sData.getBS();
-		s.printGame (sData, p, commands);
+	public void gameScreen (PlayerCtrl pCtrl, Commands commands) {
+		screenData.getBS();
+		screen.printGame (screenData, pCtrl, commands);
 	}
 	
 	public ScreenData getScreenData () {
-		return this.sData;
+		return this.screenData;
 	}
 
 }

@@ -24,16 +24,8 @@ public class PlayerCtrl {
 		}
 	}
 	
-	public BufferedImage playerSprite (int i) {
-		return p[i].getSprite();
-	}
-	
-	public int playerX (int i) {
-		return p[i].getX();
-	}
-	
-	public int playerY (int i) {
-		return p[i].getY();
+	public Player getPlayer (int index) {
+		return p[index];
 	}
 	
 }

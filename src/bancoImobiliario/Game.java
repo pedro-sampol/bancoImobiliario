@@ -9,15 +9,17 @@ public class Game implements Runnable {
 	private Board board;
 	private Dice dice;
 	private Commands commands;
+	private Save save;
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
 	public Game () {
+		save = new Save();
 		screen = new RenderScreen();
 		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
-		//p = new PlayerCtrl();
-		//board = new Board();
+		p = new PlayerCtrl(false, save);
+		board = new Board(false, save);
 	}
 	
 	public synchronized void start () {
@@ -58,7 +60,7 @@ public class Game implements Runnable {
 				frames++;
 				delta--;
 			}
-			
+		
 			if (System.currentTimeMillis() - timer >= 1000) {
 				System.out.println ("FPS: " + frames);
 				frames = 0;

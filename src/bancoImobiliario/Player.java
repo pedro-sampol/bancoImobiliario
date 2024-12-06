@@ -11,13 +11,13 @@ public class Player {
 	private int money;					// dinheiro atual
 	private boolean bankrupt;			// player faliu ou nao
 	private int numProprieties;			// numero de propriedades/companhias que o player possui
-	private boolean proprietiesOwned[] = new boolean[36];	// vetor indicando quais as propriedades que o player possui
 	private boolean inJail;				// esta preso
 	private int timeInPrision;			// tempo em turnos preso
 	private int getOutCards;			// quantidade cartas de sair da prisao
 	private int noPlayTime;				// Player não pode jogar n rodadas
 	private int repeatedDice;			// quantas vezes seguidas os dados foram iguais
 	private BufferedImage sprite;		// sprite do personagem
+	private boolean proprietiesOwned[] = new boolean[36];	// vetor indicando quais as propriedades que o player possui
 	
 	//cria o player com os valores iniciais basicos do jogo
 	public Player(BufferedImage p, int x, int y) {
