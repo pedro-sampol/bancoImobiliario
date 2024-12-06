@@ -6,17 +6,24 @@ public class Game implements Runnable {
 	private RenderScreen screen;
 	private PlayerCtrl p;
 	private Board board;
+	private Save save;
+	private GameCtrl g;
+	private Player players[];
+	
+	private Spritesheet player_sprite;
 	
 	
 	private boolean isRunning = true;		//condicao de parada do game
 	
 	private Dice dice;
 	
-	public Game () {
+	public Game () {		
+		save = new Save();
 		screen = new RenderScreen();
 		dice = new Dice();
-		p = new PlayerCtrl();
-		board = new Board();
+		p = new PlayerCtrl(false, save);
+		board = new Board(false, save);
+		g = new GameCtrl();
 	}
 	
 	public synchronized void start () {
@@ -37,9 +44,6 @@ public class Game implements Runnable {
 	// laço principal do jogo
 	public void run () {
 		Player current_player;
-		Board board = new Board();
-		Dice dice = new Dice();
-		/*
 		int frames;
 		long now, lastTime;
 		double amountOfTicks, nsPerTick, delta, timer;
@@ -68,8 +72,12 @@ public class Game implements Runnable {
 				timer += 1000;
 			}
 			
+			// jogo em si
+			if (g.isGameOn() && !g.isPaused()) {
+				
+			}
+			
 		}
-		*/
 		
 		// jogo em si
 		int player_index = 5;
