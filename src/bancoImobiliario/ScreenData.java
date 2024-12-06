@@ -13,12 +13,11 @@ public class ScreenData extends Canvas {
 
 	public JFrame frame;				// janela
 	public BufferStrategy bs;
-	
+
 	private final int LENGTH = 1760;		// eixo x
 	private final int HEIGHT = 990;			// eixo y
 	
 	private BufferedImage image;
-	
 	private BufferedImage map;
 	private BufferedImage property;
 	private BufferedImage hub;
