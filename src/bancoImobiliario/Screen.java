@@ -32,8 +32,7 @@ public class Screen extends Canvas {
 	public void printGame (ScreenData screenData, PlayerCtrl pCtrl, Commands commands) {
 		Graphics graphics;
 		Player player = pCtrl.getPlayer(commands.getPlayerID());
-				
-		graphics = screenData.getImage().getGraphics ();				//acessa image
+		graphics = screenData.getImage().getGraphics ();
 	
 		// renderiza menu principal
 		if (commands.getScreenID() == commands.c.MAINMENU) {
@@ -45,14 +44,13 @@ public class Screen extends Canvas {
 			
 		// renderiza tabuleiro
 		} else if (commands.getScreenID() == commands.c.BOARD) {
-			graphics.drawImage(screenData.getHub(), 0, 0, null);
-			graphics.drawImage(player.getSprite(), 0, 210, null);
-			graphics.drawImage(screenData.getMap(), 770, 0, null);
+			drawHub(screenData, graphics, player);
+			drawMap(screenData, graphics, pCtrl, commands);
 			
 		// renderiza imoveis
 		} else if (commands.getScreenID() == commands.c.PROPERTIES) {
-			graphics.drawImage(screenData.getHub(), 0, 0, null);
-			graphics.drawImage(player.getSprite(), 0, 210, null);
+			drawHub(screenData, graphics, player);
+			//drawProperty();
 			graphics.drawImage(screenData.getProperty(), 770, 0, null);
 			
 		// renderiza tela de pause
@@ -111,6 +109,55 @@ public class Screen extends Canvas {
 		
 		// imagem das regras
 		g.drawImage(s.getRules(), 0, 0, null);
+	}
+	
+/*************************************************************************************************/
+	
+	public void drawHub (ScreenData s, Graphics g, Player player) {
+		g.drawImage(s.getHub(), 0, 0, null);
+		g.drawImage(player.getSprite(), 0, 210, null);
+		//escrever dinheiro, posses, instrucoes
+	}
+	
+/*************************************************************************************************/
+	
+	public void drawMap (ScreenData s, Graphics g, PlayerCtrl pCtrl, Commands c) {
+		Player p;
+		
+		// mapa
+		g.drawImage(s.getMap(), 770, 0, null);
+		
+		// valor dos dados
+		g.setColor (Color.BLACK);
+		g.setFont (fontSmall);
+		g.drawString("Dado 1: "+c.dice.getValue1(), 1400, 670);
+		g.drawString("Dado 2: "+c.dice.getValue2(), 1400, 720);
+		
+		// players
+		g.setColor (new Color (255,0,0));
+		p = pCtrl.getPlayer(0);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+		
+		g.setColor (new Color (38,0,255));
+		p = pCtrl.getPlayer(1);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+		
+		g.setColor (new Color (30,255,0));
+		p = pCtrl.getPlayer(2);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+		
+		g.setColor (new Color (236,0,255));
+		p = pCtrl.getPlayer(3);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+		
+		g.setColor (new Color (244,255,0));
+		p = pCtrl.getPlayer(4);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+		
+		g.setColor (new Color (255,167,0));
+		p = pCtrl.getPlayer(5);
+		g.fillRect(p.getX(), p.getY(), 30, 30);
+
 	}
 	
 /*************************************************************************************************/

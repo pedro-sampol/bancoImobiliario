@@ -11,6 +11,7 @@ public class Game implements Runnable {
 	private Commands commands;
 	private Save save;
 	private GameCtrl g;
+	private Bank bank;
 	public Constants c;
 	
 	private Spritesheet player_sprite;
@@ -20,12 +21,13 @@ public class Game implements Runnable {
 	public Game () {
 		save = new Save();
 		screen = new RenderScreen();
-		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
 		g = new GameCtrl();
-		c = new Constants();
 		p = new PlayerCtrl(false, save);
 		board = new Board(false, save);
+		bank = new Bank();
+		commands = new Commands(screen.getScreenData(), dice, g, p, bank);
+		c = new Constants();
 	}
 	
 	public synchronized void start () {

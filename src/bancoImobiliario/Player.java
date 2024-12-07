@@ -20,10 +20,9 @@ public class Player {
 	private boolean proprietiesOwned[] = new boolean[36];	// vetor indicando quais as propriedades que o player possui
 	
 	//cria o player com os valores iniciais basicos do jogo
-	public Player(BufferedImage p, int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Player(BufferedImage p, int index) {
 		position = 0;
+		pickCoords(index);
 		money = 200;
 		bankrupt = false;
 		numProprieties = 0;
@@ -106,6 +105,12 @@ public class Player {
 		return repeatedDice;
 	}
 	
+	// muda as coordenadas do player no tabuleiro
+	public void setCoords(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	// altera o tempo que o jogador esta impedido de jogar
 	public void setNoPlayTime(int time) {
 		noPlayTime = time;
@@ -134,7 +139,87 @@ public class Player {
 			return false;
 	}
 	
-
+	public void pickCoords (int index) {
+		int x, y;
+		int walk = position % 9;
+		
+		// coordenadas para a fileira de baixo
+		if (position <= 8) {
+			x = 1632;
+			y = 882;
+			if (index == 1) {
+				x += 37;
+			} else if (index == 2) {
+				y += 37;
+			} else if (index == 3) {
+				x += 37;
+				y += 37;
+			} else if (index == 4) {
+				y += 74;
+			} else if (index == 5) {
+				x += 37;
+				y += 74;
+			}
+			setCoords (x-(89*walk), y);	
+		
+		// coordenadas para a fileira da esquerda
+		} else if (position <= 17) {
+			x = 848;
+			y = 862;
+			if (index == 1) {
+				y += 37;
+			} else if (index == 2) {
+				x -= 37;
+			} else if (index == 3) {
+				x -= 37;
+				y += 37;
+			} else if (index == 4) {
+				x -= 74;
+			} else if (index == 5) {
+				x -= 74;
+				y += 37;
+			}
+			setCoords (x, y-(89*walk));
+			
+		// coordenadas para a fileira de cima
+		} else if (position <= 26) {
+			x = 868;
+			y = 78;
+			if (index == 1) {
+				x -= 37;
+			} else if (index == 2) {
+				y -= 37;
+			} else if (index == 3) {
+				x -= 37;
+				y -= 37;
+			} else if (index == 4) {
+				y -= 74;
+			} else if (index == 5) {
+				x -= 37;
+				y -= 74;
+			}
+			setCoords (x+(89*walk), y);	
+			
+		// coordenadas para a fileira da direita
+		} else if (position <= 35) {
+			x = 1652;
+			y = 98;
+			if (index == 1) {
+				y -= 37;
+			} else if (index == 2) {
+				x += 37;
+			} else if (index == 3) {
+				x += 37;
+				y -= 37;
+			} else if (index == 4) {
+				x += 74;
+			} else if (index == 5) {
+				x += 74;
+				y -= 37;
+			}
+			setCoords (x, y+(89*walk));
+		}
+	}
 	
 	//move o player num casas para frente
 	//retorna true se o player passou ou parou na casa inicial, false se nao
@@ -148,7 +233,7 @@ public class Player {
 			retorno = false;	
 			
 		//atualiza posicao do player (tabuleiro é circular com 36 casas)
-		position = (money + num) % 36;
+		position = (position + num) % 36;
 		return retorno;
 	}
 	

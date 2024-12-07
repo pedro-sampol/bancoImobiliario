@@ -11,12 +11,20 @@ public class Commands implements KeyListener {
 	private int menuButton;
 	private int pauseButton;
 	private int lastScreen;
+	public Dice dice;
+	private GameCtrl gCtrl;
+	private PlayerCtrl pCtrl;
+	private Bank bank;
 
 /*************************************************************************************************/
 	
-	public Commands (ScreenData sData) {
+	public Commands (ScreenData sData, Dice dice, GameCtrl gCtrl, PlayerCtrl pCtrl, Bank bank) {
 		c = new Constants();
 		sData.frame.addKeyListener(this);
+		this.dice = dice;
+		this.gCtrl = gCtrl;
+		this.pCtrl = pCtrl;
+		this.bank = bank;
 		playerSelected = 0;
 		screenSelected = 0;
 		menuButton = 0;
@@ -32,10 +40,12 @@ public class Commands implements KeyListener {
 			rulesScreen (e);
 		} else if (screenSelected == c.BOARD) {
 			hubScreen(e);
-			swapSides (e);
+			swapSides(e);
+			executeDice(e);
+			endTurn(e);
 		} else if (screenSelected == c.PROPERTIES) {
 			hubScreen(e);
-			swapSides (e);
+			swapSides(e);
 		} else if (screenSelected == c.PAUSE) {
 			pauseScreen(e);
 		} else if (screenSelected == c.WIN) {
@@ -119,6 +129,40 @@ public class Commands implements KeyListener {
 	
 /*************************************************************************************************/
 	
+	// rola os dados e atualiza posicao do player
+	public void executeDice (KeyEvent e) {
+		boolean start;
+		Player p;
+		
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			if (gCtrl.diceUsed()) return;
+			dice.rollDice();									// rola os dados
+			p = pCtrl.getPlayer(gCtrl.getPlayerIndex());		// pega o player do turno atual
+			start = p.move(dice.getTotalValue());				// soma a posicao no tabuleiro
+			p.pickCoords(gCtrl.getPlayerIndex());				// atualiza as coordenadas
+			if (start) {
+				bank.giveMoney(p, 200); 						// da 200 pro player se passar pelo inicio
+			}
+			if (!dice.getIsEqual()) {							// se os dados tiveram valores diferentes
+				gCtrl.setDiceState(true);						// eles ja foram usados nesse turno
+			}
+		}
+	}
+	
+/*************************************************************************************************/
+	
+	// rola os dados e atualiza posicao do player
+	public void endTurn (KeyEvent e) {		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (gCtrl.diceUsed()) {
+				gCtrl.setPlayerIndex((gCtrl.getPlayerIndex()+1)%6);
+				gCtrl.setDiceState(false);
+			}
+		}
+	}
+	
+/*************************************************************************************************/
+	
 	public void pauseScreen (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (pauseButton > 0) {
@@ -150,7 +194,6 @@ public class Commands implements KeyListener {
 	
 /*************************************************************************************************/
 
-	
 	// funcoes de get
 	public int getPlayerID () {
 		return this.playerSelected;

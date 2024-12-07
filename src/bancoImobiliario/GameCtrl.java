@@ -7,12 +7,11 @@ public class GameCtrl {
 	private boolean isPaused;
 	private int playerIndex;
 	private int playersOn;
-	private boolean isWaitingDice;
-	
+	private boolean diceUsed;
 	
 	public GameCtrl() {
 		currentState = 0;
-		isWaitingDice = false;
+		diceUsed = false;
 		isGameOn = false;
 		load = false;
 		playerIndex = 0;
@@ -35,9 +34,15 @@ public class GameCtrl {
 	public void setPlayerIndex(int index) {
 		playerIndex = index;
 	}
-	
+	public void setDiceState(boolean state) {
+		diceUsed = state;
+	}
+
 	public int getCurrentState() {
 		return currentState;
+	}
+	public int getPlayerIndex() {
+		return playerIndex;
 	}
 	public boolean isGameOn() {
 		return isGameOn;
@@ -50,6 +55,9 @@ public class GameCtrl {
 	}
 	public boolean getLoad() {
 		return load;
+	}
+	public boolean diceUsed() {
+		return diceUsed;
 	}
 	
 }
