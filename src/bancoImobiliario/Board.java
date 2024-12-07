@@ -5,8 +5,6 @@ import java.awt.image.BufferedImage;
 public class Board {
 	private Constants cnst = new Constants();
 	private Square[] squares;
-	private Player[] players;
-	private int players_on;
 	
 	private Spritesheet spritesheet;
 	private Spritesheet spritesheetBig;
@@ -17,7 +15,6 @@ public class Board {
 		spritesheet = new Spritesheet("/cartas.png");
 		spritesheetBig = new Spritesheet("/cartasGrandes.png");
 		squares = new Square[36];
-		players_on = 6;
 		
 		// inicializando casas
 		squares[0] = new Square(0, cnst.CORNER);
@@ -147,10 +144,5 @@ public class Board {
 	public Square getSquare(int index) {
 		return squares[index];
 	}
-	public Player getPlayer(int index) {
-		return players[index];
-	}
-	public int getPlayersOn() {
-		return players_on;
-	}
+
 }
