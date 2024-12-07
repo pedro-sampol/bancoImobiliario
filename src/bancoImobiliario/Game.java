@@ -12,8 +12,8 @@ public class Game implements Runnable {
 	private Save save;						//save/load do jogo
 	private GameCtrl g;						//controle de fluxo do jogo
 	private Prision prision;				//controle da prisao
-	private Spritesheet player_sprite;		//sprites dos players
 	private boolean isRunning = true;		//condicao de parada do game
+	private Bank bank;						//controle de dinheiro do jogo
 	
 	public Constants c;
 	
@@ -22,12 +22,13 @@ public class Game implements Runnable {
 	public Game () {
 		save = new Save();
 		screen = new RenderScreen();
-		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
 		g = new GameCtrl();
-		c = new Constants();
 		p = new PlayerCtrl();
 		board = new Board();
+		bank = new Bank();
+		commands = new Commands(screen.getScreenData(), dice, g, p, bank);
+		c = new Constants();
 	}
 	
 	/*************************************************************************************************/

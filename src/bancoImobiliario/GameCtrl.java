@@ -1,18 +1,18 @@
 package bancoImobiliario;
 
 public class GameCtrl {
+
 	private boolean load;			//jogo precisa dar load?
 	private int currentState;		//estado atual do jogo
 	private boolean isGameOn;		//jogo esta sendo rodado?
 	private boolean isPaused;		//jogo esta pausado?
 	private int playerIndex;		//indice do player atual
 	private int playersOn;			//numero de players no jogo
-	private boolean isWaitingDice;	//player ainda nao jogou os dados
-	
+	private boolean diceUsed;		//player ainda nao jogou os dados
 	
 	public GameCtrl() {
 		currentState = 0;
-		isWaitingDice = false;
+		diceUsed = false;
 		isGameOn = false;
 		load = false;
 		playerIndex = 0;
@@ -35,9 +35,22 @@ public class GameCtrl {
 		p.setBankrupt(true);
 	}
 	
-	
 	public void setPlayerIndex(int index) {
 		playerIndex = index;
+	}
+
+	public int getPlayerIndex() {
+		return playerIndex;
+	}
+	
+	/*************************************************************************************************/
+	
+	public void setDiceState(boolean state) {
+		diceUsed = state;
+	}
+
+	public boolean diceUsed() {
+		return diceUsed;
 	}
 	
 	/*************************************************************************************************/

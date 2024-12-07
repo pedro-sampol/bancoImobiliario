@@ -12,11 +12,11 @@ public class PlayerCtrl {
 	public PlayerCtrl () {
 		p = new Player[6];
 		spritesheet = new Spritesheet("/personagens.png");
-	
+
 		//cria os players
 		for (int i = 0; i < 6; i++) {
 			spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
-			p[i] = new Player(spritePlayer, 0, 0);
+			p[i] = new Player(spritePlayer, i);
 		}
 	}
 	
@@ -37,5 +37,5 @@ public class PlayerCtrl {
 	public Player getPlayer (int index) {
 		return p[index];
 	}
-
+	
 }
