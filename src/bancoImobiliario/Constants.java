@@ -31,4 +31,5 @@ public class Constants {
 	public int ROLL_DICE 		 = 8;
 	public int ROLL_PRISION_DICE = 9;
 	public int PRISION_CHOICE    = 10;
+	public int SOLVE_SQUARE		 = 11;
 }

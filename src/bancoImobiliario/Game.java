@@ -168,8 +168,17 @@ public class Game implements Runnable {
 	
 					// ROLL_DICE
 					case 8:
+						// espera player rodar dados
+						rolled_dice = false;
+						if (rolled_dice) {
+							// move player
+							// resolve o quadrado em que caiu
+						}
 						break;
 					
+					case 11:
+						
+						
 					default:
 						break;	
 	
