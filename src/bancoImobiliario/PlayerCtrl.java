@@ -4,25 +4,35 @@ import java.awt.image.BufferedImage;
 
 public class PlayerCtrl {
 	
-	Player[] p;
+	Player[] p;								//vetor com todos os players do jogo
 	
-	private Spritesheet spritesheet;
-	private BufferedImage spritePlayer;
+	private Spritesheet spritesheet;		//spritesheet com todos os players
+	private BufferedImage spritePlayer;		//spritesheet de apenas um player
 	
-	public PlayerCtrl (boolean loadSave, Save save) {
+	public PlayerCtrl () {
 		p = new Player[6];
 		spritesheet = new Spritesheet("/personagens.png");
-		
-		//cria players a partir do arquivo de save
-		if(loadSave)
-			save.loadPLayers(p, spritesheet);
-		else { //cria os players da forma padão
-			for (int i = 0; i < 6; i++) {
-				spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
-				p[i] = new Player(spritePlayer, i);
-			}
+
+		//cria os players
+		for (int i = 0; i < 6; i++) {
+			spritePlayer = spritesheet.getSprite(0+(i*520), 0, 520, 600);
+			p[i] = new Player(spritePlayer, i);
 		}
 	}
+	
+	/*************************************************************************************************/
+	
+	//aumenta o tempo sem jogar do player em num
+	public void increseNoPlayTime(Player player, int num) {
+		player.setNoPlayTime(num + player.getNoPlayTime()); 
+	}
+	
+	//diminui o numero de turnos sem jogar do player
+	public void wasteTurn(Player player) {
+		player.setNoPlayTime(player.getNoPlayTime() - 1);
+	}
+	
+	/*************************************************************************************************/
 	
 	public Player getPlayer (int index) {
 		return p[index];

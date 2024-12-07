@@ -6,11 +6,12 @@ import java.awt.event.KeyListener;
 public class Commands implements KeyListener {
 	
 	public Constants c;
-	private int playerSelected;
-	private int screenSelected;
-	private int menuButton;
-	private int pauseButton;
-	private int lastScreen;
+	
+	private int playerSelected;		//player selecionado atualmente
+	private int screenSelected;		//tela selecionada atualmente
+	private int menuButton;			//botao do menu
+	private int pauseButton;		//botao de pause
+	private int lastScreen;			//tela anterior
 	public Dice dice;
 	private GameCtrl gCtrl;
 	private PlayerCtrl pCtrl;
@@ -131,18 +132,14 @@ public class Commands implements KeyListener {
 	
 	// rola os dados e atualiza posicao do player
 	public void executeDice (KeyEvent e) {
-		boolean start;
 		Player p;
 		
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			if (gCtrl.diceUsed()) return;
 			dice.rollDice();									// rola os dados
 			p = pCtrl.getPlayer(gCtrl.getPlayerIndex());		// pega o player do turno atual
-			start = p.move(dice.getTotalValue());				// soma a posicao no tabuleiro
+			p.move(dice.getTotalValue());				// soma a posicao no tabuleiro
 			p.pickCoords(gCtrl.getPlayerIndex());				// atualiza as coordenadas
-			if (start) {
-				bank.giveMoney(p, 200); 						// da 200 pro player se passar pelo inicio
-			}
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores diferentes
 				gCtrl.setDiceState(true);						// eles ja foram usados nesse turno
 			}

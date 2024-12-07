@@ -4,37 +4,42 @@ public class Game implements Runnable {
 	
 	private Thread thread;
 	
-	private RenderScreen screen;
-	private PlayerCtrl p;
-	private Board board;
-	private Dice dice;
-	private Commands commands;
-	private Save save;
-	private GameCtrl g;
-	private Bank bank;
+	private RenderScreen screen;			//tela do jogo a ser impressa
+	private PlayerCtrl p;					//controlador do player
+	private Board board;					//tabuleiro com as casas
+	private Dice dice;						//dados
+	private Commands commands;				//comandos do jogo
+	private Save save;						//save/load do jogo
+	private GameCtrl g;						//controle de fluxo do jogo
+	private Prision prision;				//controle da prisao
+	private boolean isRunning = true;		//condicao de parada do game
+	private Bank bank;						//controle de dinheiro do jogo
+	
 	public Constants c;
 	
-	private Spritesheet player_sprite;
-
-	private boolean isRunning = true;		//condicao de parada do game
+	/*************************************************************************************************/
 	
 	public Game () {
 		save = new Save();
 		screen = new RenderScreen();
 		dice = new Dice();
 		g = new GameCtrl();
-		p = new PlayerCtrl(false, save);
-		board = new Board(false, save);
+		p = new PlayerCtrl();
+		board = new Board();
 		bank = new Bank();
 		commands = new Commands(screen.getScreenData(), dice, g, p, bank);
 		c = new Constants();
 	}
+	
+	/*************************************************************************************************/
 	
 	public synchronized void start () {
 		thread = new Thread (this);
 		isRunning = true;					
 		thread.start ();					// chama o metodo run
 	}
+	
+	/*************************************************************************************************/
 	
 	public synchronized void stop () {
 		isRunning = false;
@@ -45,12 +50,15 @@ public class Game implements Runnable {
 		}
 	}
 	
+	/*************************************************************************************************/
+	
 	// laço principal do jogo
 	public void run () {
 		Player current_player;
 		int frames;
 		long now, lastTime;
 		double amountOfTicks, nsPerTick, delta, timer;
+		save.saveGame(p, board);
 		
 		lastTime = System.nanoTime ();
 		amountOfTicks = 60.0;
@@ -90,11 +98,9 @@ public class Game implements Runnable {
 				switch(currentState) {
 					// START_GAME
 					case 0:
-						/*
-						p = new PlayerCtrl(g.getLoad(), save);
-						board = new Board(g.getLoad(), save);
+						save.loadPlayers(p);
+						save.loadSquares(board);
 						g.setCurrentState(c.START_TURN);
-						*/
 						break;
 						
 					// DID_GAME_END
@@ -130,7 +136,7 @@ public class Game implements Runnable {
 						
 					// IS_IN_JAIL
 					case 7:
-						if (current_player.isInJail()) {
+						if (current_player.isInPrision()) {
 							if (current_player.getTimeInPrision() < 3) {
 								g.setCurrentState(c.ROLL_PRISION_DICE);
 							}
@@ -171,6 +177,10 @@ public class Game implements Runnable {
 					// ROLL_DICE
 					case 8:
 						break;
+						
+					case 3:
+						save.saveGame(p, board);
+						break;
 					
 					default:
 						break;	
@@ -178,7 +188,7 @@ public class Game implements Runnable {
 				}
 			}
 			
-		}
+		}	
 		stop ();
 	}
 	

@@ -9,19 +9,19 @@ import javax.swing.JFrame;
 
 public class ScreenData extends Canvas {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	//controle
 
 	public JFrame frame;				// janela
-	public BufferStrategy bs;
+	public BufferStrategy bs;			//estrategia de buffer
 
 	private final int LENGTH = 1760;		// eixo x
 	private final int HEIGHT = 990;			// eixo y
 	
-	private BufferedImage image;
-	private BufferedImage map;
-	private BufferedImage property;
-	private BufferedImage hub;
-	private BufferedImage rules;
+	private BufferedImage image;		//imagem
+	private BufferedImage map;			//mapa
+	private BufferedImage property;		//propriedades
+	private BufferedImage hub;			//menu
+	private BufferedImage rules;		//regras do jogo
 
 	
 	public ScreenData () {
@@ -31,6 +31,8 @@ public class ScreenData extends Canvas {
 		image = new BufferedImage (LENGTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		initMaps ();
 	}
+	
+	/*************************************************************************************************/
 	
 	// inicializa janela do jogo
 	public void initFrame () {
@@ -42,6 +44,8 @@ public class ScreenData extends Canvas {
 		frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 		frame.setVisible (true);
 	}
+	
+	/*************************************************************************************************/
 	
 	// inicializa sprites dos mapas
 	public void initMaps () {
@@ -66,6 +70,8 @@ public class ScreenData extends Canvas {
 			e.printStackTrace ();
 		}
 	}
+	
+	/*************************************************************************************************/
 
 	public BufferedImage getImage () {
 		return this.image;

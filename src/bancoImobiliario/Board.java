@@ -4,12 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class Board {
 	private Constants cnst = new Constants();
-	private Square[] squares;
 	
-	private Spritesheet spritesheet;
-	private Spritesheet spritesheetBig;
+	private Square[] squares;				//Vetor guardando todas as casas do tabuleiro
 	
-	public Board(boolean loadSave, Save save) {
+	private Spritesheet spritesheet;	    //imagens das cartas
+	private Spritesheet spritesheetBig;     //imagens grande das cartas
+	
+	public Board() {
 		BufferedImage sprite;
 		BufferedImage spriteBig;
 		spritesheet = new Spritesheet("/cartas.png");
@@ -136,9 +137,6 @@ public class Board {
 		sprite = spritesheet.getSprite(198*23, 0, 198, 222);
 		spriteBig = spritesheetBig.getSprite(297*23, 0, 297, 333);
 		squares[35] = new Company(sprite, spriteBig, 35, cnst.COMPANY, 100, 50, 200);
-		
-		//atualiza os quadrados para retornar ao estado salvo na save
-		if(loadSave) save.loadSquares(squares);
 	}
 	
 	public Square getSquare(int index) {

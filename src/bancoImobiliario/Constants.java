@@ -1,10 +1,10 @@
 package bancoImobiliario;
 
 public class Constants {
-	public int PROPERTY = 0;
 	public int DESTINY  = 1;
 	public int COMPANY  = 2;
 	public int CORNER   = 3;
+	public int PROPERTY = 4;
 	
 	public int ORANGE = 0;
 	public int BLUE   = 1;

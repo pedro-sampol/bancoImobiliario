@@ -1,8 +1,8 @@
 package bancoImobiliario;
 
 public class Square {
-	private int index;
-	private int type;
+	private int index;	//indice no tabuleiro
+	private int type;	//tipo de casa (company, property, destiny, outro)
 	
 	public Square() {
 		
@@ -14,6 +14,8 @@ public class Square {
 		this.index = index;
 		this.type = type;
 	}
+	
+	/*************************************************************************************************/
 	
 	public int getIndex() {
 		return index;
