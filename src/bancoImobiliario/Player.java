@@ -35,7 +35,7 @@ public class Player {
 		sprite = p;
 	}
 	
-
+	/*************************************************************************************************/
 	
 	//funcoes que retornam informações do estado atual de uma variavel do player
 	public int getX() {
@@ -81,6 +81,8 @@ public class Player {
 		return proprietiesOwned[index];
 	}
 	
+	/*************************************************************************************************/
+	
 	//funcoes que alteram diretamente as variaveis do player
 	public void setNoPlayTime(int time) {
 		noPlayTime = time;
@@ -104,6 +106,8 @@ public class Player {
 	public void setGetOutCards(int count) {
 		getOutCards = count;
 	}
+	
+	/*************************************************************************************************/
 	
 	//player recebe um novo lugar
 	public void newLocal(int index) {
@@ -133,6 +137,8 @@ public class Player {
 			numProprieties--;
 	}
 	
+	/*************************************************************************************************/
+	
 	// verifica se o player tem dinheiro suficiente para uma compra
 	// retorna true se sim, false se não
 	public boolean hasMoney(int valor) {
@@ -142,7 +148,7 @@ public class Player {
 			return false;
 	}
 	
-
+	/*************************************************************************************************/
 	
 	//move o player num casas para frente
 	//retorna true se o player passou ou parou na casa inicial, false se nao
@@ -159,10 +165,14 @@ public class Player {
 		//atualiza posicao do player (tabuleiro é circular com 36 casas)
 		position = (position + num) % 36;
 		
-		
+		//player parou ou passou do inicio
+		if(pos_ant + num != position)
+			money += 200;
 		
 		return retorno;
 	}
+	
+	/*************************************************************************************************/
 	
 
 	
@@ -183,6 +193,8 @@ public class Player {
 	public void resetRepeatedDice() {
 		repeatedDice = 0;
 	}
+	
+	/*************************************************************************************************/
 	
 	//atualiza o player ppara  as iformações passadas em linha
 	public void updateLoad(String linha) {

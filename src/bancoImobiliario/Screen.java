@@ -6,11 +6,11 @@ import java.io.IOException;
 
 public class Screen extends Canvas {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;	//controle
 
-	private Font fontBig;
-	private Font fontMedium;
-	private Font fontSmall;
+	private Font fontBig;								//fonte das letras em tamanho grande
+	private Font fontMedium;							//fonte das letras em tamanho medio
+	private Font fontSmall;								//fonte das letras em tamanho pequeno
 	
 /*************************************************************************************************/
 	

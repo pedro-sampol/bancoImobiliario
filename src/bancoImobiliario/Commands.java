@@ -6,11 +6,11 @@ import java.awt.event.KeyListener;
 public class Commands implements KeyListener {
 	
 	public Constants c;
-	private int playerSelected;
-	private int screenSelected;
-	private int menuButton;
-	private int pauseButton;
-	private int lastScreen;
+	private int playerSelected;		//player selecionado atualmente
+	private int menuButton;			//botao do menu
+	private int pauseButton;		//botao de pause
+	private int lastScreen;			//tela anterior
+	private int screenSelected;		//tela selecionada atualmente
 
 /*************************************************************************************************/
 	

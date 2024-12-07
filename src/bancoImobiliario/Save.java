@@ -9,7 +9,8 @@ import java.io.IOException;
 
 public class Save {
 	
-	public File save;
+	private File save;						//abre o arquivo de save padrao
+	
 	private Constants c = new Constants();
 	
 	public Save (){
@@ -23,6 +24,7 @@ public class Save {
 		}
 	}
 	
+	/*************************************************************************************************/
 	
 	public void saveGame(PlayerCtrl control, Board board) {
 		try {
@@ -89,6 +91,7 @@ public class Save {
 		}
 	}
 	
+	/*************************************************************************************************/
 	
 	//realiza o load do player a partir do arquivo save
 	public void loadPlayers (PlayerCtrl control) {

@@ -4,10 +4,14 @@ public class Bank {
 	
 	Constants c = new Constants();
 	
+	/*************************************************************************************************/
+	
 	//dá amount Money para o player
 	public void giveMoney(Player player, int amount) {
 		player.setMoney(player.getMoney() + amount);
 	}
+	
+	/*************************************************************************************************/
 	
 	//retira amount Money do player
 	// se o player não tiver o dinheiro
@@ -30,6 +34,8 @@ public class Bank {
 		player.setMoney(player.getMoney() - amount);
 	}
 	
+	/*************************************************************************************************/
+	
 	//retira dinheiro de p2 e adiciona para p1
 	//se p2 não tiver o suficiente
 	//	P2 vai a falencia
@@ -45,6 +51,8 @@ public class Bank {
 			this.giveMoney(p1, amount);
 	}
 	
+	/*************************************************************************************************/
+	
 	//vende uma casa de uma propriedade e entrega o dinheiro para o player
 	public void sellHouse(Player player, Property property) {
 		this.giveMoney(player, property.getHousePrice());
@@ -59,6 +67,8 @@ public class Bank {
 		property.setNHouses(property.getNHouses() + 1);
 		this.takeMoney(player, property.getHousePrice());
 	}
+	
+	/*************************************************************************************************/
 	
 	//vende uma propriedade (e todas as suas casas) e entrega o dinheiro para o player
 	public void sellProperty(Player player, Square property) {
@@ -93,6 +103,8 @@ public class Bank {
 		aux.setOwner(-1);
 		aux.setBought(false);
 	}
+	
+	/*************************************************************************************************/
 	
 	//Player compra uma company
 	// se nao tiver dinheiro retorna false, ao contrario retorna true
@@ -137,6 +149,8 @@ public class Bank {
 		return true;
 	}
 	
+	/*************************************************************************************************/
+	
 	//hipoteca um local
 	public void mortgage(Square square, Player player) {
 		Local local = (Local) square;
@@ -149,7 +163,7 @@ public class Bank {
 		local.setMortgage(true);
 		
 		//player recebe o dinheiro da hipoteca
-		this.giveMoney(player, local.getValue());
+		this.giveMoney(player, local.getMortgageValue());
 	}
 	
 	//player paga 110% do valor do local e ele não está mais hipotecado
@@ -157,26 +171,35 @@ public class Bank {
 		Local local = (Local) square;
 		
 		//verifica se o player tem dinheiro para a transação
-		if(!player.hasMoney(11 * local.getValue()/10))
+		if(!player.hasMoney(11 * local.getMortgageValue()/10))
 			return;
 		
 		//retira o dinheiro do player
-		this.takeMoney(player, 11 * local.getValue()/10);
+		this.takeMoney(player, 11 * local.getMortgageValue()/10);
 		
 		//local não está mais hipotecado
 		local.setMortgage(false);
 	}
 	
+	/*************************************************************************************************/
+	
 	//player payer para ao owner o valor por ter caido em um de seus locais
 	public void payRent(Player payer, Player owner, Square square, Dice dice) {
 		int value = 0;
+		
+		//calcula o valor caso o player caia em uma company
+		//valor tirado nos dados vezes o multiplicador dessa company
 		if(square.getIndex() == c.COMPANY) {
-			value = dice.getTotalValue() * 50;
+			Company company = (Company) square;
+			value = dice.getTotalValue() * company.getMultiplier();
 		} else {
+			
+			//valor com base no numero de casas na propriedade
 			Property property = (Property) square;
 			value = property.getRent(property.getNHouses());
 		}
 		
+		//realiza a troca de dinheiro entre os players
 		this.exchangeMoney(payer, owner, value);
 	}
 }

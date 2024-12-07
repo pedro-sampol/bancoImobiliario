@@ -4,10 +4,11 @@ import java.awt.image.BufferedImage;
 
 public class Board {
 	private Constants cnst = new Constants();
-	private Square[] squares;
 	
-	private Spritesheet spritesheet;
-	private Spritesheet spritesheetBig;
+	private Square[] squares;				//Vetor guardando todas as casas do tabuleiro
+	
+	private Spritesheet spritesheet;	    //imagens das cartas
+	private Spritesheet spritesheetBig;     //imagens grande das cartas
 	
 	public Board() {
 		BufferedImage sprite;

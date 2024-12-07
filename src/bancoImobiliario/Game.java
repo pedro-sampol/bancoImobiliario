@@ -4,18 +4,20 @@ public class Game implements Runnable {
 	
 	private Thread thread;
 	
-	private RenderScreen screen;
-	private PlayerCtrl p;
-	private Board board;
-	private Dice dice;
-	private Commands commands;
-	private Save save;
-	private GameCtrl g;
-	private Prision prision;
-	private Spritesheet player_sprite;
+	private RenderScreen screen;			//tela do jogo a ser impressa
+	private PlayerCtrl p;					//controlador do player
+	private Board board;					//tabuleiro com as casas
+	private Dice dice;						//dados
+	private Commands commands;				//comandos do jogo
+	private Save save;						//save/load do jogo
+	private GameCtrl g;						//controle de fluxo do jogo
+	private Prision prision;				//controle da prisao
+	private Spritesheet player_sprite;		//sprites dos players
 	private boolean isRunning = true;		//condicao de parada do game
 	
 	public Constants c;
+	
+	/*************************************************************************************************/
 	
 	public Game () {
 		save = new Save();
@@ -28,11 +30,15 @@ public class Game implements Runnable {
 		board = new Board();
 	}
 	
+	/*************************************************************************************************/
+	
 	public synchronized void start () {
 		thread = new Thread (this);
 		isRunning = true;					
 		thread.start ();					// chama o metodo run
 	}
+	
+	/*************************************************************************************************/
 	
 	public synchronized void stop () {
 		isRunning = false;
@@ -42,6 +48,8 @@ public class Game implements Runnable {
 			e.printStackTrace ();
 		}
 	}
+	
+	/*************************************************************************************************/
 	
 	// laço principal do jogo
 	public void run () {
