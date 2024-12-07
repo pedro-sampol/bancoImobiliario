@@ -24,6 +24,8 @@ public class Game implements Runnable {
 		dice = new Dice();
 		g = new GameCtrl();
 		c = new Constants();
+		p = new PlayerCtrl(false, save);
+		board = new Board(false, save);
 	}
 	
 	public synchronized void start () {
@@ -58,7 +60,8 @@ public class Game implements Runnable {
 		
 		boolean load = false;
 		int player_index = 0;
-		current_player = p.getPlayer(0);
+		//current_player = p.getPlayer(0);
+		current_player = null;
 		
 		while (isRunning) {
 			now = System.nanoTime ();
@@ -85,9 +88,11 @@ public class Game implements Runnable {
 				switch(currentState) {
 					// START_GAME
 					case 0:
+						/*
 						p = new PlayerCtrl(g.getLoad(), save);
 						board = new Board(g.getLoad(), save);
 						g.setCurrentState(c.START_TURN);
+						*/
 						break;
 						
 					// DID_GAME_END
@@ -172,47 +177,6 @@ public class Game implements Runnable {
 			}
 			
 		}
-		
-		/*
-		// jogo em si
-		while (g.getPlayersOn() > 1) {
-			// pega o player atual
-			player_index = (player_index + 1)%6;
-			current_player = board.getPlayer(player_index);
-			
-			// caso em que o player esta impedido de jogar
-			if (current_player.getNoPlayTime() > 0) {
-				// current_player.noPlayTime--;
-				continue;
-			}
-			// caso em que o player esta na cadeia
-			if (current_player.isInJail()) {
-				if (current_player.getTimeInPrision() < 3) {
-					dice.rollDice();
-					if (dice.getIsEqual()) {
-						// current_player.inJail = false
-						// current_player.timeInPrison = 0
-					}
-				}
-				else {
-					// escolhe se quer pagar para sair ou rolar os dados
-				}
-			}
-			// verifica se saiu da cadeia
-			if (current_player.isInJail()) {
-				// current_player.timeInPrison++
-				continue;
-			}
-			
-			// acoes normais
-			dice.rollDice();
-			if (current_player.repeatedDice(dice)) {
-				// move player para a cadeia
-				continue;
-			}
-			
-		}
-		*/
 		stop ();
 	}
 	
