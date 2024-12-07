@@ -37,7 +37,7 @@ public class Save {
 				writer.append(String.valueOf(players[i].getMoney() + " "));
 				writer.append(String.valueOf(players[i].isBankrupt() + " "));
 				writer.append(String.valueOf(players[i].getNumProprieties() + " "));
-				writer.append(String.valueOf(players[i].isInJail() + " "));
+				writer.append(String.valueOf(players[i].isInPrision() + " "));
 				writer.append(String.valueOf(players[i].getTimeInPrision() + " "));
 				writer.append(String.valueOf(players[i].getGetOutCards() + " "));
 				writer.append(String.valueOf(players[i].getNoPlayTime() + " "));
@@ -138,6 +138,8 @@ public class Save {
 					aux.setNHouses(Integer.valueOf(info[2]));
 					
 				}
+				
+				reader.close();
 			}
 		} catch(IOException e) {
 			e.printStackTrace();

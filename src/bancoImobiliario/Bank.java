@@ -2,6 +2,8 @@ package bancoImobiliario;
 
 public class Bank {
 	
+	Constants c = new Constants();
+	
 	//dá amount Money para o player
 	public void giveMoney(Player player, int amount) {
 		player.setMoney(player.getMoney() + amount);
@@ -32,6 +34,7 @@ public class Bank {
 	//se p2 não tiver o suficiente
 	//	P2 vai a falencia
 	//	p1 recebe todo o restante do dinheiro de p2
+	//retorna true se o p2 faliu
 	public void exchangeMoney(Player p1, Player p2, int amount) {
 		
 		//player2 sem dinheiro suficiente para a troca
@@ -123,5 +126,48 @@ public class Bank {
 		aux.setOwner(id);
 		aux.setBought(true);
 		return true;
+	}
+	
+	//hipoteca um local
+	public void mortgage(Square square, Player player) {
+		Local local = (Local) square;
+		
+		//local já está hipotecado
+		if(local.getMortgage())
+			return;
+		
+		//local hipotecado
+		local.setMortgage(true);
+		
+		//player recebe o dinheiro da hipoteca
+		this.giveMoney(player, local.getValue());
+	}
+	
+	//player paga 110% do valor do local e ele não está mais hipotecado
+	public void payMortgage(Square square, Player player) {
+		Local local = (Local) square;
+		
+		//verifica se o player tem dinheiro para a transação
+		if(!player.hasMoney(11 * local.getValue()/10))
+			return;
+		
+		//retira o dinheiro do player
+		this.takeMoney(player, 11 * local.getValue()/10);
+		
+		//local não está mais hipotecado
+		local.setMortgage(false);
+	}
+	
+	//player payer para ao owner o valor por ter caido em um de seus locais
+	public void payRent(Player payer, Player owner, Square square, Dice dice) {
+		int value = 0;
+		if(square.getIndex() == c.COMPANY) {
+			value = dice.getTotalValue() * 50;
+		} else {
+			Property property = (Property) square;
+			value = property.getRent(property.getNHouses());
+		}
+		
+		this.exchangeMoney(payer, owner, value);
 	}
 }

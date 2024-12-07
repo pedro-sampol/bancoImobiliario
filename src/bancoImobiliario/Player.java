@@ -11,7 +11,7 @@ public class Player {
 	private int money;					// dinheiro atual
 	private boolean bankrupt;			// player faliu ou nao
 	private int numProprieties;			// numero de propriedades/companhias que o player possui
-	private boolean inJail;				// esta preso
+	private boolean inPrision;			// esta preso
 	private int timeInPrision;			// tempo em turnos preso
 	private int getOutCards;			// quantidade cartas de sair da prisao
 	private int noPlayTime;				// Player não pode jogar n rodadas
@@ -27,7 +27,7 @@ public class Player {
 		money = 200;
 		bankrupt = false;
 		numProprieties = 0;
-		inJail = false;
+		inPrision = false;
 		timeInPrision =  0;
 		getOutCards = 0;
 		noPlayTime = 0;
@@ -52,7 +52,7 @@ public class Player {
 		money = Integer.valueOf(info[3]);
 		bankrupt = Boolean.valueOf(info[4]);
 		numProprieties = Integer.valueOf(info[5]);
-		inJail = Boolean.valueOf(info[6]);
+		inPrision = Boolean.valueOf(info[6]);
 		timeInPrision =  Integer.valueOf(info[7]);
 		getOutCards = Integer.valueOf(info[8]);
 		noPlayTime = Integer.valueOf(info[9]);
@@ -84,11 +84,12 @@ public class Player {
 	public int getNumProprieties() {
 		return numProprieties;
 	}
+
 	public boolean getOwned(int index) {
 		return proprietiesOwned[index];
 	}
-	public boolean isInJail() {
-		return inJail;
+	public boolean isInPrision() {
+		return inPrision;
 	}
 	public int getTimeInPrision() {
 		return timeInPrision;
@@ -106,19 +107,32 @@ public class Player {
 		return repeatedDice;
 	}
 	
-	//altera a variavel bankrupt do player para ser igual a state
+
+	//funcoes que alteram diretamente as variaveis do player
 	public void setBankrupt(boolean state) {
 		bankrupt = state;
 	}
-	
-	// altera a quantidade de dinheiro que o player possui
 	public void setMoney(int valor) {
 		money = valor;
 	}
-	
-	public boolean setOwned(int index, boolean bool) {
-		return proprietiesOwned[index] = bool;
+	public void setOwned(int index, boolean bool) {
+		proprietiesOwned[index] = bool;
 	}
+	public void setInPrision(boolean bool) {
+		inPrision = bool;
+	}
+	public void setTimeInPrision(int time) {
+		timeInPrision = time;
+	}
+	public void setPosition(int id) {
+		position = id;
+	}
+	public void setGetOutCards(int count) {
+		getOutCards = count;
+	}
+	public void setNoPlayTime(int num) {
+		noPlayTime = num;
+	}	
 	
 	// verifica se o player tem dinheiro suficiente para uma compra
 	// retorna true se sim, false se não
@@ -147,19 +161,7 @@ public class Player {
 		return retorno;
 	}
 	
-	//player recebe uma carta de fuga da prisao
-	public void increaseGetOutCards() {
-		getOutCards++;
-	}
-	
-	//player saiu da prisao
-	//se carta == true -> remove uma carta de fuga da prisao
-	public void getOutOfPrision(boolean carta) {
-		if(carta)
-			getOutCards--;
-		
-		inJail = false;
-	}
+
 	
 	//caso os dados sejam repetidos, aumenta a contagem de dados
 	//retorna true se foram jogados dados repetidos 3 vezes seguidas em um turno

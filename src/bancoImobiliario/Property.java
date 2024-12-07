@@ -28,7 +28,7 @@ public class Property extends Local {
 	public int getHousePrice() {
 		return house_price;
 	}
-	public int getRend(int index) {
+	public int getRent(int index) {
 		return rent[index];
 	}
 	

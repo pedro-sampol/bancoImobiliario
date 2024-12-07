@@ -12,6 +12,7 @@ public class Game implements Runnable {
 	private Save save;
 	private GameCtrl g;
 	private Player players[];
+	private Prision prision;
 	
 	private Spritesheet player_sprite;
 	
@@ -93,28 +94,32 @@ public class Game implements Runnable {
 				continue;
 			}
 			// caso em que o player esta na cadeia
-			if (current_player.isInJail()) {
+			if (current_player.isInPrision()) {
 				if (current_player.getTimeInPrision() < 3) {
 					dice.rollDice();
 					if (dice.getIsEqual()) {
-						// current_player.inJail = false
-						// current_player.timeInPrison = 0
+						prision.getOutOfPrision(current_player);
 					}
 				}
 				else {
 					// escolhe se quer pagar para sair ou rolar os dados
+					
+					//se pagar
+					//	prision.getOutWithBail(current_player);
+					//se nao pagar e tirar igual
+					// prision.getOutOfPrision(current_player);
 				}
 			}
 			// verifica se saiu da cadeia
-			if (current_player.isInJail()) {
-				// current_player.timeInPrison++
+			if (current_player.isInPrision()) {
+				prision.increaseTimeInPrision(current_player);
 				continue;
 			}
 			
 			// acoes normais
 			dice.rollDice();
 			if (current_player.repeatedDice(dice)) {
-				// move player para a cadeia
+				prision.sendToPrision(current_player);
 				continue;
 			}
 			
