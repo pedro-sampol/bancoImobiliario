@@ -14,7 +14,7 @@ public class Game implements Runnable {
 	public Constants c;
 	
 	private Spritesheet player_sprite;
-	
+
 	private boolean isRunning = true;		//condicao de parada do game
 	
 	public Game () {
