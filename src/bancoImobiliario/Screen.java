@@ -109,10 +109,8 @@ public class Screen extends Canvas {
 		g.setColor (Color.BLACK);
 		g.fillRect (0, 0, s.getLength(), s.getHeight());
 		
-		// texto
-		g.setColor (Color.WHITE);
-		g.setFont (new Font("Franklin Gothic Medium", Font.BOLD, 20));
-		g.drawString("teste som", 100, 400);
+		// imagem das regras
+		g.drawImage(s.getRules(), 0, 0, null);
 	}
 	
 /*************************************************************************************************/

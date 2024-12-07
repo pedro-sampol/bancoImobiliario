@@ -21,6 +21,7 @@ public class ScreenData extends Canvas {
 	private BufferedImage map;
 	private BufferedImage property;
 	private BufferedImage hub;
+	private BufferedImage rules;
 
 	
 	public ScreenData () {
@@ -59,32 +60,34 @@ public class ScreenData extends Canvas {
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
+		try {
+			rules = ImageIO.read (getClass().getResource("/regras.png"));
+		} catch (IOException e) {
+			e.printStackTrace ();
+		}
 	}
 
 	public BufferedImage getImage () {
 		return this.image;
 	}
-	
 	public BufferedImage getMap () {
 		return this.map;
 	}
-	
 	public BufferedImage getProperty () {
 		return this.property;
 	}
-	
 	public BufferedImage getHub () {
 		return this.hub;
 	}
-	
+	public BufferedImage getRules () {
+		return this.rules;
+	}
 	public int getLength () {
 		return this.LENGTH;
 	}
-	
 	public int getHeight () {
 		return this.HEIGHT;
 	}
-	
 	public void getBS() {
 		bs = getBufferStrategy();
 		if (bs == null) {
