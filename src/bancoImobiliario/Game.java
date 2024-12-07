@@ -11,7 +11,7 @@ public class Game implements Runnable {
 	private Commands commands;
 	private Save save;
 	private GameCtrl g;
-	private Player players[];
+	public Constants c;
 	
 	private Spritesheet player_sprite;
 	
@@ -22,9 +22,8 @@ public class Game implements Runnable {
 		screen = new RenderScreen();
 		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
-		p = new PlayerCtrl(false, save);
-		board = new Board(false, save);
 		g = new GameCtrl();
+		c = new Constants();
 	}
 	
 	public synchronized void start () {
@@ -56,6 +55,11 @@ public class Game implements Runnable {
 		frames = 0;
 		timer = System.currentTimeMillis ();
 		
+		
+		boolean load = false;
+		int player_index = 0;
+		current_player = p.getPlayer(0);
+		
 		while (isRunning) {
 			now = System.nanoTime ();
 			delta += (now - lastTime) / nsPerTick;
@@ -73,16 +77,105 @@ public class Game implements Runnable {
 				timer += 1000;
 			}
 			
+			// no momento certo chama startGame()
+			
 			// jogo em si
 			if (g.isGameOn() && !g.isPaused()) {
-				
+				int currentState = g.getCurrentState();
+				switch(currentState) {
+					// START_GAME
+					case 0:
+						p = new PlayerCtrl(g.getLoad(), save);
+						board = new Board(g.getLoad(), save);
+						g.setCurrentState(c.START_TURN);
+						break;
+						
+					// DID_GAME_END
+					case 6:
+						boolean has_ended = false;
+						
+						// verifica se o jogo acabou
+					
+						if (has_ended) {
+							g.endGame();
+						}
+						else {
+							g.setCurrentState(c.START_TURN);
+						}
+						break;
+						
+					// START_TURN
+					case 1:
+						current_player = p.getPlayer(player_index);
+						g.setCurrentState(c.ABLE_TO_PLAY);
+						break;
+					
+					// ABLE_TO_PLAY
+					case 5:
+						if (current_player.getNoPlayTime() > 0) {
+							current_player.setNoPlayTime(current_player.getNoPlayTime() - 1);
+							g.setCurrentState(c.END_TURN);
+						}
+						else {
+							g.setCurrentState(c.IS_IN_JAIL);
+						}
+						break;
+						
+					// IS_IN_JAIL
+					case 7:
+						if (current_player.isInJail()) {
+							if (current_player.getTimeInPrision() < 3) {
+								g.setCurrentState(c.ROLL_PRISION_DICE);
+							}
+							else {
+								g.setCurrentState(c.PRISION_CHOICE);
+							}
+						}
+						else {
+							g.setCurrentState(c.ROLL_DICE);
+						}
+						break;
+						
+					// PRISION_CHOICE
+					case 10:
+						// espera decisao do player
+						boolean roll_dice = false;
+						boolean chose = false;
+						if (chose) {
+							if (roll_dice) {
+								g.setCurrentState(c.ROLL_PRISION_DICE);
+							}
+							else {
+								// desconta 50
+								g.setCurrentState(c.END_TURN);
+							}
+						}
+						break;
+					
+					// ROLL_PRISION_DICE
+					case 9:
+						// espera player rodar dados
+						boolean rolled_dice = false;
+						if (rolled_dice) {
+							// decide se o player conseguiu sair da cadeia
+							g.setCurrentState(c.END_TURN);
+						}
+	
+					// ROLL_DICE
+					case 8:
+						break;
+					
+					default:
+						break;	
+	
+				}
 			}
 			
 		}
 		
+		/*
 		// jogo em si
-		int player_index = 5;
-		while (board.getPlayersOn() > 1) {
+		while (g.getPlayersOn() > 1) {
 			// pega o player atual
 			player_index = (player_index + 1)%6;
 			current_player = board.getPlayer(player_index);
@@ -119,7 +212,7 @@ public class Game implements Runnable {
 			}
 			
 		}
-		
+		*/
 		stop ();
 	}
 	

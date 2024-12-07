@@ -106,6 +106,11 @@ public class Player {
 		return repeatedDice;
 	}
 	
+	// altera o tempo que o jogador esta impedido de jogar
+	public void setNoPlayTime(int time) {
+		noPlayTime = time;
+	}
+	
 	//altera a variavel bankrupt do player para ser igual a state
 	public void setBankrupt(boolean state) {
 		bankrupt = state;
