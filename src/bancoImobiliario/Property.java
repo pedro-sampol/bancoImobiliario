@@ -1,13 +1,19 @@
 package bancoImobiliario;
 
+import java.awt.image.BufferedImage;
+
 public class Property extends Local {
 	private int color;
 	private int n_houses;
 	private int house_price;
 	private int[] rent = new int[6];
+	private BufferedImage sprite;
+	private BufferedImage spriteBig;
 	
-	public Property(int index, int type, int value, int color, int c0, int c1, int c2, int c3, int c4, int c5, int house_price) {
+	public Property(BufferedImage sprite, BufferedImage spriteBig,int index, int type, int value, int color, int c0, int c1, int c2, int c3, int c4, int c5, int house_price) {
 		super(index, type, value);
+		this.sprite = sprite;
+		this.spriteBig = spriteBig;
 		this.color = color;
 		this.house_price = house_price;
 		n_houses = 0;
@@ -34,5 +40,13 @@ public class Property extends Local {
 	
 	public void setNHouses(int n) {
 		this.n_houses = n;
+	}
+	
+	public BufferedImage getSprite() {
+		return this.sprite;
+	}
+	
+	public BufferedImage getBigSprite() {
+		return this.spriteBig;
 	}
 }

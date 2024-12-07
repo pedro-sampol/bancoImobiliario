@@ -12,9 +12,7 @@ public class Game implements Runnable {
 	private Save save;
 	private GameCtrl g;
 	private Player players[];
-	
-	private Spritesheet player_sprite;
-	
+		
 	private boolean isRunning = true;		//condicao de parada do game
 	
 	public Game () {
