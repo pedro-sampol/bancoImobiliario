@@ -1,18 +1,22 @@
 package bancoImobiliario;
 
 public class GameCtrl {
-	private boolean startingTurn;
-	private boolean endingTurn;
+	private boolean load;
+	private int currentState;
 	private boolean isGameOn;
 	private boolean isPaused;
 	private int playerIndex;
+	private int playersOn;
+	private boolean isWaitingDice;
 	
 	
 	public GameCtrl() {
-		startingTurn = true;
-		endingTurn = false;
+		currentState = 0;
+		isWaitingDice = false;
 		isGameOn = false;
+		load = false;
 		playerIndex = 0;
+		playersOn = 6;
 	}
 	
 	public void startGame() {
@@ -21,16 +25,31 @@ public class GameCtrl {
 	public void endGame() {
 		isGameOn = false;
 	}
+	public void removePlayer(Player p) {
+		playersOn--;
+		p.setBankrupt(true);
+	}
+	public void setCurrentState(int state) {
+		currentState = state;
+	}
+	public void setPlayerIndex(int index) {
+		playerIndex = index;
+	}
 	
+	public int getCurrentState() {
+		return currentState;
+	}
 	public boolean isGameOn() {
 		return isGameOn;
 	}
 	public boolean isPaused() {
 		return isPaused;
 	}
-	public void endTurn() {
-		startingTurn = true;
-		playerIndex = (playerIndex+1)%6;
+	public int getPlayersOn() {
+		return playersOn;
+	}
+	public boolean getLoad() {
+		return load;
 	}
 	
 }

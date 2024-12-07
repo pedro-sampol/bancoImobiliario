@@ -51,6 +51,15 @@ public class Bank {
 		property.setNHouses(property.getNHouses() - 1);
 	}
 	
+	//compra uma casa de uma propriedade e retira o dinheiro do player
+	public void buyHouse(Player player, Property property) {
+		if(!player.hasMoney(property.getHousePrice()) || property.getNHouses() == 5)
+			return;
+		
+		property.setNHouses(property.getNHouses() + 1);
+		this.takeMoney(player, property.getHousePrice());
+	}
+	
 	//vende uma propriedade (e todas as suas casas) e entrega o dinheiro para o player
 	public void sellProperty(Player player, Square property) {
 		Property aux = (Property) property;
@@ -60,7 +69,7 @@ public class Bank {
 			this.sellHouse(player, aux);
 		
 		//player perde a propriedade
-		player.setOwned(property.getIndex(), false);
+		player.removeLocal(aux.getIndex());
 		
 		//player ganha o dinheiro da propriedade
 		this.giveMoney(player, aux.getValue());
@@ -75,7 +84,7 @@ public class Bank {
 		Company aux = (Company) comp;
 
 		//player perde a company
-		player.setOwned(aux.getIndex(), false);
+		player.removeLocal(aux.getIndex());
 		
 		//player ganha o dinheiro da company
 		this.giveMoney(player, aux.getValue());
@@ -95,7 +104,7 @@ public class Bank {
 			return false;
 			
 		//player compra a company
-		player.setOwned(aux.getIndex(), true);
+		player.newLocal(aux.getIndex());
 		
 		//player perde o dinheiro da company
 		this.takeMoney(player, aux.getValue());
@@ -117,7 +126,7 @@ public class Bank {
 			return false;
 		
 		//player compra a propriedade
-		player.setOwned(property.getIndex(), true);
+		player.newLocal(property.getIndex());
 		
 		//player perde o dinheiro da propriedade
 		this.takeMoney(player, aux.getValue());

@@ -14,7 +14,6 @@ public class Spritesheet {
 		} catch (IOException e) {
 			e.printStackTrace ();
 		}
-		
 	}
 	
 	public BufferedImage getSpritesheet () {

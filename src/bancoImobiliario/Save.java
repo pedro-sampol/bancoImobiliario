@@ -24,54 +24,62 @@ public class Save {
 	}
 	
 	
-	public void saveGame(Player players[], Square squares[]) {
+	public void saveGame(PlayerCtrl control, Board board) {
 		try {
 			//cria um FileWriter
 			FileWriter writer = new FileWriter("./save/save.txt");
 			
+			Player player;
+			
 			//salva os players
 			for(int i = 0; i < 6; i++) {
-				writer.append(String.valueOf(players[i].getX() + " "));
-				writer.append(String.valueOf(players[i].getY() + " "));
-				writer.append(String.valueOf(players[i].getPosition() + " "));
-				writer.append(String.valueOf(players[i].getMoney() + " "));
-				writer.append(String.valueOf(players[i].isBankrupt() + " "));
-				writer.append(String.valueOf(players[i].getNumProprieties() + " "));
-				writer.append(String.valueOf(players[i].isInPrision() + " "));
-				writer.append(String.valueOf(players[i].getTimeInPrision() + " "));
-				writer.append(String.valueOf(players[i].getGetOutCards() + " "));
-				writer.append(String.valueOf(players[i].getNoPlayTime() + " "));
-				writer.append(String.valueOf(players[i].getRepeatedDice() + " "));
+				player = control.getPlayer(i);
+				writer.append(String.valueOf(player.getX() + " "));
+				writer.append(String.valueOf(player.getY() + " "));
+				writer.append(String.valueOf(player.getPosition() + " "));
+				writer.append(String.valueOf(player.getMoney() + " "));
+				writer.append(String.valueOf(player.isBankrupt() + " "));
+				writer.append(String.valueOf(player.getNumProprieties() + " "));
+				writer.append(String.valueOf(player.isInPrision() + " "));
+				writer.append(String.valueOf(player.getTimeInPrision() + " "));
+				writer.append(String.valueOf(player.getGetOutCards() + " "));
+				writer.append(String.valueOf(player.getNoPlayTime() + " "));
+				writer.append(String.valueOf(player.getRepeatedDice() + " "));
 				
 				//grava o arquivo
 				writer.flush();
 				
 				//salva o vetor que controla as propriedades que o player possui
-				for(int j = 0; j < 36; j++)
-					writer.append(String.valueOf(players[i].getOwned(j)));
+				for(int j = 0; j < player.getNumProprieties(); j++)
+					writer.append(String.valueOf(player.getOwned(j)) + ' ');
 				writer.append("\n");
 				
 				writer.flush();
 			}
 			
+			Square square;
+			
 			//percorre todas as casas e verifica quais podem necessitar de alteração
-			for(int i = 0; i< 36; i++) {
+			for(int i = 0; i < 36; i++) {
+				square = board.getSquare(i);
 				
 				//salva as companhias
-				if(squares[i].getType() == c.COMPANY) {
+				if(square.getType() == c.COMPANY) {
 					
-					Company aux = (Company)squares[i]; //squares[i] é uma company
+					Company aux = (Company)square; //squares[i] é uma company
 					
 					writer.append(String.valueOf(aux.isBought() + " "));
 					writer.append(String.valueOf(aux.getOwner() + "\n"));
-				} else if(squares[i].getType() == c.PROPERTY) { //salva as propriedades
-					Property aux = (Property)squares[i]; //squares[i] é uma property
+				} else if(square.getType() == c.PROPERTY) { //salva as propriedades
+					Property aux = (Property)square; //squares[i] é uma property
 					
 					writer.append(String.valueOf(aux.isBought() + " "));
 					writer.append(String.valueOf(aux.getOwner()  + " "));
 					writer.append(String.valueOf(aux.getNHouses()  + "\n"));
 					
 				}
+				
+				writer.flush();
 			}
 			writer.close();
 			
@@ -81,18 +89,18 @@ public class Save {
 		}
 	}
 	
-	public void loadPLayers (Player players[], Spritesheet sprite) {
+	
+	//realiza o load do player a partir do arquivo save
+	public void loadPlayers (PlayerCtrl control) {
 		try {
 			
 			//abre a save com as informações dos players
 			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
 			
 			String linha; //linha com as informações de cada player
-			BufferedImage spritePlayer; //sprite de cada player
 			for(int i = 0; i < 6; i++) {
 				linha = reader.readLine(); 										//obtem as informações do arquivo
-				spritePlayer = sprite.getSprite(0+(i*520), 0, 520, 600);		//obtem a parte correta da sprite de cada player
-				players[i] = new Player(linha, spritePlayer); 					//cria o player a partir dessas informações
+				control.getPlayer(i).updateLoad(linha); 					//cria o player a partir dessas informações
 			}
 			
 			reader.close();
@@ -101,7 +109,7 @@ public class Save {
 		}
 	}
 	
-	public void loadSquares (Square squares[]) {
+	public void loadSquares (Board board) {
 		//abre a save com as informações dos players
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
@@ -113,24 +121,26 @@ public class Save {
 			String info[]; //strings separadas com a info de cada linha
 			String separador = " "; //separador das informações nas linhas
 			
+			Square square;
 			//percorre todas as casas e verifica quais podem necessitar de alteração
 			for(int i = 0; i< 36; i++) {
-				if(squares[i].getType() == c.COMPANY) {
+				square = board.getSquare(i);
+				if(square.getType() == c.COMPANY) {
 					linha = reader.readLine(); //linha com todas as infos dessa casa
 					
 					info = linha.split(separador); //infos separadas
 					
-					Company aux = (Company)squares[i]; //squares[i] é uma company
+					Company aux = (Company)square; //squares[i] é uma company
 					
 					//atualiza os valores
 					aux.setBought(Boolean.valueOf(info[0]));
 					aux.setOwner(Integer.valueOf(info[1]));
-				} else if(squares[i].getType() == c.PROPERTY) {
+				} else if(square.getType() == c.PROPERTY) {
 					linha = reader.readLine();		//linha com todas as infos dessa casa
 					
 					info = linha.split(separador);	//infos separadas
 					
-					Property aux = (Property)squares[i]; //squares[i] é uma property
+					Property aux = (Property)square; //squares[i] é uma property
 					
 					//atualiza os valores
 					aux.setBought(Boolean.valueOf(info[0]));
@@ -145,4 +155,5 @@ public class Save {
 			e.printStackTrace();
 		}
 	}
+
 }
