@@ -3,7 +3,6 @@ package bancoImobiliario;
 public class Board {
 	private Constants cnst = new Constants();
 	private Square[] squares;
-	private Player[] players;
 	
 	public Board(boolean loadSave, Save save) {
 		squares = new Square[36];
@@ -53,7 +52,5 @@ public class Board {
 	public Square getSquare(int index) {
 		return squares[index];
 	}
-	public Player getPlayer(int index) {
-		return players[index];
-	}
+
 }
