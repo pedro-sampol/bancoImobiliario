@@ -3,23 +3,24 @@ package bancoImobiliario;
 public class Game implements Runnable {
 	
 	private Thread thread;
+	
 	private RenderScreen screen;
 	private PlayerCtrl p;
 	private Board board;
+	private Dice dice;
+	private Commands commands;
 	private Save save;
 	private GameCtrl g;
 	public Constants c;
 	
 	private Spritesheet player_sprite;
 	
-	
 	private boolean isRunning = true;		//condicao de parada do game
 	
-	private Dice dice;
-	
-	public Game () {		
+	public Game () {
 		save = new Save();
 		screen = new RenderScreen();
+		commands = new Commands(screen.getScreenData());
 		dice = new Dice();
 		g = new GameCtrl();
 		c = new Constants();
@@ -65,11 +66,11 @@ public class Game implements Runnable {
 			lastTime = now;
 			
 			if (delta >= 1) {
-				screen.gameScreen(p);			// funcao render
+				screen.gameScreen(p, commands);			// funcao render
 				frames++;
 				delta--;
 			}
-			
+		
 			if (System.currentTimeMillis() - timer >= 1000) {
 				System.out.println ("FPS: " + frames);
 				frames = 0;
