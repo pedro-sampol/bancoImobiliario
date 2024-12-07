@@ -3,9 +3,9 @@ package bancoImobiliario;
 import java.util.Random;
 
 public class Dice {
-	private boolean isEqual;
-	private int value1;
-	private int value2;
+	private boolean isEqual;	//os dois dados são iguais?
+	private int value1;			//valor dado 1
+	private int value2;			//valor dado 2
 	
 	public void rollDice() {
 		Random random = new Random();
@@ -19,6 +19,8 @@ public class Dice {
 			isEqual = false;
 		}
 	}
+	
+	/*************************************************************************************************/
 	
 	public boolean getIsEqual() {
 		return isEqual;

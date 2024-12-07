@@ -3,10 +3,10 @@ package bancoImobiliario;
 import java.awt.image.BufferedImage;
 
 public class Company extends Local {
-	private int multiplier;
-	private int price;
-	private BufferedImage sprite;
-	private BufferedImage spriteBig;
+	private int multiplier;				//Multiplicador para calculo da taxa
+	private int price;					//Preco de compra
+	private BufferedImage sprite;		//sprite da carta
+	private BufferedImage spriteBig;	//sprite grande da carta
 	
 	public Company() {
 		multiplier = 1;
@@ -19,6 +19,8 @@ public class Company extends Local {
 		this.multiplier = multiplier;
 		this.price = price;
 	}
+	
+	/*************************************************************************************************/
 	
 	public int getMultiplier() {
 		return multiplier;

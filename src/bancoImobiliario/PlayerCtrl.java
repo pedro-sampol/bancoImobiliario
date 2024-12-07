@@ -4,10 +4,10 @@ import java.awt.image.BufferedImage;
 
 public class PlayerCtrl {
 	
-	Player[] p;
+	Player[] p;								//vetor com todos os players do jogo
 	
-	private Spritesheet spritesheet;
-	private BufferedImage spritePlayer;
+	private Spritesheet spritesheet;		//spritesheet com todos os players
+	private BufferedImage spritePlayer;		//spritesheet de apenas um player
 	
 	public PlayerCtrl () {
 		p = new Player[6];
@@ -20,6 +20,8 @@ public class PlayerCtrl {
 		}
 	}
 	
+	/*************************************************************************************************/
+	
 	//aumenta o tempo sem jogar do player em num
 	public void increseNoPlayTime(Player player, int num) {
 		player.setNoPlayTime(num + player.getNoPlayTime()); 
@@ -29,6 +31,8 @@ public class PlayerCtrl {
 	public void wasteTurn(Player player) {
 		player.setNoPlayTime(player.getNoPlayTime() - 1);
 	}
+	
+	/*************************************************************************************************/
 	
 	public Player getPlayer (int index) {
 		return p[index];

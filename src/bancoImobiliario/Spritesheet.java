@@ -6,7 +6,7 @@ import javax.imageio.*;
 
 public class Spritesheet {
 
-	private BufferedImage spritesheet;
+	private BufferedImage spritesheet;	//spritesheet obtida
 	
 	public Spritesheet (String path) {
 		try {
@@ -15,6 +15,8 @@ public class Spritesheet {
 			e.printStackTrace ();
 		}
 	}
+	
+	/*************************************************************************************************/
 	
 	public BufferedImage getSpritesheet () {
 		return spritesheet;

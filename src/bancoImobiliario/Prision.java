@@ -9,10 +9,14 @@ public class Prision {
 		player.setPosition(27);
 	}
 	
+	/*************************************************************************************************/
+	
 	//aumenta o tempo preso
 	void increaseTimeInPrision(Player player) {
 		player.setTimeInPrision(player.getTimeInPrision() + 1);
 	}
+	
+	/*************************************************************************************************/
 	
 	//saindo da prisao utilziando a carta de fuga da prisao
 	void getOutOfJailCard(Player player) {
