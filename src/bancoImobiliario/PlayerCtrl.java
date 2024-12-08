@@ -51,6 +51,8 @@ public class PlayerCtrl {
 		
 		int monopoly = 0;
 		
+		int companies = 0;
+		
 		int cores[] = {0, 0, 0, 0, 0, 0};
 		
 		//conta o numero de propriedades de cada cor
@@ -60,7 +62,8 @@ public class PlayerCtrl {
 			if(aux.getType() == c.PROPERTY) {
 				Property p = (Property) aux;
 				cores[p.getColor()] ++;
-			}
+			} else 
+				companies++;
 		}
 		
 		//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
@@ -71,8 +74,8 @@ public class PlayerCtrl {
 				monopoly++;
 		}
 		
-		//player ganhou o jogo por numero de monopolios
-		if(monopoly >= 3)
+		//player ganhou o jogo por numero de monopolios ou monopolio de companhias
+		if(monopoly >= 3 || companies == 5)
 			return true;
 		
 		return false;
