@@ -10,6 +10,12 @@ public class GameCtrl {
 	private int playersOn;			//numero de players no jogo
 	private boolean diceUsed;		//player ainda nao jogou os dados
 	
+	private int playerSelected;		//player selecionado atualmente
+	private int screenSelected;		//tela selecionada atualmente
+	private int menuButton;			//botao do menu
+	private int pauseButton;		//botao de pause
+	private int lastScreen;			//tela anterior
+	
 	public GameCtrl() {
 		currentState = 0;
 		diceUsed = false;
@@ -34,6 +40,8 @@ public class GameCtrl {
 		playersOn--;
 		p.setBankrupt(true);
 	}
+	
+	/*************************************************************************************************/
 	
 	public void setPlayerIndex(int index) {
 		playerIndex = index;
@@ -76,6 +84,40 @@ public class GameCtrl {
 	}
 	public boolean getLoad() {
 		return load;
+	}
+	
+	/*************************************************************************************************/
+
+	public int getPlayerSelected() {
+		return playerSelected;
+	}
+	public int getScreenSelected() {
+		return screenSelected;
+	}
+	public int getMenuButton() {
+		return menuButton;
+	}
+	public int getPauseButton() {
+		return pauseButton;
+	}
+	public int getLastScreen() {
+		return lastScreen;
+	}
+	
+	public void setPlayerSelected(int playerSelected) {
+		this.playerSelected = playerSelected;
+	}
+	public void setScreenSelected(int screenSelected) {
+		this.screenSelected = screenSelected;
+	}
+	public void setMenuButton(int menuButton) {
+		this.menuButton = menuButton;
+	}
+	public void setPauseButton(int pauseButton) {
+		this.pauseButton = pauseButton;
+	}
+	public void setLastScreen(int lastScreen) {
+		this.lastScreen = lastScreen;
 	}
 	
 }

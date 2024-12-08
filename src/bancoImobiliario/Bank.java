@@ -183,7 +183,7 @@ public class Bank {
 	
 	/*************************************************************************************************/
 	
-	//player payer para ao owner o valor por ter caido em um de seus locais
+	//player payer paga ao owner o valor por ter caido em um de seus locais
 	public void payRent(Player payer, Player owner, Square square, Dice dice) {
 		int value = 0;
 		

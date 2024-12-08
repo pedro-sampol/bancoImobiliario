@@ -15,9 +15,9 @@ public class RenderScreen extends Canvas {
 	
 	/*************************************************************************************************/
 	
-	public void gameScreen (PlayerCtrl pCtrl, Commands commands) {
+	public void gameScreen (PlayerCtrl pCtrl, GameCtrl g, Dice dice, Board board) {
 		screenData.getBS();
-		screen.printGame (screenData, pCtrl, commands);
+		screen.printGame (screenData, pCtrl, g, dice, board);
 	}
 	
 	/*************************************************************************************************/

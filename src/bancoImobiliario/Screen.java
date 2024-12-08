@@ -8,6 +8,8 @@ public class Screen extends Canvas {
 	
 	private static final long serialVersionUID = 1L;	//controle
 
+	public Constants cnst = new Constants();
+	
 	private Font fontBig;								//fonte das letras em tamanho grande
 	private Font fontMedium;							//fonte das letras em tamanho medio
 	private Font fontSmall;								//fonte das letras em tamanho pequeno
@@ -29,37 +31,41 @@ public class Screen extends Canvas {
 	
 /*************************************************************************************************/
 	
-	public void printGame (ScreenData screenData, PlayerCtrl pCtrl, Commands commands) {
+	public void printGame (ScreenData screenData, PlayerCtrl pCtrl, GameCtrl gCtrl, Dice dice, Board board) {
 		Graphics graphics;
-		Player player = pCtrl.getPlayer(commands.getPlayerID());
+		Player player = pCtrl.getPlayer(gCtrl.getPlayerSelected());
 		graphics = screenData.getImage().getGraphics ();
 	
 		// renderiza menu principal
-		if (commands.getScreenID() == commands.c.MAINMENU) {
-			drawMainMenu(screenData, graphics, commands);
+		if (gCtrl.getScreenSelected() == cnst.MAINMENU) {
+			drawMainMenu(screenData, graphics, gCtrl);
 			
 		//renderiza regras
-		} else if (commands.getScreenID() == commands.c.RULES) {
-			drawRules (screenData, graphics, commands);
+		} else if (gCtrl.getScreenSelected() == cnst.RULES) {
+			drawRules (screenData, graphics, gCtrl);
 			
 		// renderiza tabuleiro
-		} else if (commands.getScreenID() == commands.c.BOARD) {
+		} else if (gCtrl.getScreenSelected() == cnst.BOARD) {
 			drawHub(screenData, graphics, player);
-			drawMap(screenData, graphics, pCtrl, commands);
+			textHubMap(graphics);
+			playerInfo (screenData, graphics, player);
+			drawMap(screenData, graphics, pCtrl, gCtrl, dice);
+			drawBigCard (screenData, graphics, pCtrl.getPlayer(gCtrl.getPlayerIndex()), board);
 			
 		// renderiza imoveis
-		} else if (commands.getScreenID() == commands.c.PROPERTIES) {
+		} else if (gCtrl.getScreenSelected() == cnst.PROPERTIES) {
 			drawHub(screenData, graphics, player);
-			//drawProperty();
-			graphics.drawImage(screenData.getProperty(), 770, 0, null);
+			textHubProperty(graphics);
+			playerInfo (screenData, graphics, player);
+			drawProperty(screenData, graphics, player, board);
 			
 		// renderiza tela de pause
-		} else if (commands.getScreenID() == commands.c.PAUSE) {
-			drawPause (screenData, graphics, commands);
+		} else if (gCtrl.getScreenSelected() == cnst.PAUSE) {
+			drawPause (screenData, graphics, gCtrl);
 			
 		// renderiza tela de vitoria
-		} else if (commands.getScreenID() == commands.c.WIN) {
-			drawWin (screenData, graphics, commands, player);
+		} else if (gCtrl.getScreenSelected() == cnst.WIN) {
+			drawWin (screenData, graphics, player);
 		}
 
 		graphics.dispose ();
@@ -71,7 +77,7 @@ public class Screen extends Canvas {
 /*************************************************************************************************/
 	
 	// desenha o menu principal completo
-	public void drawMainMenu (ScreenData s, Graphics g, Commands commands) {
+	public void drawMainMenu (ScreenData s, Graphics g, GameCtrl gCtrl) {
 		// cor do fundo
 		g.setColor (Color.BLACK);
 		g.fillRect (0, 0, s.getLength(), s.getHeight());
@@ -90,11 +96,11 @@ public class Screen extends Canvas {
 		
 		// bolinhas de selecao
 		g.setColor (Color.YELLOW);
-		if (commands.getMenuButton() == 0) {
+		if (gCtrl.getMenuButton() == 0) {
 			g.fillOval(150, 500, 30, 30);
-		} else if (commands.getMenuButton() == 1) {
+		} else if (gCtrl.getMenuButton() == 1) {
 			g.fillOval(150, 612, 30, 30);
-		} else if (commands.getMenuButton() == 2) {
+		} else if (gCtrl.getMenuButton() == 2) {
 			g.fillOval(150, 725, 30, 30);
 		}
 	}
@@ -102,7 +108,7 @@ public class Screen extends Canvas {
 /*************************************************************************************************/
 	
 	// desenha as regras
-	public void drawRules (ScreenData s, Graphics g, Commands commands) {
+	public void drawRules (ScreenData s, Graphics g, GameCtrl gCtrl) {
 		// cor de fundo
 		g.setColor (Color.BLACK);
 		g.fillRect (0, 0, s.getLength(), s.getHeight());
@@ -113,15 +119,77 @@ public class Screen extends Canvas {
 	
 /*************************************************************************************************/
 	
+	// imagem da hub com personagem escolhido
 	public void drawHub (ScreenData s, Graphics g, Player player) {
 		g.drawImage(s.getHub(), 0, 0, null);
 		g.drawImage(player.getSprite(), 0, 210, null);
-		//escrever dinheiro, posses, instrucoes
+	}
+	
+	// controles disponiveis na tela MAP
+	public void textHubMap (Graphics g) {
+		g.setColor (Color.BLACK);
+		g.setFont (fontSmall);
+		g.drawString("- D para rolar os dados", 20, 860);
+		g.drawString("- C para comprar terrenos e casas", 20, 890);
+		g.drawString("- ENTER para passar o turno", 20, 920);
+		g.drawString("- ESC para pausar", 20, 950);
+	}
+	
+	// controles disponiveis na tela PROPERTY
+	public void textHubProperty (Graphics g) {
+		g.setColor (Color.BLACK);
+		g.setFont (fontSmall);
+		g.drawString("- V para vender suas posses", 20, 860);
+		g.drawString("- H para hipotecar suas posses", 20, 890);
+		g.drawString("- ESC para pausar", 20, 920);
+	}
+	
+	// informacoes do player na tela
+	public void playerInfo (ScreenData s, Graphics g, Player player) {
+		g.setFont (fontSmall);
+		if (player.isBankrupt()) {
+			g.setColor (Color.RED);
+			g.drawString("FALIU", 530, 250);
+			return;
+		}
+		g.setColor (Color.BLACK);
+		g.drawString("Dinheiro:", 530, 250);
+		g.drawString("Monopólios:", 530, 350);
+		g.drawString("Empresas:", 530, 450);
+		g.drawString("Cartas de Fuga:", 530, 550);
+		
+		g.setColor (Color.WHITE);
+		g.drawString(""+player.getMoney(), 530, 290);
+		//g.drawString("", 530, 390);
+		//g.drawString("", 530, 490);
+		g.drawString(""+player.getGetOutCards(), 530, 590);
+		//g.drawString("", 530, 690);
+	}
+	
+/*************************************************************************************************/ 
+	
+	public void drawProperty (ScreenData s, Graphics g, Player player, Board board) {		
+		// desenha imagem
+		g.drawImage(s.getProperty(), 770, 0, null);
+		
+		//desenha cartas
+		int height = 0;
+		for (int i = 0; i < player.getNumProprieties(); i++) {
+			Square square = board.getSquare(player.getOwned(i));
+			if (square.getType() == cnst.PROPERTY) {
+				Property property = (Property) square;
+				g.drawImage(property.getSprite(), 198*(i%5), 102+(222*height), null);
+			} else if (square.getType() == cnst.COMPANY) {
+				Company company = (Company) square;
+				g.drawImage(company.getSprite(), 198*(i%5), 102+(222*height), null);
+			}
+			height = i/5;
+		}
 	}
 	
 /*************************************************************************************************/
 	
-	public void drawMap (ScreenData s, Graphics g, PlayerCtrl pCtrl, Commands c) {
+	public void drawMap (ScreenData s, Graphics g, PlayerCtrl pCtrl, GameCtrl gCtrl, Dice dice) {
 		Player p;
 		
 		// mapa
@@ -130,8 +198,8 @@ public class Screen extends Canvas {
 		// valor dos dados
 		g.setColor (Color.BLACK);
 		g.setFont (fontSmall);
-		g.drawString("Dado 1: "+c.dice.getValue1(), 1400, 670);
-		g.drawString("Dado 2: "+c.dice.getValue2(), 1400, 720);
+		g.drawString("Dado 1: "+dice.getValue1(), 1400, 670);
+		g.drawString("Dado 2: "+dice.getValue2(), 1400, 720);
 		
 		// players
 		g.setColor (new Color (255,0,0));
@@ -162,8 +230,21 @@ public class Screen extends Canvas {
 	
 /*************************************************************************************************/
 	
+	public void drawBigCard (ScreenData s, Graphics g, Player player, Board board) {		
+		Square square = board.getSquare(player.getPosition());
+		if (square.getType() == cnst.PROPERTY) {
+			Property property = (Property) square;
+			g.drawImage(property.getBigSprite(), 970, 440, null);
+		} else if (square.getType() == cnst.COMPANY) {
+			Company company = (Company) square;
+			g.drawImage(company.getBigSprite(), 970, 440, null);
+		}	
+	}
+	
+/*************************************************************************************************/
+	
 	// desenha a tela de pause
-	public void drawPause (ScreenData s, Graphics g, Commands commands) {
+	public void drawPause (ScreenData s, Graphics g, GameCtrl gCtrl) {
 		// cor do fundo
 		g.setColor (Color.BLACK);
 		g.fillRect (0, 0, s.getLength(), s.getHeight());
@@ -182,19 +263,19 @@ public class Screen extends Canvas {
 				
 		// bolinhas de selecao
 		g.setColor (Color.YELLOW);
-		if (commands.getPauseButton() == 0) {
+		if (gCtrl.getPauseButton() == 0) {
 			g.fillOval(150, 500, 30, 30);
-		} else if (commands.getPauseButton() == 1) {
+		} else if (gCtrl.getPauseButton() == 1) {
 			g.fillOval(150, 612, 30, 30);
-		} else if (commands.getPauseButton() == 2) {
+		} else if (gCtrl.getPauseButton() == 2) {
 			g.fillOval(150, 725, 30, 30);
 		}
 	}
-	
+
 /*************************************************************************************************/
 	
 	// desenha a tela de vitoria
-	public void drawWin (ScreenData s, Graphics g, Commands commands, Player player) {
+	public void drawWin (ScreenData s, Graphics g, Player player) {
 		// cor do fundo
 		g.setColor (Color.BLACK);
 		g.fillRect (0, 0, s.getLength(), s.getHeight());

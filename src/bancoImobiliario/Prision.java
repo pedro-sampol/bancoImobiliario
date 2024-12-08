@@ -3,10 +3,11 @@ package bancoImobiliario;
 public class Prision {
 	
 	//envia um player para a prisao
-	void sendToPrision(Player player){
+	void sendToPrision(Player player, int index){
 		player.setInPrision(true);
 		player.setTimeInPrision(0);
 		player.setPosition(27);
+		player.pickCoords(index);
 	}
 	
 	/*************************************************************************************************/
