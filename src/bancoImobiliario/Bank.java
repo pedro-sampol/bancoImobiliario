@@ -19,19 +19,20 @@ public class Bank {
 	//		-Se ainda não tiver dinheiro
 	//			-Player vai a falencia
 	// se o player tiver dinheir
-	public void takeMoney(Player player, int amount) {
-		
-		//tenta hipotecar/vender as propriedades do player
-		while(!player.hasMoney(amount) && player.getNumProprieties() > 0) {
-			//abre parte de hipoteca e tals
-		}
-		
+	public int takeMoney(Player player, int amount) {
 		//player sem dinheiro suficinete -> falencia
-		if(!player.hasMoney(player.getMoney() + amount))
-			player.setBankrupt(true);
-		
+		if(!player.hasMoney(amount)) {
+			//player sem imoveis -> falencia
+			if (player.getNumProprieties() == 0) {
+				player.setBankrupt(true);
+				return 0;
+			} else {
+				return 1;
+			}	
+		}	
 		//player com dinheiro suficiente -> remove amount do dinheiro que ele possui
 		player.setMoney(player.getMoney() - amount);
+		return 2;
 	}
 	
 	/*************************************************************************************************/
@@ -138,10 +139,10 @@ public class Bank {
 		// player ja eh dono da property, entao compra uma casa nela
 		if(id == aux.getOwner()) {
 			buyHouse(player, aux);
-			return false;
+			return true;
 		}
 		
-		//player sem dinheiro para a compra
+		//player sem dinheiro para a compra ou propriedade ja tem dono
 		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1)
 			return false;
 		

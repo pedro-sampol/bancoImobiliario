@@ -182,9 +182,21 @@ public class Commands implements KeyListener {
 	
 	// rola os dados e atualiza posicao do player
 	public void endTurn (KeyEvent e) {		
+		Player next;
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			
+			// se o player ja rolou o dado ele pode passar o turno
 			if (gCtrl.diceUsed()) {
 				gCtrl.setPlayerIndex((gCtrl.getPlayerIndex()+1)%6);
+				next = pCtrl.getPlayer(gCtrl.getPlayerIndex());
+				
+				// verifica se o proximo player esta falido e passa pro proximo
+				while (next.isBankrupt()) {
+					gCtrl.setPlayerIndex((gCtrl.getPlayerIndex()+1)%6);
+					next = pCtrl.getPlayer(gCtrl.getPlayerIndex());
+				}
+
+				gCtrl.setPlayerSelected(gCtrl.getPlayerIndex());
 				gCtrl.setDiceState(false);
 			}
 		}
