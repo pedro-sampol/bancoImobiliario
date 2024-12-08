@@ -47,6 +47,7 @@ public class Commands implements KeyListener {
 		} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
 			hubScreen(e);
 			swapSides(e);
+			sell(e);
 		} else if (gCtrl.getScreenSelected() == c.PAUSE) {
 			pauseScreen(e);
 		} else if (gCtrl.getScreenSelected() == c.WIN) {
@@ -74,7 +75,10 @@ public class Commands implements KeyListener {
 		// selecao de botao
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
-			if (gCtrl.getMenuButton() == 0 || gCtrl.getMenuButton() == 1) {
+			if (gCtrl.getMenuButton() == 0) {
+				gCtrl.setLoad(true);
+				gCtrl.setScreenSelected(c.BOARD);	
+			} else if (gCtrl.getMenuButton() == 1) {
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 2) {
 				gCtrl.setScreenSelected(c.RULES);
@@ -113,22 +117,27 @@ public class Commands implements KeyListener {
 /*************************************************************************************************/
 
 	// gira entre o tabuleiro e os imoveis comprados pelos players
-	// e pausa do jogo
+	// e pausa do jogo, impossivel girar se estiver vendendo casas
 	public void swapSides (KeyEvent e) {
+		// pausa com esc
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			gCtrl.setLastScreen(gCtrl.getScreenSelected());
+			gCtrl.setScreenSelected(c.PAUSE);
+		
+		
+		} else if (gCtrl.getEditProperty()) {
+			return;
+			
 		// gira entre imoveis e tabuleiro com espaco
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getScreenSelected() == c.BOARD) {
 				gCtrl.setScreenSelected(c.PROPERTIES);
 			} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
 				gCtrl.setScreenSelected(c.BOARD);
 			}
-		
-		// pausa com esc
-		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			gCtrl.setLastScreen(gCtrl.getScreenSelected());
-			gCtrl.setScreenSelected(c.PAUSE);
 		}
+		
 	}
 	
 /*************************************************************************************************/
@@ -218,15 +227,21 @@ public class Commands implements KeyListener {
 	
 /*************************************************************************************************/
 	
+	// usando a tela de pause
 	public void pauseScreen (KeyEvent e) {
+		// move para cima
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (gCtrl.getPauseButton() > 0) {
 				gCtrl.setPauseButton(gCtrl.getPauseButton()-1);
 			}
+		
+		// move para baixo
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (gCtrl.getPauseButton() < 2) {
 				gCtrl.setPauseButton(gCtrl.getPauseButton()+1);
 			}
+			
+		// seleciona o botao
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen (gCtrl.getScreenSelected());
 			if (gCtrl.getPauseButton() == 0) {
@@ -234,8 +249,51 @@ public class Commands implements KeyListener {
 			} else if (gCtrl.getPauseButton() == 1) {
 				gCtrl.setScreenSelected(c.RULES);
 			} else  if (gCtrl.getPauseButton() == 2) {
+				gCtrl.setSave(true);
 				gCtrl.setScreenSelected(c.MAINMENU);
 			} 
+		}
+	}
+
+/*************************************************************************************************/
+
+	public void sell (KeyEvent e) {
+		Player p = pCtrl.getPlayer(gCtrl.getPlayerIndex());
+		
+		if (e.getKeyCode() == KeyEvent.VK_N) {
+			if (p.getNumProprieties() == 0) return;
+			gCtrl.flipEditProperty();
+			gCtrl.setCardSelected(0);
+		} else if (e.getKeyCode() == KeyEvent.VK_H) {
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_V) {
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_C) {
+			
+			
+		// movimenta para cima
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (gCtrl.getCardSelected()-5 >= 0) {
+				gCtrl.setCardSelected(gCtrl.getCardSelected()-5);
+			}
+			
+		// movimenta para baixo
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (gCtrl.getCardSelected()+5 < p.getNumProprieties()) {
+				gCtrl.setCardSelected(gCtrl.getCardSelected()+5);
+			}
+			
+		// movimenta para direita
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if ((gCtrl.getCardSelected()%5)+1 <= 4) {
+				gCtrl.setCardSelected(gCtrl.getCardSelected()+1);
+			}
+			
+		// movimenta para esquerda
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if ((gCtrl.getCardSelected()%5)-1 >= 0) {
+				gCtrl.setCardSelected(gCtrl.getCardSelected()-1);
+			}
 		}
 	}
 	

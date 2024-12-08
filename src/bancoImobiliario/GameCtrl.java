@@ -2,7 +2,6 @@ package bancoImobiliario;
 
 public class GameCtrl {
 
-	private boolean load;			//jogo precisa dar load?
 	private int currentState;		//estado atual do jogo
 	private boolean isGameOn;		//jogo esta sendo rodado?
 	private boolean isPaused;		//jogo esta pausado?
@@ -15,12 +14,18 @@ public class GameCtrl {
 	private int menuButton;			//botao do menu
 	private int pauseButton;		//botao de pause
 	private int lastScreen;			//tela anterior
+	private boolean editProperty;	//abre menu de vendas
+	private int cardSelected;		//carta selecionada no menu de vendas
+	
+	private boolean save;
+	private boolean load;
 	
 	public GameCtrl() {
 		currentState = 0;
 		diceUsed = false;
 		isGameOn = false;
 		load = false;
+		save = false;
 		playerIndex = 0;
 		playersOn = 6;
 		playerSelected = 0;
@@ -28,6 +33,8 @@ public class GameCtrl {
 		menuButton = 0;
 		pauseButton = 0;
 		lastScreen = 0;
+		cardSelected = 0;
+		editProperty = false;
 	}
 	
 	/*************************************************************************************************/
@@ -68,6 +75,26 @@ public class GameCtrl {
 	
 	/*************************************************************************************************/
 	
+	public boolean getEditProperty () {
+		return editProperty;
+	}
+	
+	public void flipEditProperty () {
+		editProperty = !editProperty;
+	}
+	
+	/*************************************************************************************************/
+	
+	public int getCardSelected () {
+		return cardSelected;
+	}
+	
+	public void setCardSelected (int cardSelected) {
+		this.cardSelected = cardSelected;
+	}
+	
+	/*************************************************************************************************/
+	
 	public void setCurrentState(int state) {
 		currentState = state;
 	}
@@ -89,6 +116,9 @@ public class GameCtrl {
 	}
 	public boolean getLoad() {
 		return load;
+	}
+	public boolean getSave() {
+		return save;
 	}
 	
 	/*************************************************************************************************/
@@ -123,6 +153,12 @@ public class GameCtrl {
 	}
 	public void setLastScreen(int lastScreen) {
 		this.lastScreen = lastScreen;
+	}
+	public void setLoad(boolean state) {
+		load = state;
+	}
+	public void setSave(boolean state) {
+		save = state;
 	}
 	
 }
