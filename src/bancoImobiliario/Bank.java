@@ -184,15 +184,15 @@ public class Bank {
 		}
 		
 		//player compra uma companhia ou uma propriedade se possuir dinheiro
-		public void buyLocal(Player player, Board board, int indexSquare) {
+		public void buyLocal(Player player, Board board, int indexSquare, int id) {
 			Square square = board.getSquare(indexSquare);
 			
 			if(square.getType() == c.COMPANY) { //compra de companhia
 				Company aux = (Company) square;
-				this.buyCompany(player, aux, indexSquare);
+				this.buyCompany(player, aux, id);
 			} else if(square.getType() == c.PROPERTY) { //compra de propriedade
 				Property aux = (Property) square;
-				this.buyProperty(player, aux, indexSquare);
+				this.buyProperty(player, aux, id);
 			} else {
 				return;
 			}

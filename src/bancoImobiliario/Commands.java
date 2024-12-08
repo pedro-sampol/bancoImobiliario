@@ -154,13 +154,13 @@ public class Commands implements KeyListener {
 				if (gCtrl.getPlayerIndex() == property.getOwner() && buyHouse) {
 					bank.buyHouse(p, property);
 				} else {
-					bank.buyLocal(p, board, gCtrl.getPlayerIndex());
+					bank.buyLocal(p, board, p.getPosition(), gCtrl.getPlayerIndex());
 					buyHouse = false;
 				}
 				
 			// compra companhia
 			} else if (s.getType() == c.COMPANY) {
-				bank.buyLocal(p, board, gCtrl.getPlayerIndex());
+				bank.buyLocal(p, board, p.getPosition(), gCtrl.getPlayerIndex());
 				
 			// compra saida da prisao
 			} else if (p.isInPrision()) {
