@@ -10,8 +10,8 @@ public class Property extends Local {
 	private BufferedImage sprite;		//sprite da carta
 	private BufferedImage spriteBig;	//sprite grande da carta
 	
-	public Property(BufferedImage sprite, BufferedImage spriteBig,int index, int type, int value, int color, int c0, int c1, int c2, int c3, int c4, int c5, int house_price) {
-		super(index, type, value);
+	public Property(BufferedImage sprite, BufferedImage spriteBig,int index, int type, int color,  int mortgage, int value, int c0, int c1, int c2, int c3, int c4, int c5, int house_price) {
+		super(index, type, value, mortgage);
 		this.sprite = sprite;
 		this.spriteBig = spriteBig;
 		this.color = color;

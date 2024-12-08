@@ -10,12 +10,12 @@ public class Local extends Square {
 	public Local() {
 		owner = -1;
 	}
-	public Local(int index, int type, int value) {
+	public Local(int index, int type, int value, int mortgage) {
 		super(index, type);
 		owner = -1;
-		this.value = value + 50;
-		mortgageValue = value;
-		mortgage = false;
+		this.value = value;
+		mortgageValue = mortgage;
+		this.mortgage = false;
 	}
 	
 	/*************************************************************************************************/
