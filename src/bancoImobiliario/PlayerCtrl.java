@@ -45,7 +45,7 @@ public class PlayerCtrl {
 	
 	//retorna true se o player tem 3 ou mais monopolios
 	//retorna false se não
-	public boolean playerGanhou(Player player, Board board) {
+	public boolean playerWon(Player player, Board board) {
 		
 		Square aux;
 		
