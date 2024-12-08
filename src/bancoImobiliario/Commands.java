@@ -175,16 +175,38 @@ public class Commands implements KeyListener {
 			p = pCtrl.getPlayer(gCtrl.getPlayerIndex());		// pega o player do turno atual
 			p.move(dice.getTotalValue());						// soma a posicao no tabuleiro
 			p.pickCoords(gCtrl.getPlayerIndex());				// atualiza as coordenadas
+
 			
+			// trata a casa em que o player caiu
 			s = board.getSquare(p.getPosition());
-			if (s.getType() == c.PROPERTY) {
-				//Property property = (Property) s;
-			} else if (s.getType() == c.COMPANY) {
-				//Company company = (Company) s;
+			if (s.getType() == c.PROPERTY || s.getType() == c.COMPANY) {
+				Local local = (Local) s;
+				if (local.isBought()) {
+					Player owner = pCtrl.getPlayer(local.getOwner());
+					bank.payRent(p, owner, local, dice);
+				}
 			} else if (s.getType() == c.DESTINY) {
 				Destiny destiny = (Destiny) s;
 				destiny.randomize();
+				int value = destiny.getValue();
+				if (value > 5) {
+					bank.giveMoney(p, destiny.getPayValue());
+				} else {
+					bank.takeMoney(p, -(destiny.getPayValue()));
+				}
+			} else if (s.getIndex() == 9 || (s.getIndex() == 27 && p.getTimeInPrision() == -1)) { // casa de va para a prisao ou acabou de cair na casa prisao
+				prision.sendToPrision(p, gCtrl.getPlayerIndex());
+			} else if (s.getIndex() == 27) {													  // ja estava na prisao	
+				
+			} else if (s.getIndex() == 10) {													  // loteria
+				bank.giveMoney(p, 200);
+			} else if (s.getIndex() == 29) {
+				bank.takeMoney(p, 200);
+			} else if (s.getIndex() == 17) {													  // ferias de verao
+				
 			}
+			
+			
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores iguais
 				gCtrl.setDiceState(true);						// o player joga de novo
 			}
