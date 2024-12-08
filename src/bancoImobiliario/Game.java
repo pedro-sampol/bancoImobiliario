@@ -27,7 +27,8 @@ public class Game implements Runnable {
 		p = new PlayerCtrl();
 		board = new Board();
 		bank = new Bank();
-		commands = new Commands(screen.getScreenData(), dice, g, p, bank);
+		prision = new Prision();
+		commands = new Commands(screen.getScreenData(), dice, g, p, bank, board, prision);
 		c = new Constants();
 	}
 	

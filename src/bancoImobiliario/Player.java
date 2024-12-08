@@ -13,7 +13,6 @@ public class Player {
 	private int numProprieties;			// numero de propriedades/companhias que o player possui
 	private boolean inPrision;			// esta preso
 	private int timeInPrision;			// tempo em turnos preso
-	private int getOutCards;			// quantidade cartas de sair da prisao
 	private int noPlayTime;				// Player não pode jogar n rodadas
 	private int repeatedDice;			// quantas vezes seguidas os dados foram iguais
 	private BufferedImage sprite;		// sprite do personagem
@@ -28,7 +27,6 @@ public class Player {
 		numProprieties = 0;
 		inPrision = false;
 		timeInPrision =  0;
-		getOutCards = 0;
 		noPlayTime = 0;
 		repeatedDice = 0;
 		sprite = p;
@@ -61,9 +59,6 @@ public class Player {
 	}
 	public int getTimeInPrision() {
 		return timeInPrision;
-	}
-	public int getGetOutCards() {
-		return getOutCards;
 	}
 	public int getNoPlayTime() {
 		return noPlayTime;
@@ -105,9 +100,6 @@ public class Player {
 	}
 	public void setPosition(int id) {
 		position = id;
-	}
-	public void setGetOutCards(int count) {
-		getOutCards = count;
 	}
 	
 	/*************************************************************************************************/
@@ -292,12 +284,11 @@ public class Player {
 		numProprieties = Integer.valueOf(info[5]);
 		inPrision = Boolean.valueOf(info[6]);
 		timeInPrision =  Integer.valueOf(info[7]);
-		getOutCards = Integer.valueOf(info[8]);
-		noPlayTime = Integer.valueOf(info[9]);
-		repeatedDice = Integer.valueOf(info[10]);
+		noPlayTime = Integer.valueOf(info[8]);
+		repeatedDice = Integer.valueOf(info[9]);
 		
 		//atualiza o vetor que controla as propriedades do player
 		for(int i = 0; i < numProprieties; i++)
-			proprietiesOwned[i] = Integer.valueOf(info[11 + i]);
+			proprietiesOwned[i] = Integer.valueOf(info[10 + i]);
 	}
 }

@@ -111,9 +111,11 @@ public class Bank {
 	public boolean buyCompany(Player player, Square comp, int id) {
 		Company aux = (Company) comp;
 		
+		// player ja eh dono da companhia
+		if(id == aux.getOwner()) return false;
+		
 		//player sem dinheiro para a compra
-		if(!player.hasMoney(aux.getValue()))
-			return false;
+		if(!player.hasMoney(aux.getValue())) return false;
 			
 		//player compra a company
 		player.newLocal(aux.getIndex());
@@ -128,13 +130,19 @@ public class Bank {
 		return true;
 	}
 	
-	//Player compra uma company
+	//Player compra uma property
 	// se nao tiver dinheiro retorna false, ao contrario retorna true
 	public boolean buyProperty(Player player, Square property, int id) {
 		Property aux = (Property) property;
 		
+		// player ja eh dono da property, entao compra uma casa nela
+		if(id == aux.getOwner()) {
+			buyHouse(player, aux);
+			return false;
+		}
+		
 		//player sem dinheiro para a compra
-		if(!player.hasMoney(aux.getValue()))
+		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1)
 			return false;
 		
 		//player compra a propriedade

@@ -44,7 +44,6 @@ public class Save {
 				writer.append(String.valueOf(player.getNumProprieties() + " "));
 				writer.append(String.valueOf(player.isInPrision() + " "));
 				writer.append(String.valueOf(player.getTimeInPrision() + " "));
-				writer.append(String.valueOf(player.getGetOutCards() + " "));
 				writer.append(String.valueOf(player.getNoPlayTime() + " "));
 				writer.append(String.valueOf(player.getRepeatedDice() + " "));
 				
