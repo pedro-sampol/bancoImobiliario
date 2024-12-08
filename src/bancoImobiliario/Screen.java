@@ -50,7 +50,7 @@ public class Screen extends Canvas {
 			textHubMap(graphics);
 			playerInfo (screenData, graphics, player);
 			drawMap(screenData, graphics, pCtrl, gCtrl, dice);
-			drawBigCard (screenData, graphics, pCtrl.getPlayer(gCtrl.getPlayerIndex()), board);
+			drawBigCard (screenData, graphics, pCtrl.getPlayer(gCtrl.getPlayerIndex()), board, gCtrl);
 			
 		// renderiza imoveis
 		} else if (gCtrl.getScreenSelected() == cnst.PROPERTIES) {
@@ -147,23 +147,21 @@ public class Screen extends Canvas {
 	// informacoes do player na tela
 	public void playerInfo (ScreenData s, Graphics g, Player player) {
 		g.setFont (fontSmall);
-		if (player.isBankrupt()) {
+		/*if (player.isBankrupt()) {
 			g.setColor (Color.RED);
 			g.drawString("FALIU", 530, 250);
 			return;
-		}
+		}*/
+		
 		g.setColor (Color.BLACK);
 		g.drawString("Dinheiro:", 530, 250);
 		g.drawString("Monopólios:", 530, 350);
 		g.drawString("Empresas:", 530, 450);
-		g.drawString("Cartas de Fuga:", 530, 550);
 		
 		g.setColor (Color.WHITE);
 		g.drawString(""+player.getMoney(), 530, 290);
 		//g.drawString("", 530, 390);
 		//g.drawString("", 530, 490);
-		g.drawString(""+player.getGetOutCards(), 530, 590);
-		//g.drawString("", 530, 690);
 	}
 	
 /*************************************************************************************************/ 
@@ -178,10 +176,10 @@ public class Screen extends Canvas {
 			Square square = board.getSquare(player.getOwned(i));
 			if (square.getType() == cnst.PROPERTY) {
 				Property property = (Property) square;
-				g.drawImage(property.getSprite(), 198*(i%5), 102+(222*height), null);
+				g.drawImage(property.getSprite(), 770+198*(i%5), 102+(222*height), null);
 			} else if (square.getType() == cnst.COMPANY) {
 				Company company = (Company) square;
-				g.drawImage(company.getSprite(), 198*(i%5), 102+(222*height), null);
+				g.drawImage(company.getSprite(), 770+198*(i%5), 102+(222*height), null);
 			}
 			height = i/5;
 		}
@@ -191,9 +189,23 @@ public class Screen extends Canvas {
 	
 	public void drawMap (ScreenData s, Graphics g, PlayerCtrl pCtrl, GameCtrl gCtrl, Dice dice) {
 		Player p;
+		String str = "erro";
 		
 		// mapa
 		g.drawImage(s.getMap(), 770, 0, null);
+		
+		// de quem eh o turno
+		switch (gCtrl.getPlayerIndex()) {
+		case 0: str = "vermelho"; break;
+		case 1: str = "azul"; break;
+		case 2: str = "verde"; break;
+		case 3: str = "roxo"; break;
+		case 4: str = "amarelo"; break;
+		case 5: str = "laranja"; break;
+		}
+		g.setColor (Color.BLACK);
+		g.setFont (fontMedium);
+		g.drawString("turno do "+str, 1040, 240);
 		
 		// valor dos dados
 		g.setColor (Color.BLACK);
@@ -230,15 +242,27 @@ public class Screen extends Canvas {
 	
 /*************************************************************************************************/
 	
-	public void drawBigCard (ScreenData s, Graphics g, Player player, Board board) {		
+	public void drawBigCard (ScreenData s, Graphics g, Player player, Board board, GameCtrl gCtrl) {		
 		Square square = board.getSquare(player.getPosition());
+		
+		// se o quadrado for uma propriedade imprime o sprite
 		if (square.getType() == cnst.PROPERTY) {
 			Property property = (Property) square;
 			g.drawImage(property.getBigSprite(), 970, 440, null);
+			
+		// se o quadrado for uma companhia imprime o sprite
 		} else if (square.getType() == cnst.COMPANY) {
 			Company company = (Company) square;
 			g.drawImage(company.getBigSprite(), 970, 440, null);
-		}	
+			
+		// se o quadrado for um destino imprime o texto do destino
+		} else if (square.getType() == cnst.DESTINY) {
+			Destiny destiny = (Destiny) square;
+			g.setColor (Color.BLACK);
+			g.setFont (fontSmall);
+			g.drawString(destiny.texts[destiny.getValue()], 1030, 560);
+
+		}
 	}
 	
 /*************************************************************************************************/

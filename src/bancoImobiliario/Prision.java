@@ -18,21 +18,15 @@ public class Prision {
 	}
 	
 	/*************************************************************************************************/
-	
-	//saindo da prisao utilziando a carta de fuga da prisao
-	void getOutOfJailCard(Player player) {
-		player.setGetOutCards(player.getGetOutCards() - 1);
-		player.setInPrision(false);
-	}
-	
+		
 	//player saiu da prisao por qualquer motivo
 	void getOutOfPrision(Player player) {
 		player.setInPrision(false);
 	}
 	
-	//player sai da prisao pagando a taxa de 50
+	//player sai da prisao pagando a taxa de 150
 	void getOutwithBail(Player player, Bank bank) {
-		bank.takeMoney(player, 50);
+		bank.takeMoney(player, 150);
 		this.getOutOfPrision(player);
 	}
 }

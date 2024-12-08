@@ -23,6 +23,11 @@ public class GameCtrl {
 		load = false;
 		playerIndex = 0;
 		playersOn = 6;
+		playerSelected = 0;
+		screenSelected = 0;
+		menuButton = 0;
+		pauseButton = 0;
+		lastScreen = 0;
 	}
 	
 	/*************************************************************************************************/
