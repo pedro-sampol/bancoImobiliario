@@ -26,7 +26,7 @@ public class Player {
 		bankrupt = false;
 		numProprieties = 0;
 		inPrision = false;
-		timeInPrision =  0;
+		timeInPrision =  -1;
 		noPlayTime = 0;
 		repeatedDice = 0;
 		sprite = p;

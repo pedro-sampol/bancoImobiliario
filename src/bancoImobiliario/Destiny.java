@@ -5,8 +5,8 @@ import java.util.Random;
 public class Destiny extends Square {
 	
 	String texts[] = new String[12];												//textos que vao aparecer na tela
-	int valores[] = {-150, -100, -75, -50, -30, -15, 150, 100, 75, 50, 30, 15};		//valor que deve ser pago
-	int randomValue;
+	private int payValues[] = {-150, -100, -75, -50, -30, -15, 150, 100, 75, 50, 30, 15};		//valor que deve ser pago
+	private int randomValue;
 	
 	public Destiny(int index, int type) {
 		super(index, type);
@@ -34,5 +34,9 @@ public class Destiny extends Square {
 	
 	public int getValue() {
 		return randomValue;
+	}
+	
+	public int getPayValue() {
+		return payValues[randomValue];
 	}
 }

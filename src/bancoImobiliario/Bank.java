@@ -198,7 +198,7 @@ public class Bank {
 		
 		//calcula o valor caso o player caia em uma company
 		//valor tirado nos dados vezes o multiplicador dessa company
-		if(square.getIndex() == c.COMPANY) {
+		if(square.getType() == c.COMPANY) {
 			Company company = (Company) square;
 			value = dice.getTotalValue() * company.getMultiplier();
 		} else {

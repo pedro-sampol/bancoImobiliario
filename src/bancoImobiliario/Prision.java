@@ -21,6 +21,7 @@ public class Prision {
 		
 	//player saiu da prisao por qualquer motivo
 	void getOutOfPrision(Player player) {
+		player.setTimeInPrision(-1);
 		player.setInPrision(false);
 	}
 	
