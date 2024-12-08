@@ -136,14 +136,8 @@ public class Bank {
 	public boolean buyProperty(Player player, Square property, int id) {
 		Property aux = (Property) property;
 		
-		// player ja eh dono da property, entao compra uma casa nela
-		if(id == aux.getOwner()) {
-			buyHouse(player, aux);
-			return true;
-		}
-		
 		//player sem dinheiro para a compra ou propriedade ja tem dono
-		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1)
+		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1 || id == aux.getOwner())
 			return false;
 		
 		//player compra a propriedade

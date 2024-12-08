@@ -134,7 +134,7 @@ public class Screen extends Canvas {
 		g.drawString("- ENTER para passar o turno", 20, 920);
 		g.drawString("- ESC para pausar", 20, 950);
 	}
-	
+
 	// controles disponiveis na tela PROPERTY
 	public void textHubProperty (Graphics g) {
 		g.setColor (Color.BLACK);
@@ -196,12 +196,12 @@ public class Screen extends Canvas {
 		
 		// de quem eh o turno
 		switch (gCtrl.getPlayerIndex()) {
-		case 0: str = "vermelho"; break;
-		case 1: str = "azul"; break;
-		case 2: str = "verde"; break;
-		case 3: str = "roxo"; break;
-		case 4: str = "amarelo"; break;
-		case 5: str = "laranja"; break;
+			case 0: str = "vermelho"; break;
+			case 1: str = "azul"; break;
+			case 2: str = "verde"; break;
+			case 3: str = "roxo"; break;
+			case 4: str = "amarelo"; break;
+			case 5: str = "laranja"; break;
 		}
 		g.setColor (Color.BLACK);
 		g.setFont (fontMedium);
@@ -244,24 +244,67 @@ public class Screen extends Canvas {
 	
 	public void drawBigCard (ScreenData s, Graphics g, Player player, Board board, GameCtrl gCtrl) {		
 		Square square = board.getSquare(player.getPosition());
+		String str = "erro";
 		
-		// se o quadrado for uma propriedade imprime o sprite
+		g.setColor (Color.BLACK);
+		g.setFont (fontSmall);
+		
+		// se o quadrado for uma propriedade imprime o sprite e diz quantas casas estao contruidas la
 		if (square.getType() == cnst.PROPERTY) {
 			Property property = (Property) square;
+			if (property.getOwner() == -1) {
+				g.drawString("sem proprietário", 970, 400);
+			} else {
+				// quem eh o dono da carta na tela
+				switch (property.getOwner()) {
+				case 0: str = "vermelho"; break;
+				case 1: str = "azul"; break;
+				case 2: str = "verde"; break;
+				case 3: str = "roxo"; break;
+				case 4: str = "amarelo"; break;
+				case 5: str = "laranja"; break;
+				default: break;
+				}
+				g.drawString(str+" tem "+property.getNHouses()+ " casas nesse lugar", 970, 400);
+			}
 			g.drawImage(property.getBigSprite(), 970, 440, null);
 			
 		// se o quadrado for uma companhia imprime o sprite
 		} else if (square.getType() == cnst.COMPANY) {
 			Company company = (Company) square;
+			// quem eh o dono da carta na tela
+			switch (company.getOwner()) {
+				case 0: str = "vermelho"; break;
+				case 1: str = "azul"; break;
+				case 2: str = "verde"; break;
+				case 3: str = "roxo"; break;
+				case 4: str = "amarelo"; break;
+				case 5: str = "laranja"; break;
+				default: break;
+			}
+			g.drawString("empresa do "+str, 970, 400);
 			g.drawImage(company.getBigSprite(), 970, 440, null);
 			
 		// se o quadrado for um destino imprime o texto do destino
 		} else if (square.getType() == cnst.DESTINY) {
 			Destiny destiny = (Destiny) square;
-			g.setColor (Color.BLACK);
-			g.setFont (fontSmall);
-			g.drawString(destiny.texts[destiny.getValue()], 1030, 560);
+			g.drawString(destiny.texts[destiny.getValue()], 970, 400);
 
+		// recebe 200 passando pelo inicio
+		} else if (square.getIndex() == 9) {
+			g.drawString("vá para a prisão", 970, 400);
+		
+		// loteria 
+		} else if (square.getIndex() == 10) {
+			g.drawString("loteria: +200", 970, 400);
+		
+		// ferias
+		} else if (square.getIndex() == 18) {
+			g.drawString("descanse a próxima rodada", 970, 400);
+		
+		// impostos
+		} else if (square.getIndex() == 29) {
+			g.drawString("impostos: -200", 970, 400);
 		}
 	}
 	
