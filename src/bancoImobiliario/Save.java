@@ -41,7 +41,9 @@ public class Save {
 				writer.append(String.valueOf(player.getPosition() + " "));
 				writer.append(String.valueOf(player.getMoney() + " "));
 				writer.append(String.valueOf(player.isBankrupt() + " "));
+				writer.append(String.valueOf(player.getMonopolies() + " "));
 				writer.append(String.valueOf(player.getNumProprieties() + " "));
+				writer.append(String.valueOf(player.getNumCompanies() + " "));
 				writer.append(String.valueOf(player.isInPrision() + " "));
 				writer.append(String.valueOf(player.getTimeInPrision() + " "));
 				writer.append(String.valueOf(player.getNoPlayTime() + " "));
