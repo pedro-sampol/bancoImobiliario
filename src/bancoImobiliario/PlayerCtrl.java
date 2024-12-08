@@ -47,38 +47,11 @@ public class PlayerCtrl {
 	//retorna false se não
 	public boolean playerWon(Player player, Board board) {
 		
-		Square aux;
-		
-		int monopoly = 0;
-		
-		int companies = 0;
-		
-		int cores[] = {0, 0, 0, 0, 0, 0};
-		
-		//conta o numero de propriedades de cada cor
-		for(int i = 0; i < player.getNumProprieties(); i++) {
-			aux = board.getSquare(player.getOwned(i));
-			
-			if(aux.getType() == c.PROPERTY) {
-				Property p = (Property) aux;
-				cores[p.getColor()] ++;
-			} else 
-				companies++;
-		}
-		
-		//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
-		for(int i = 0; i < 6; i++) {
-			if(i == c.PURPLE && cores[i] == 4)
-				monopoly++;
-			else if(cores[i] == 3)
-				monopoly++;
-		}
-		
 		//player ganhou o jogo por numero de monopolios ou monopolio de companhias
-		if(monopoly >= 3 || companies == 5)
-			return true;
-		
-		return false;
+				if(player.getMonopolies() >= 3 || player.getNumCompanies() == 5)
+					return true;
+				
+				return false;
 	}
 	
 	//verifica se algum player ganhou o jogo
