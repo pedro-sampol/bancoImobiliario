@@ -78,4 +78,34 @@ public class PlayerCtrl {
 		return false;
 	}
 	
+	//verifica se algum player ganhou o jogo
+	//retorna o index do player que ganhou
+	//retorna -1 se nenhum player ganhou
+	public int winner(PlayerCtrl control, Board board) {
+		int numInTheGame = 0;
+		int indexInTheGame = 0;
+		
+		Player player;
+		for(int i = 0; i < 6; i++) {
+			player = control.getPlayer(i);
+			
+			//verifica se algum player ganhou por monopolio
+			if(this.playerWon(player, board))
+				return i;
+			
+			//verifica o numero de players que nao faliram
+			if(!player.isBankrupt()) {
+				numInTheGame++;
+				indexInTheGame = i;
+			}
+		}
+		
+		//se apenas um player nao faliu retorna seu indice
+		if(numInTheGame == 1)
+			return indexInTheGame;
+		
+		//nenhum player ganhou
+		return -1;
+	}
+	
 }
