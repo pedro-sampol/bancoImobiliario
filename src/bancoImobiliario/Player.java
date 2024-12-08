@@ -23,7 +23,7 @@ public class Player {
 	public Player(BufferedImage p, int index) {
 		position = 0;
 		pickCoords(index);
-		money = 200;
+		money = 2150;
 		bankrupt = false;
 		numProprieties = 0;
 		inPrision = false;

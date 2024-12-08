@@ -6,12 +6,6 @@ import java.awt.event.KeyListener;
 public class Commands implements KeyListener {
 	
 	public Constants c;
-	
-	private int playerSelected;		//player selecionado atualmente
-	private int screenSelected;		//tela selecionada atualmente
-	private int menuButton;			//botao do menu
-	private int pauseButton;		//botao de pause
-	private int lastScreen;			//tela anterior
 	public Dice dice;
 	private GameCtrl gCtrl;
 	private PlayerCtrl pCtrl;
@@ -26,30 +20,30 @@ public class Commands implements KeyListener {
 		this.gCtrl = gCtrl;
 		this.pCtrl = pCtrl;
 		this.bank = bank;
-		playerSelected = 0;
-		screenSelected = 0;
-		menuButton = 0;
-		pauseButton = 0;
+		gCtrl.setPlayerSelected(0);
+		gCtrl.setScreenSelected(0);
+		gCtrl.setMenuButton(0);
+		gCtrl.setPauseButton(0);
 	}
 	
 /*************************************************************************************************/
 	
 	public void keyPressed(KeyEvent e) {		
-		if (screenSelected == c.MAINMENU) {
+		if (gCtrl.getScreenSelected() == c.MAINMENU) {
 			menuScreen (e);
-		} else if (screenSelected == c.RULES) {
+		} else if (gCtrl.getScreenSelected() == c.RULES) {
 			rulesScreen (e);
-		} else if (screenSelected == c.BOARD) {
+		} else if (gCtrl.getScreenSelected() == c.BOARD) {
 			hubScreen(e);
 			swapSides(e);
 			executeDice(e);
 			endTurn(e);
-		} else if (screenSelected == c.PROPERTIES) {
+		} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
 			hubScreen(e);
 			swapSides(e);
-		} else if (screenSelected == c.PAUSE) {
+		} else if (gCtrl.getScreenSelected() == c.PAUSE) {
 			pauseScreen(e);
-		} else if (screenSelected == c.WIN) {
+		} else if (gCtrl.getScreenSelected() == c.WIN) {
 			winScreen(e);
 		}
 	}
@@ -61,23 +55,23 @@ public class Commands implements KeyListener {
 	public void menuScreen (KeyEvent e) {
 		// movimento para cima
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (menuButton > 0) {
-				menuButton--;
+			if (gCtrl.getMenuButton() > 0) {
+				gCtrl.setMenuButton(gCtrl.getMenuButton()-1);
 			}
 		
 		// movimento para baixo
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (menuButton < 2) {
-				menuButton++;
+			if (gCtrl.getMenuButton() < 2) {
+				gCtrl.setMenuButton(gCtrl.getMenuButton()+1);;;
 			}
 		
 		// selecao de botao
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			lastScreen = screenSelected;
-			if (menuButton == 0 || menuButton == 1) {
-				screenSelected = c.BOARD;	
-			} else if (menuButton == 2) {
-				screenSelected = c.RULES;
+			gCtrl.setLastScreen(gCtrl.getScreenSelected());
+			if (gCtrl.getMenuButton() == 0 || gCtrl.getMenuButton() == 1) {
+				gCtrl.setScreenSelected(c.BOARD);	
+			} else if (gCtrl.getMenuButton() == 2) {
+				gCtrl.setScreenSelected(c.RULES);
 			} 
 		}
 	}
@@ -87,7 +81,7 @@ public class Commands implements KeyListener {
 	// tela de leitura, saida com esc
 	public void rulesScreen (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			screenSelected = lastScreen;
+			gCtrl.setScreenSelected(gCtrl.getLastScreen());
 		}
 	}
 	
@@ -96,17 +90,17 @@ public class Commands implements KeyListener {
 	// permuta entre os 6 jogadores no tabuleiro
 	public void hubScreen (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_1) {
-			playerSelected = 0;
+			gCtrl.setPlayerSelected(0);
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-			playerSelected = 1;
+			gCtrl.setPlayerSelected(1);
 		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-			playerSelected = 2;
+			gCtrl.setPlayerSelected(2);
 		} else if (e.getKeyCode() == KeyEvent.VK_4) {
-			playerSelected = 3;
+			gCtrl.setPlayerSelected(3);
 		} else if (e.getKeyCode() == KeyEvent.VK_5) {
-			playerSelected = 4;
+			gCtrl.setPlayerSelected(4);
 		} else if (e.getKeyCode() == KeyEvent.VK_6) {
-			playerSelected = 5;
+			gCtrl.setPlayerSelected(5);
 		} 
 	}
 	
@@ -116,15 +110,15 @@ public class Commands implements KeyListener {
 	// e pausa do jogo
 	public void swapSides (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			lastScreen = screenSelected;
-			if (screenSelected == c.BOARD) {
-				screenSelected = c.PROPERTIES;
-			} else if (screenSelected == c.PROPERTIES) {
-				screenSelected = c.BOARD;
+			gCtrl.setLastScreen(gCtrl.getScreenSelected());
+			if (gCtrl.getScreenSelected() == c.BOARD) {
+				gCtrl.setScreenSelected(c.PROPERTIES);
+			} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
+				gCtrl.setScreenSelected(c.BOARD);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			lastScreen = screenSelected;
-			screenSelected = c.PAUSE;
+			gCtrl.setLastScreen(gCtrl.getScreenSelected());
+			gCtrl.setScreenSelected(c.PAUSE);
 		}
 	}
 	
@@ -162,21 +156,21 @@ public class Commands implements KeyListener {
 	
 	public void pauseScreen (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (pauseButton > 0) {
-				pauseButton--;
+			if (gCtrl.getPauseButton() > 0) {
+				gCtrl.setPauseButton(gCtrl.getPauseButton()-1);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (pauseButton < 2) {
-				pauseButton++;
+			if (gCtrl.getPauseButton() < 2) {
+				gCtrl.setPauseButton(gCtrl.getPauseButton()+1);
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			lastScreen = screenSelected;
-			if (pauseButton == 0) {
-				screenSelected = c.BOARD;	
-			} else if (pauseButton == 1) {
-				screenSelected = c.RULES;
-			} else  if (pauseButton == 2) {
-				screenSelected = c.MAINMENU;
+			gCtrl.setLastScreen (gCtrl.getScreenSelected());
+			if (gCtrl.getPauseButton() == 0) {
+				gCtrl.setScreenSelected(c.BOARD);	
+			} else if (gCtrl.getPauseButton() == 1) {
+				gCtrl.setScreenSelected(c.RULES);
+			} else  if (gCtrl.getPauseButton() == 2) {
+				gCtrl.setScreenSelected(c.MAINMENU);
 			} 
 		}
 	}
@@ -185,25 +179,11 @@ public class Commands implements KeyListener {
 
 	public void winScreen (KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			screenSelected = c.MAINMENU;
+			gCtrl.setScreenSelected(c.MAINMENU);
 		}
 	}
 	
 /*************************************************************************************************/
-
-	// funcoes de get
-	public int getPlayerID () {
-		return this.playerSelected;
-	}
-	public int getScreenID () {
-		return this.screenSelected;
-	}
-	public int getMenuButton () {
-		return this.menuButton;
-	}
-	public int getPauseButton () {
-		return this.pauseButton;
-	}
 	
 	public void keyTyped(KeyEvent e) {}
 	public void keyReleased(KeyEvent e) {}
