@@ -58,6 +58,7 @@ public class Screen extends Canvas {
 			textHubProperty(graphics);
 			playerInfo (screenData, graphics, player);
 			drawProperty(screenData, graphics, player, board);
+			sellingMode(screenData, graphics, gCtrl);
 			
 		// renderiza tela de pause
 		} else if (gCtrl.getScreenSelected() == cnst.PAUSE) {
@@ -174,15 +175,31 @@ public class Screen extends Canvas {
 		int height = 0;
 		for (int i = 0; i < player.getNumProprieties(); i++) {
 			Square square = board.getSquare(player.getOwned(i));
+			height = i/5;
+			
+			// imprime cartas de propriedade
 			if (square.getType() == cnst.PROPERTY) {
 				Property property = (Property) square;
 				g.drawImage(property.getSprite(), 770+198*(i%5), 102+(222*height), null);
+				
+			// imprime cartas de companhia
 			} else if (square.getType() == cnst.COMPANY) {
 				Company company = (Company) square;
 				g.drawImage(company.getSprite(), 770+198*(i%5), 102+(222*height), null);
 			}
-			height = i/5;
 		}
+	}
+	
+/*************************************************************************************************/ 
+	
+	public void sellingMode (ScreenData s, Graphics g, GameCtrl gCtrl) {		
+		if (gCtrl.getEditProperty()) {
+			int height = (gCtrl.getCardSelected()/5);
+			int length = (gCtrl.getCardSelected()%5);
+			g.setColor(Color.BLACK);
+			g.fillOval(869+(198*length), 213+(222*height), 30, 30);
+		}
+		
 	}
 	
 /*************************************************************************************************/
@@ -214,29 +231,41 @@ public class Screen extends Canvas {
 		g.drawString("Dado 2: "+dice.getValue2(), 1400, 720);
 		
 		// players
-		g.setColor (new Color (255,0,0));
 		p = pCtrl.getPlayer(0);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (255,0,0));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 		
-		g.setColor (new Color (38,0,255));
 		p = pCtrl.getPlayer(1);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (38,0,255));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 		
-		g.setColor (new Color (30,255,0));
 		p = pCtrl.getPlayer(2);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (30,255,0));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 		
-		g.setColor (new Color (236,0,255));
 		p = pCtrl.getPlayer(3);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (236,0,255));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 		
-		g.setColor (new Color (244,255,0));
 		p = pCtrl.getPlayer(4);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (244,255,0));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 		
-		g.setColor (new Color (255,167,0));
 		p = pCtrl.getPlayer(5);
-		g.fillRect(p.getX(), p.getY(), 30, 30);
+		if (!p.isBankrupt()) {
+			g.setColor (new Color (255,167,0));
+			g.fillRect(p.getX(), p.getY(), 30, 30);
+		}
 
 	}
 	

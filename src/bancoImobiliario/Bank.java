@@ -148,6 +148,10 @@ public class Bank {
 			if(!player.hasMoney(aux.getValue())) 
 				return;
 				
+			if (aux.getOwner() != -1) {
+				return;
+			}
+			
 			//player compra a company
 			player.newLocal(aux.getIndex());
 			player.setNumCompanies(player.getNumCompanies() - 1);
@@ -206,7 +210,7 @@ public class Bank {
 					cores[p.getColor()] ++;
 				}
 			}
-			
+		
 			//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
 			for(int i = 0; i < 6; i++) {
 				if(i == c.PURPLE && cores[i] == 4)
@@ -217,7 +221,6 @@ public class Bank {
 			
 			player.setMonopoly(monopoly);
 		}
-		
 	
 	/*************************************************************************************************/
 	
