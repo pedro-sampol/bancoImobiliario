@@ -72,83 +72,155 @@ public class Bank {
 	/*************************************************************************************************/
 	
 	//vende uma propriedade (e todas as suas casas) e entrega o dinheiro para o player
-	public void sellProperty(Player player, Square property) {
-		Property aux = (Property) property;
+		public void sellProperty(Player player, Board board, int index) {
+			Property aux = (Property) board.getSquare(index);
+			
+			//vende todas as casas da propriedade
+			while(aux.getNHouses() > 0)
+				this.sellHouse(player, aux);
+			
+			//player perde a propriedade
+			player.removeLocal(aux.getIndex());
+			
+			//player ganha o dinheiro da propriedade
+			this.giveMoney(player, aux.getValue());
+			
+			//propiedade sem dono
+			aux.setOwner(-1);
+			aux.setBought(false);
+			
+			Square square;
+			
+			int monopoly = 0;
+			
+			int cores[] = {0, 0, 0, 0, 0, 0};
+			
+			//conta o numero de propriedades de cada cor
+			for(int i = 0; i < player.getNumProprieties(); i++) {
+				square = board.getSquare(player.getOwned(i));
+				
+				if(square.getType() == c.PROPERTY) {
+					Property p = (Property) square;
+					cores[p.getColor()] ++;
+				}
+			}
+			
+			//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
+			for(int i = 0; i < 6; i++) {
+				if(i == c.PURPLE && cores[i] == 4)
+					monopoly++;
+				else if(cores[i] == 3)
+					monopoly++;
+			}
+			
+			//atualiza o numero de monopolios do player
+			player.setMonopoly(monopoly);
+			
+		}
 		
-		//vende todas as casas da propriedade
-		while(aux.getNHouses() > 0)
-			this.sellHouse(player, aux);
-		
-		//player perde a propriedade
-		player.removeLocal(aux.getIndex());
-		
-		//player ganha o dinheiro da propriedade
-		this.giveMoney(player, aux.getValue());
-		
-		//propiedade sem dono
-		aux.setOwner(-1);
-		aux.setBought(false);
-	}
-	
-	//vende uma companhia e entrega o dinheiro ao player
-	public void sellCompany(Player player, Square comp) {
-		Company aux = (Company) comp;
+		//vende uma companhia e entrega o dinheiro ao player
+		public void sellCompany(Player player, Square comp) {
+			Company aux = (Company) comp;
 
-		//player perde a company
-		player.removeLocal(aux.getIndex());
-		
-		//player ganha o dinheiro da company
-		this.giveMoney(player, aux.getValue());
-		
-		//company sem dono
-		aux.setOwner(-1);
-		aux.setBought(false);
-	}
+			//player perde a company
+			player.removeLocal(aux.getIndex());
+			player.setNumCompanies(player.getNumCompanies() + 1);
+			
+			//player ganha o dinheiro da company
+			this.giveMoney(player, aux.getValue());
+			
+			//company sem dono
+			aux.setOwner(-1);
+			aux.setBought(false);
+		}
 	
 	/*************************************************************************************************/
 	
-	//Player compra uma company
-	// se nao tiver dinheiro retorna false, ao contrario retorna true
-	public boolean buyCompany(Player player, Square comp, int id) {
-		Company aux = (Company) comp;
+		//Player compra uma company
+		public void buyCompany(Player player, Company comp, int id) {
+			Company aux = (Company) comp;
+			
+			// player ja eh dono da companhia
+			if(id == aux.getOwner()) 
+				return;
+			
+			//player sem dinheiro para a compra
+			if(!player.hasMoney(aux.getValue())) 
+				return;
+				
+			if (aux.getOwner() != -1) {
+				return;
+			}
+			
+			//player compra a company
+			player.newLocal(aux.getIndex());
+			player.setNumCompanies(player.getNumCompanies() - 1);
+			
+			//player perde o dinheiro da company
+			this.takeMoney(player, aux.getValue());
+			
+			//company com dono
+			aux.setOwner(id);
+			aux.setBought(true);
+			
+			return;
+		}
 		
-		//player sem dinheiro para a compra ou companhia ja tem dono
-		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1 || id == aux.getOwner())
-			return false;
+		//Player compra uma property
+		public void buyProperty(Player player, Property property, int id) {
+			//player sem dinheiro para a compra ou propriedade ja tem dono
+			if(!player.hasMoney(property.getValue()) || property.getOwner() != -1 || id == property.getOwner())
+				return;
+			
+			//player compra a propriedade
+			player.newLocal(property.getIndex());
+			
+			//player perde o dinheiro da propriedade
+			this.takeMoney(player, property.getValue());
+			
+			//propiedade com dono
+			property.setOwner(id);
+			property.setBought(true);
+		}
 		
-		//player compra a company
-		player.newLocal(aux.getIndex());
+		//player compra uma companhia ou uma propriedade se possuir dinheiro
+		public void buyLocal(Player player, Board board, int indexSquare) {
+			Square square = board.getSquare(indexSquare);
+			
+			if(square.getType() == c.COMPANY) { //compra de companhia
+				Company aux = (Company) square;
+				this.buyCompany(player, aux, indexSquare);
+			} else if(square.getType() == c.PROPERTY) { //compra de propriedade
+				Property aux = (Property) square;
+				this.buyProperty(player, aux, indexSquare);
+			} else {
+				return;
+			}
+			
+			int monopoly = 0;
+			
+			int cores[] = {0, 0, 0, 0, 0, 0};
+			
+			//conta o numero de propriedades de cada cor
+			for(int i = 0; i < player.getNumProprieties(); i++) {
+				square = board.getSquare(player.getOwned(i));
+				
+				if(square.getType() == c.PROPERTY) {
+					Property p = (Property) square;
+					cores[p.getColor()] ++;
+				}
+			}
 		
-		//player perde o dinheiro da company
-		this.takeMoney(player, aux.getValue());
-		
-		//company com dono
-		aux.setOwner(id);
-		aux.setBought(true);
-		
-		return true;
-	}
-
-	//Player compra uma property
-	// se nao tiver dinheiro retorna false, ao contrario retorna true
-	public boolean buyProperty(Player player, Square property, int id) {
-		Property aux = (Property) property;
-		
-		//player sem dinheiro para a compra ou propriedade ja tem dono
-		if(!player.hasMoney(aux.getValue()) || aux.getOwner() != -1 || id == aux.getOwner())
-			return false;
-		
-		//player compra a propriedade
-		player.newLocal(property.getIndex());
-		
-		//player perde o dinheiro da propriedade
-		this.takeMoney(player, aux.getValue());
-		
-		//propiedade com dono
-		aux.setOwner(id);
-		aux.setBought(true);
-		return true;
-	}
+			//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
+			for(int i = 0; i < 6; i++) {
+				if(i == c.PURPLE && cores[i] == 4)
+					monopoly++;
+				else if(cores[i] == 3)
+					monopoly++;
+			}
+			
+			player.setMonopoly(monopoly);
+		}
 	
 	/*************************************************************************************************/
 	
@@ -190,7 +262,7 @@ public class Bank {
 		
 		//calcula o valor caso o player caia em uma company
 		//valor tirado nos dados vezes o multiplicador dessa company
-		if(square.getIndex() == c.COMPANY) {
+		if(square.getType() == c.COMPANY) {
 			Company company = (Company) square;
 			value = dice.getTotalValue() * company.getMultiplier();
 		} else {

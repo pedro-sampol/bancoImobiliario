@@ -47,35 +47,41 @@ public class PlayerCtrl {
 	//retorna false se não
 	public boolean playerWon(Player player, Board board) {
 		
-		Square aux;
+		//player ganhou o jogo por numero de monopolios ou monopolio de companhias
+				if(player.getMonopolies() >= 3 || player.getNumCompanies() == 5)
+					return true;
+				
+				return false;
+	}
+	
+	//verifica se algum player ganhou o jogo
+	//retorna o index do player que ganhou
+	//retorna -1 se nenhum player ganhou
+	public int winner(PlayerCtrl control, Board board) {
+		int numInTheGame = 0;
+		int indexInTheGame = 0;
 		
-		int monopoly = 0;
-		
-		int cores[] = {0, 0, 0, 0, 0, 0};
-		
-		//conta o numero de propriedades de cada cor
-		for(int i = 0; i < player.getNumProprieties(); i++) {
-			aux = board.getSquare(player.getOwned(i));
+		Player player;
+		for(int i = 0; i < 6; i++) {
+			player = control.getPlayer(i);
 			
-			if(aux.getType() == c.PROPERTY) {
-				Property p = (Property) aux;
-				cores[p.getColor()] ++;
+			//verifica se algum player ganhou por monopolio
+			if(this.playerWon(player, board))
+				return i;
+			
+			//verifica o numero de players que nao faliram
+			if(!player.isBankrupt()) {
+				numInTheGame++;
+				indexInTheGame = i;
 			}
 		}
 		
-		//verifica o numero de monopolios com base na quantidade de propriedades de cada cor
-		for(int i = 0; i < 6; i++) {
-			if(i == c.PURPLE && cores[i] == 4)
-				monopoly++;
-			else if(cores[i] == 3)
-				monopoly++;
-		}
+		//se apenas um player nao faliu retorna seu indice
+		if(numInTheGame == 1)
+			return indexInTheGame;
 		
-		//player ganhou o jogo por numero de monopolios
-		if(monopoly >= 3)
-			return true;
-		
-		return false;
+		//nenhum player ganhou
+		return -1;
 	}
 	
 }

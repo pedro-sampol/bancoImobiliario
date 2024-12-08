@@ -10,7 +10,9 @@ public class Player {
 	private int position;				// indice no mapa
 	private int money;					// dinheiro atual
 	private boolean bankrupt;			// player faliu ou nao
-	private int numProprieties;			// numero de propriedades/companhias que o player possui
+	private int monopolies;				// numero de monopolios do player atualmente
+	private int numLocals;			    // numero de propriedades/companhias que o player possui
+	private int numCompanies;			//numero de companhias que o player possui
 	private boolean inPrision;			// esta preso
 	private int timeInPrision;			// tempo em turnos preso
 	private int noPlayTime;				// Player não pode jogar n rodadas
@@ -19,18 +21,19 @@ public class Player {
 	private int proprietiesOwned[] = new int[36];	// vetor indicando quais as propriedades que o player possui
 	
 	//cria o player com os valores iniciais basicos do jogo
-	public Player(BufferedImage p, int index) {
-		position = 0;
-		pickCoords(index);
-		money = 2150;
-		bankrupt = false;
-		numProprieties = 0;
-		inPrision = false;
-		timeInPrision =  0;
-		noPlayTime = 0;
-		repeatedDice = 0;
-		sprite = p;
-	}
+		public Player(BufferedImage p, int index) {
+			position = 0;
+			pickCoords(index);
+			money = 2150;
+			bankrupt = false;
+			numLocals = 0;
+			inPrision = false;
+			timeInPrision =  0;
+			noPlayTime = 0;
+			repeatedDice = 0;
+			sprite = p;
+			numCompanies = 0;
+		}
 	
 	/*************************************************************************************************/
 	
@@ -50,8 +53,14 @@ public class Player {
 	public boolean isBankrupt() {
 		return bankrupt;
 	}
+	public int getMonopolies() {
+		return monopolies;
+	}
 	public int getNumProprieties() {
-		return numProprieties;
+		return numLocals;
+	}
+	public int getNumCompanies() {
+		return numCompanies;
 	}
 	
 	public boolean isInPrision() {
@@ -70,7 +79,7 @@ public class Player {
 		return repeatedDice;
 	}
 	public int getOwned(int index) {
-		if(index > numProprieties)
+		if(index > numLocals)
 			return -1;
 		return proprietiesOwned[index];
 	}
@@ -101,22 +110,28 @@ public class Player {
 	public void setPosition(int id) {
 		position = id;
 	}
+	public void setNumCompanies (int num) {
+		numCompanies = num;
+	}
+	public void setMonopoly (int num) {
+		monopolies = num;
+	}
 	
 	/*************************************************************************************************/
 	
 	//player recebe um novo lugar
 	public void newLocal(int index) {
 		//salva o index da nova prorpiedade
-		proprietiesOwned[numProprieties] = index;
+		proprietiesOwned[numLocals] = index;
 		
 		//aumenta o num de propriedades que o player possui
-		numProprieties++;
+		numLocals++;
 	}
 	
 	//player perde posse de um local com indice = index
 	public void removeLocal(int index) {
 		boolean achou = false;
-		for(int i = 0; i < numProprieties; i++) {
+		for(int i = 0; i < numLocals; i++) {
 			
 			//encontra o local a ser retirado
 			if(proprietiesOwned[i] == index)
@@ -129,7 +144,7 @@ public class Player {
 		
 		//se encontrou o local é diminuido um do num de propriedades que o player possui
 		if(achou)
-			numProprieties--;
+			numLocals--;
 	}
 	
 	/*************************************************************************************************/
@@ -281,14 +296,14 @@ public class Player {
 		position = Integer.valueOf(info[2]);
 		money = Integer.valueOf(info[3]);
 		bankrupt = Boolean.valueOf(info[4]);
-		numProprieties = Integer.valueOf(info[5]);
+		numLocals = Integer.valueOf(info[5]);
 		inPrision = Boolean.valueOf(info[6]);
 		timeInPrision =  Integer.valueOf(info[7]);
 		noPlayTime = Integer.valueOf(info[8]);
 		repeatedDice = Integer.valueOf(info[9]);
 		
 		//atualiza o vetor que controla as propriedades do player
-		for(int i = 0; i < numProprieties; i++)
+		for(int i = 0; i < numLocals; i++)
 			proprietiesOwned[i] = Integer.valueOf(info[10 + i]);
 	}
 }
