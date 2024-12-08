@@ -13,7 +13,8 @@ public class Commands implements KeyListener {
 	private Board board;
 	private Prision prision;
 	
-	boolean buyAction;
+	boolean buyAction;				// evita que se compre mais de uma vez por clique
+	boolean buyHouse;				// evita que se compre casas no mesmo turno de compra de um local
 
 /*************************************************************************************************/
 	
@@ -27,6 +28,7 @@ public class Commands implements KeyListener {
 		this.board = board;
 		this.prision = prision;
 		buyAction = true;
+		buyHouse = false;
 	}
 	
 /*************************************************************************************************/
@@ -137,10 +139,21 @@ public class Commands implements KeyListener {
 		Square s = board.getSquare(p.getPosition());
 		
 		if (e.getKeyCode() == KeyEvent.VK_C && buyAction) {
+			// compra local ou casa no local
 			if (s.getType() == c.PROPERTY) {
-				bank.buyProperty(p, s, gCtrl.getPlayerIndex());
+				Property property = (Property) s;
+				if (gCtrl.getPlayerIndex() == property.getOwner() && buyHouse) {
+					bank.buyHouse(p, property);
+				} else {
+					bank.buyProperty(p, s, gCtrl.getPlayerIndex());
+					buyHouse = false;
+				}
+				
+			// compra companhia
 			} else if (s.getType() == c.COMPANY) {
 				bank.buyCompany(p, s, gCtrl.getPlayerIndex());
+				
+			// compra saida da prisao
 			} else if (p.isInPrision()) {
 				prision.getOutwithBail(p, bank);
 			}
@@ -198,6 +211,7 @@ public class Commands implements KeyListener {
 
 				gCtrl.setPlayerSelected(gCtrl.getPlayerIndex());
 				gCtrl.setDiceState(false);
+				buyHouse = true;
 			}
 		}
 	}
