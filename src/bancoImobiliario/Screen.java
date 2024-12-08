@@ -147,11 +147,11 @@ public class Screen extends Canvas {
 	// informacoes do player na tela
 	public void playerInfo (ScreenData s, Graphics g, Player player) {
 		g.setFont (fontSmall);
-		/*if (player.isBankrupt()) {
+		if (player.isBankrupt()) {
 			g.setColor (Color.RED);
 			g.drawString("FALIU", 530, 250);
 			return;
-		}*/
+		}
 		
 		g.setColor (Color.BLACK);
 		g.drawString("Dinheiro:", 530, 250);
