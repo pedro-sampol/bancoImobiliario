@@ -12,13 +12,14 @@ public class Commands implements KeyListener {
 	private Bank bank;
 	private Board board;
 	private Prision prision;
+	private Save save;
 	
 	boolean buyAction;				// evita que se compre mais de uma vez por clique
 	boolean buyHouse;				// evita que se compre casas no mesmo turno de compra de um local
 
 /*************************************************************************************************/
 	
-	public Commands (ScreenData sData, Dice dice, GameCtrl gCtrl, PlayerCtrl pCtrl, Bank bank, Board board, Prision prision) {
+	public Commands (ScreenData sData, Dice dice, GameCtrl gCtrl, PlayerCtrl pCtrl, Bank bank, Board board, Prision prision, Save save) {
 		c = new Constants();
 		sData.frame.addKeyListener(this);
 		this.dice = dice;
@@ -27,6 +28,7 @@ public class Commands implements KeyListener {
 		this.bank = bank;
 		this.board = board;
 		this.prision = prision;
+		this.save = save;
 		buyAction = true;
 		buyHouse = false;
 	}
@@ -78,7 +80,8 @@ public class Commands implements KeyListener {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getMenuButton() == 0) {
 				gCtrl.setLoad(true);
-				
+				save.loadPlayers(pCtrl);
+				save.loadSquares(board);
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 1) {
 				gCtrl.setScreenSelected(c.BOARD);	
