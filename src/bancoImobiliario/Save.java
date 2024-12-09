@@ -8,16 +8,19 @@ import java.io.IOException;
 
 public class Save {
 	
-	private File save;						//abre o arquivo de save padrao
+	private File save;									//abre o arquivo de save padrao
+	BufferedReader reader;	//file a ser lida
+
 	
 	private Constants c = new Constants();
 	
 	public Save (){
 		try {
 			//cria um novo File caso nao exista
-			this.save = new File("./save/save.txt");
+			save = new File("./save/save.txt");
 			if(!save.exists())
-				this.save.createNewFile();
+				save.createNewFile();
+			reader = new BufferedReader(new FileReader("./save/save.txt"));
 		} catch (IOException e) { //verifica se nao ouve algum erro
 			e.printStackTrace();
 		}
@@ -96,17 +99,11 @@ public class Save {
 	//realiza o load do player a partir do arquivo save
 	public void loadPlayers (PlayerCtrl control) {
 		try {
-			
-			//abre a save com as informações dos players
-			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
-			
 			String linha; //linha com as informações de cada player
 			for(int i = 0; i < 6; i++) {
-				linha = reader.readLine(); 										//obtem as informações do arquivo
+				linha = reader.readLine(); 									//obtem as informações do arquivo
 				control.getPlayer(i).updateLoad(linha); 					//cria o player a partir dessas informações
 			}
-			
-			reader.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -115,11 +112,7 @@ public class Save {
 	public void loadSquares (Board board) {
 		//abre a save com as informações dos players
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
-			
 			String linha; //linha com as informações
-			for(int i = 0; i < 6; i++)
- 					linha = reader.readLine(); //pula as informações dos players
 			
 			String info[]; //strings separadas com a info de cada linha
 			String separador = " "; //separador das informações nas linhas
@@ -149,11 +142,9 @@ public class Save {
 					aux.setBought(Boolean.valueOf(info[0]));
 					aux.setOwner(Integer.valueOf(info[1]));
 					aux.setNHouses(Integer.valueOf(info[2]));
-					
 				}
-				
-				reader.close();
 			}
+			reader.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
