@@ -47,7 +47,6 @@ public class Save {
 				writer.append(String.valueOf(player.getNumCompanies() + " "));
 				writer.append(String.valueOf(player.isInPrision() + " "));
 				writer.append(String.valueOf(player.getTimeInPrision() + " "));
-				writer.append(String.valueOf(player.getNoPlayTime() + " "));
 				writer.append(String.valueOf(player.getRepeatedDice() + " "));
 				
 				//grava o arquivo
