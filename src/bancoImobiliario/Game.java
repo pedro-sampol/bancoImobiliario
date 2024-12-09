@@ -28,10 +28,8 @@ public class Game implements Runnable {
 		board = new Board();
 		bank = new Bank();
 		prision = new Prision();
-		commands = new Commands(screen.getScreenData(), dice, g, p, bank, board, prision);
+		commands = new Commands(screen.getScreenData(), dice, g, p, bank, board, prision, save);
 		c = new Constants();
-		save.loadPlayers(p);
-		save.loadSquares(board);
 	}
 	
 	/*************************************************************************************************/
@@ -60,7 +58,7 @@ public class Game implements Runnable {
 		int frames;
 		long now, lastTime;
 		double amountOfTicks, nsPerTick, delta, timer;
-		save.saveGame(p, board);
+		
 		
 		lastTime = System.nanoTime ();
 		amountOfTicks = 60.0;

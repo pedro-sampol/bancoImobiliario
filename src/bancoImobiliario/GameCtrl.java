@@ -18,15 +18,10 @@ public class GameCtrl {
 	private int cardSelected;		//carta selecionada no menu de vendas
 	private int gameWinner;			//indice do vencedor
 	
-	private boolean save;
-	private boolean load;
-	
 	public GameCtrl() {
 		currentState = 0;
 		diceUsed = false;
 		isGameOn = false;
-		load = false;
-		save = false;
 		playerIndex = 0;
 		playersOn = 6;
 		playerSelected = 0;
@@ -125,12 +120,6 @@ public class GameCtrl {
 	public int getPlayersOn() {
 		return playersOn;
 	}
-	public boolean getLoad() {
-		return load;
-	}
-	public boolean getSave() {
-		return save;
-	}
 	
 	/*************************************************************************************************/
 
@@ -164,12 +153,6 @@ public class GameCtrl {
 	}
 	public void setLastScreen(int lastScreen) {
 		this.lastScreen = lastScreen;
-	}
-	public void setLoad(boolean state) {
-		load = state;
-	}
-	public void setSave(boolean state) {
-		save = state;
 	}
 	
 }

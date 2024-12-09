@@ -9,8 +9,7 @@ import java.io.IOException;
 public class Save {
 	
 	private File save;									//abre o arquivo de save padrao
-	BufferedReader reader;	//file a ser lida
-
+	
 	
 	private Constants c = new Constants();
 	
@@ -20,7 +19,7 @@ public class Save {
 			save = new File("./save/save.txt");
 			if(!save.exists())
 				save.createNewFile();
-			reader = new BufferedReader(new FileReader("./save/save.txt"));
+			
 		} catch (IOException e) { //verifica se nao ouve algum erro
 			e.printStackTrace();
 		}
@@ -28,7 +27,7 @@ public class Save {
 	
 	/*************************************************************************************************/
 	
-	public void saveGame(PlayerCtrl control, Board board) {
+	public void saveGame(PlayerCtrl control, Board board, int index) {
 		try {
 			//cria um FileWriter
 			FileWriter writer = new FileWriter("./save/save.txt");
@@ -59,6 +58,8 @@ public class Save {
 					writer.append(String.valueOf(player.getOwned(j)) + ' ');
 				writer.append("\n");
 				
+				
+				
 				writer.flush();
 			}
 			
@@ -86,6 +87,8 @@ public class Save {
 				
 				writer.flush();
 			}
+			writer.append(index + "\n");
+			
 			writer.close();
 			
 			
@@ -96,23 +99,15 @@ public class Save {
 	
 	/*************************************************************************************************/
 	
-	//realiza o load do player a partir do arquivo save
-	public void loadPlayers (PlayerCtrl control) {
+	public void loadGame(PlayerCtrl control, Board board, GameCtrl game) {
 		try {
+			BufferedReader reader = new BufferedReader(new FileReader("./save/save.txt"));
+
 			String linha; //linha com as informações de cada player
 			for(int i = 0; i < 6; i++) {
 				linha = reader.readLine(); 									//obtem as informações do arquivo
 				control.getPlayer(i).updateLoad(linha); 					//cria o player a partir dessas informações
 			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void loadSquares (Board board) {
-		//abre a save com as informações dos players
-		try {
-			String linha; //linha com as informações
 			
 			String info[]; //strings separadas com a info de cada linha
 			String separador = " "; //separador das informações nas linhas
@@ -144,10 +139,53 @@ public class Save {
 					aux.setNHouses(Integer.valueOf(info[2]));
 				}
 			}
+			
+			linha = reader.readLine(); //linha com o index
+			
+			game.setPlayerIndex(Integer.valueOf(linha)); //atualiza o index para o contido no arquivo
+			
 			reader.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void resetGame(PlayerCtrl control, Board board, GameCtrl game) {
+		
+		//reseta os players para seus valores iniciais
+		control.getPlayer(0).updateLoad("1632 882 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(1).updateLoad("1669 882 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(2).updateLoad("1632 919 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(3).updateLoad("1632 882 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(4).updateLoad("1632 956 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(5).updateLoad("1669 956 0 2150 false 0 0 0 false 0 0 0");
+		
+		//reseta as casas para seus valores iniciais
+		
+		Square square;
+		//percorre todas as casas e verifica quais podem necessitar de alteração
+		for(int i = 0; i< 36; i++) {
+			square = board.getSquare(i);
+			if(square.getType() == c.COMPANY) {
+				
+				Company aux = (Company)square; //squares[i] é uma company
+				
+				//atualiza os valores
+				aux.setBought(false);
+				aux.setOwner(-1);
+			} else if(square.getType() == c.PROPERTY) {
+				
+				Property aux = (Property)square; //squares[i] é uma property
+				
+				//atualiza os valores
+				aux.setBought(false);
+				aux.setOwner(-1);
+				aux.setNHouses(0);
+			}
+		}
+		
+		//player zero inicia o jogo
+		game.setPlayerIndex(0);
 	}
 
 }

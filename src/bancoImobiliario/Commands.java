@@ -12,13 +12,14 @@ public class Commands implements KeyListener {
 	private Bank bank;
 	private Board board;
 	private Prision prision;
+	private Save save;
 	
 	boolean buyAction;				// evita que se compre mais de uma vez por clique
 	boolean buyHouse;				// evita que se compre casas no mesmo turno de compra de um local
 
 /*************************************************************************************************/
 	
-	public Commands (ScreenData sData, Dice dice, GameCtrl gCtrl, PlayerCtrl pCtrl, Bank bank, Board board, Prision prision) {
+	public Commands (ScreenData sData, Dice dice, GameCtrl gCtrl, PlayerCtrl pCtrl, Bank bank, Board board, Prision prision, Save save) {
 		c = new Constants();
 		sData.frame.addKeyListener(this);
 		this.dice = dice;
@@ -27,6 +28,7 @@ public class Commands implements KeyListener {
 		this.bank = bank;
 		this.board = board;
 		this.prision = prision;
+		this.save = save;
 		buyAction = true;
 		buyHouse = false;
 	}
@@ -78,11 +80,15 @@ public class Commands implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getMenuButton() == 0) {
-				gCtrl.setLoad(true);
+				//realiza o load do game
+				save.loadGame(pCtrl, board, gCtrl);
 				
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 1) {
 				gCtrl.setScreenSelected(c.BOARD);	
+				
+				//garante que o jogo inicia com os valores padroes
+				save.resetGame(pCtrl, board, gCtrl);
 			} else if (gCtrl.getMenuButton() == 2) {
 				gCtrl.setScreenSelected(c.RULES);
 			} 
@@ -255,6 +261,7 @@ public class Commands implements KeyListener {
 			
 			// se o player ja rolou o dado ele pode passar o turno
 			if (gCtrl.diceUsed()) {
+
 				// verifica fim de jogo
 				gCtrl.setGameWinner(pCtrl.winner(pCtrl, board));
 				if (gCtrl.getGameWinner() != -1) {
@@ -302,7 +309,7 @@ public class Commands implements KeyListener {
 			} else if (gCtrl.getPauseButton() == 1) {
 				gCtrl.setScreenSelected(c.RULES);
 			} else  if (gCtrl.getPauseButton() == 2) {
-				gCtrl.setSave(true);
+				save.saveGame(pCtrl, board, gCtrl.getPlayerIndex());
 				gCtrl.setScreenSelected(c.MAINMENU);
 			} 
 		}
