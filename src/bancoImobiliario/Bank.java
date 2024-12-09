@@ -262,7 +262,7 @@ public class Bank {
 	/*************************************************************************************************/
 	
 	//player payer paga ao owner o valor por ter caido em um de seus locais
-	public void payRent(Player payer, Player owner, Square square, Dice dice) {
+	public int payRent(Player payer, Player owner, Square square, Dice dice) {
 		int value = 0;
 		
 		//calcula o valor caso o player caia em uma company
@@ -277,7 +277,11 @@ public class Bank {
 			value = property.getRent(property.getNHouses());
 		}
 		
+		if (payer.getMoney() < value) return value;
+		
 		//realiza a troca de dinheiro entre os players
 		this.exchangeMoney(owner, payer, value);
+		
+		return 0;
 	}
 }
