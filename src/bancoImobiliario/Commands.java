@@ -212,6 +212,7 @@ public class Commands implements KeyListener {
 					Player owner = pCtrl.getPlayer(local.getOwner());
 					int value = bank.payRent(p, owner, local, dice);
 					bank.giveMoney(owner, value);
+					if (value != 0) gCtrl.lockSelling(value);
 				}
 			} else if (s.getType() == c.DESTINY) {
 				Destiny destiny = (Destiny) s;
@@ -333,6 +334,7 @@ public class Commands implements KeyListener {
 				gCtrl.setCardSelected(0);
 				gCtrl.setAmountToUnlock(0);
 				gCtrl.setSellingLocked(false);
+				bank.takeMoney(p, gCtrl.getAmountToUnlock());
 			}
 		// hipotecar
 		} else if (e.getKeyCode() == KeyEvent.VK_H) {
