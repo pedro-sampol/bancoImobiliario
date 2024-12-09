@@ -43,6 +43,7 @@ public class Commands implements KeyListener {
 			swapSides(e);
 			buy(e);
 			executeDice(e);
+			payToLeavePrision(e);
 			endTurn(e);
 		} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
 			hubScreen(e);
@@ -69,7 +70,7 @@ public class Commands implements KeyListener {
 		// movimento para baixo
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (gCtrl.getMenuButton() < 2) {
-				gCtrl.setMenuButton(gCtrl.getMenuButton()+1);;;
+				gCtrl.setMenuButton(gCtrl.getMenuButton()+1);
 			}
 		
 		// selecao de botao
@@ -77,12 +78,28 @@ public class Commands implements KeyListener {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getMenuButton() == 0) {
 				gCtrl.setLoad(true);
+				
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 1) {
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 2) {
 				gCtrl.setScreenSelected(c.RULES);
 			} 
+		}
+	}
+	
+/*************************************************************************************************/
+	
+	public void payToLeavePrision(KeyEvent e) {
+		Player p;
+		
+		if (e.getKeyCode() == KeyEvent.VK_P) {
+			p = pCtrl.getPlayer(gCtrl.getPlayerIndex());
+			if (p.isInPrision() && p.getMoney() >= 150 && !gCtrl.diceUsed()) {
+				bank.takeMoney(p, 150);
+				prision.getOutOfPrision(p);
+				gCtrl.setDiceState(true);
+			}
 		}
 	}
 	
@@ -174,14 +191,14 @@ public class Commands implements KeyListener {
 	
 	// rola os dados e atualiza posicao do player
 	public void executeDice (KeyEvent e) {
-		Player p;
+		Player p = pCtrl.getPlayer(gCtrl.getPlayerIndex());		// pega o player do turno atual
 		Square s; 
 		
-		if (e.getKeyCode() == KeyEvent.VK_D) {
+		if (e.getKeyCode() == KeyEvent.VK_D && !p.isInPrision()) {
 			if (gCtrl.diceUsed()) return;						// se o dado ja foi rodado retorna
 			
 			dice.rollDice();									// rola os dados
-			p = pCtrl.getPlayer(gCtrl.getPlayerIndex());		// pega o player do turno atual
+			
 			p.move(dice.getTotalValue());						// soma a posicao no tabuleiro
 			p.pickCoords(gCtrl.getPlayerIndex());				// atualiza as coordenadas
 
@@ -203,21 +220,28 @@ public class Commands implements KeyListener {
 				} else {
 					bank.takeMoney(p, -(destiny.getPayValue()));
 				}
-			} else if (s.getIndex() == 9 || (s.getIndex() == 27 && p.getTimeInPrision() == -1)) { // casa de va para a prisao ou acabou de cair na casa prisao
+			} else if (s.getIndex() == 9) { // casa de va para a prisao
 				prision.sendToPrision(p, gCtrl.getPlayerIndex());
-			} else if (s.getIndex() == 27) {													  // ja estava na prisao	
-				
+				gCtrl.setDiceState(true);
 			} else if (s.getIndex() == 10) {													  // loteria
 				bank.giveMoney(p, 200);
-			} else if (s.getIndex() == 29) {
+			} else if (s.getIndex() == 29) {													  // impostos
 				bank.takeMoney(p, 200);
-			} else if (s.getIndex() == 17) {													  // ferias de verao
-				
 			}
 			
 			
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores iguais
 				gCtrl.setDiceState(true);						// o player joga de novo
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_D && p.isInPrision()) {
+			if (gCtrl.diceUsed()) return;
+			
+			dice.rollDice();
+			
+			gCtrl.setDiceState(true);
+			
+			if (dice.getIsEqual()) {
+				prision.getOutOfPrision(p);
 			}
 		}
 	}
