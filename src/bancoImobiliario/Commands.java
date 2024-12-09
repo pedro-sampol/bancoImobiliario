@@ -371,7 +371,7 @@ public class Commands implements KeyListener {
 			
 		// movimenta para direita
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if ((gCtrl.getCardSelected()%5)+1 <= 4) {
+			if ((gCtrl.getCardSelected()%5)+1 <= 4 && gCtrl.getCardSelected()+1 < p.getNumProprieties()) {
 				gCtrl.setCardSelected(gCtrl.getCardSelected()+1);
 			}
 			
