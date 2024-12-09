@@ -24,18 +24,6 @@ public class PlayerCtrl {
 	
 	/*************************************************************************************************/
 	
-	//aumenta o tempo sem jogar do player em num
-	public void increseNoPlayTime(Player player, int num) {
-		player.setNoPlayTime(num + player.getNoPlayTime()); 
-	}
-	
-	//diminui o numero de turnos sem jogar do player
-	public void wasteTurn(Player player) {
-		player.setNoPlayTime(player.getNoPlayTime() - 1);
-	}
-	
-	/*************************************************************************************************/
-	
 	public Player getPlayer (int index) {
 		return p[index];
 	}

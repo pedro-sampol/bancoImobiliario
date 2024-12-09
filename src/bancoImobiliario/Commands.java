@@ -80,6 +80,7 @@ public class Commands implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getMenuButton() == 0) {
+
 				//realiza o load do game
 				save.loadGame(pCtrl, board, gCtrl);
 				
@@ -143,15 +144,12 @@ public class Commands implements KeyListener {
 	// gira entre o tabuleiro e os imoveis comprados pelos players
 	// e pausa do jogo, impossivel girar se estiver vendendo casas
 	public void swapSides (KeyEvent e) {
+		if (gCtrl.getEditProperty()) return;
+		
 		// pausa com esc
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			gCtrl.setScreenSelected(c.PAUSE);
-		
-		
-		} else if (gCtrl.getEditProperty()) {
-			return;
-			
 		// gira entre imoveis e tabuleiro com espaco
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
@@ -216,7 +214,9 @@ public class Commands implements KeyListener {
 				Local local = (Local) s;
 				if (local.isBought()) {
 					Player owner = pCtrl.getPlayer(local.getOwner());
-					bank.payRent(p, owner, local, dice);
+					int value = bank.payRent(p, owner, local, dice);
+					bank.giveMoney(owner, value);
+					if (value != 0) gCtrl.lockSelling(value);
 				}
 			} else if (s.getType() == c.DESTINY) {
 				Destiny destiny = (Destiny) s;
@@ -225,7 +225,7 @@ public class Commands implements KeyListener {
 				if (value > 5) {
 					bank.giveMoney(p, destiny.getPayValue());
 				} else {
-					bank.takeMoney(p, -(destiny.getPayValue()));
+					if(bank.takeMoney(p, -(destiny.getPayValue())) == 1) gCtrl.lockSelling(-(destiny.getPayValue()));
 				}
 			} else if (s.getIndex() == 9) { // casa de va para a prisao
 				prision.sendToPrision(p, gCtrl.getPlayerIndex());
@@ -233,7 +233,7 @@ public class Commands implements KeyListener {
 			} else if (s.getIndex() == 10) {													  // loteria
 				bank.giveMoney(p, 200);
 			} else if (s.getIndex() == 29) {													  // impostos
-				bank.takeMoney(p, 200);
+				if(bank.takeMoney(p, 200) == 1) gCtrl.lockSelling(200);
 			}
 			
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores iguais
@@ -324,10 +324,23 @@ public class Commands implements KeyListener {
 		
 		// ativar modo de venda
 		if (e.getKeyCode() == KeyEvent.VK_N) {
-			if (p.getNumProprieties() == 0) return;
-			gCtrl.flipEditProperty();
-			gCtrl.setCardSelected(0);
+			if (p.getNumProprieties() == 0) {
+				if (gCtrl.isSellingLocked()) {
+					p.setBankrupt(true);
+				}
+				return;
+			}
 			
+			if (!gCtrl.getEditProperty()) {
+				gCtrl.setEditProperty(true);
+				gCtrl.setCardSelected(0);
+			} else if (!gCtrl.isSellingLocked() || p.getMoney() >= gCtrl.getAmountToUnlock()) {
+				gCtrl.flipEditProperty();
+				gCtrl.setCardSelected(0);
+				gCtrl.setAmountToUnlock(0);
+				gCtrl.setSellingLocked(false);
+				bank.takeMoney(p, gCtrl.getAmountToUnlock());
+			}
 		// hipotecar
 		} else if (e.getKeyCode() == KeyEvent.VK_H) {
 			if (gCtrl.getEditProperty()) {
