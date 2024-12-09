@@ -58,7 +58,7 @@ public class Game implements Runnable {
 		int frames;
 		long now, lastTime;
 		double amountOfTicks, nsPerTick, delta, timer;
-		save.saveGame(p, board);
+		
 		
 		lastTime = System.nanoTime ();
 		amountOfTicks = 60.0;

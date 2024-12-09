@@ -20,16 +20,11 @@ public class GameCtrl {
 	private int gameWinner;			//indice do vencedor
 	private int amountToUnlock;     //quantidade para desbloquear a tela de vendas
 	
-	private boolean save;
-	private boolean load;
-	
 	public GameCtrl() {
 		sellingLocked = false;
 		currentState = 0;
 		diceUsed = false;
 		isGameOn = false;
-		load = false;
-		save = false;
 		playerIndex = 0;
 		playersOn = 6;
 		playerSelected = 0;
@@ -133,12 +128,6 @@ public class GameCtrl {
 	public int getPlayersOn() {
 		return playersOn;
 	}
-	public boolean getLoad() {
-		return load;
-	}
-	public boolean getSave() {
-		return save;
-	}
 	public boolean isSellingLocked() {
 		return sellingLocked;
 	}
@@ -179,12 +168,6 @@ public class GameCtrl {
 	public void setLastScreen(int lastScreen) {
 		this.lastScreen = lastScreen;
 	}
-	public void setLoad(boolean state) {
-		load = state;
-	}
-	public void setSave(boolean state) {
-		save = state;
-	}
 	public void setAmountToUnlock(int amount) {
 		amountToUnlock = amount;
 	}
@@ -197,4 +180,5 @@ public class GameCtrl {
 		amountToUnlock = amount;
 		editProperty = true;
 	}
+
 }

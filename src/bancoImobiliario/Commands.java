@@ -80,12 +80,16 @@ public class Commands implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
 			if (gCtrl.getMenuButton() == 0) {
-				gCtrl.setLoad(true);
-				//save.loadPlayers(pCtrl);
-				//save.loadSquares(board);
+
+				//realiza o load do game
+				save.loadGame(pCtrl, board, gCtrl);
+				
 				gCtrl.setScreenSelected(c.BOARD);	
 			} else if (gCtrl.getMenuButton() == 1) {
 				gCtrl.setScreenSelected(c.BOARD);	
+				
+				//garante que o jogo inicia com os valores padroes
+				save.resetGame(pCtrl, board, gCtrl);
 			} else if (gCtrl.getMenuButton() == 2) {
 				gCtrl.setScreenSelected(c.RULES);
 			} 
@@ -257,6 +261,7 @@ public class Commands implements KeyListener {
 			
 			// se o player ja rolou o dado ele pode passar o turno
 			if (gCtrl.diceUsed()) {
+
 				// verifica fim de jogo
 				gCtrl.setGameWinner(pCtrl.winner(pCtrl, board));
 				if (gCtrl.getGameWinner() != -1) {
@@ -304,7 +309,7 @@ public class Commands implements KeyListener {
 			} else if (gCtrl.getPauseButton() == 1) {
 				gCtrl.setScreenSelected(c.RULES);
 			} else  if (gCtrl.getPauseButton() == 2) {
-				gCtrl.setSave(true);
+				save.saveGame(pCtrl, board, gCtrl.getPlayerIndex());
 				gCtrl.setScreenSelected(c.MAINMENU);
 			} 
 		}
