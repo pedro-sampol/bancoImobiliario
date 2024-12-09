@@ -154,7 +154,7 @@ public class Bank {
 			
 			//player compra a company
 			player.newLocal(aux.getIndex());
-			player.setNumCompanies(player.getNumCompanies() - 1);
+			player.setNumCompanies(player.getNumCompanies() + 1);
 			
 			//player perde o dinheiro da company
 			this.takeMoney(player, aux.getValue());
@@ -220,6 +220,9 @@ public class Bank {
 			}
 			
 			player.setMonopoly(monopoly);
+			
+			System.out.println(player.getNumCompanies());
+			System.out.println(player.getMonopolies());
 		}
 	
 	/*************************************************************************************************/
@@ -253,7 +256,7 @@ public class Bank {
 		//local não está mais hipotecado
 		local.setMortgage(false);
 	}
-	
+
 	/*************************************************************************************************/
 	
 	//player payer paga ao owner o valor por ter caido em um de seus locais
@@ -273,6 +276,6 @@ public class Bank {
 		}
 		
 		//realiza a troca de dinheiro entre os players
-		this.exchangeMoney(payer, owner, value);
+		this.exchangeMoney(owner, payer, value);
 	}
 }

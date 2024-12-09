@@ -161,8 +161,8 @@ public class Screen extends Canvas {
 		
 		g.setColor (Color.WHITE);
 		g.drawString(""+player.getMoney(), 530, 290);
-		//g.drawString("", 530, 390);
-		//g.drawString("", 530, 490);
+		g.drawString(""+player.getMonopolies(), 530, 390);
+		g.drawString(""+player.getNumCompanies(), 530, 490);
 	}
 	
 /*************************************************************************************************/ 

@@ -16,6 +16,7 @@ public class GameCtrl {
 	private int lastScreen;			//tela anterior
 	private boolean editProperty;	//abre menu de vendas
 	private int cardSelected;		//carta selecionada no menu de vendas
+	private int gameWinner;			//indice do vencedor
 	
 	private boolean save;
 	private boolean load;
@@ -71,6 +72,16 @@ public class GameCtrl {
 
 	public boolean diceUsed() {
 		return diceUsed;
+	}
+	
+	/*************************************************************************************************/
+	
+	public void setGameWinner(int gameWinner) {
+		this.gameWinner = gameWinner;
+	}
+
+	public int getGameWinner() {
+		return gameWinner;
 	}
 	
 	/*************************************************************************************************/

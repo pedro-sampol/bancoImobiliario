@@ -296,14 +296,16 @@ public class Player {
 		position = Integer.valueOf(info[2]);
 		money = Integer.valueOf(info[3]);
 		bankrupt = Boolean.valueOf(info[4]);
-		numLocals = Integer.valueOf(info[5]);
-		inPrision = Boolean.valueOf(info[6]);
-		timeInPrision =  Integer.valueOf(info[7]);
-		noPlayTime = Integer.valueOf(info[8]);
-		repeatedDice = Integer.valueOf(info[9]);
+		monopolies = Integer.valueOf(info[5]);
+		numLocals = Integer.valueOf(info[6]);
+		numCompanies = Integer.valueOf(info[7]);
+		inPrision = Boolean.valueOf(info[8]);
+		timeInPrision =  Integer.valueOf(info[9]);
+		noPlayTime = Integer.valueOf(info[10]);
+		repeatedDice = Integer.valueOf(info[11]);
 		
 		//atualiza o vetor que controla as propriedades do player
 		for(int i = 0; i < numLocals; i++)
-			proprietiesOwned[i] = Integer.valueOf(info[10 + i]);
+			proprietiesOwned[i] = Integer.valueOf(info[12 + i]);
 	}
 }
