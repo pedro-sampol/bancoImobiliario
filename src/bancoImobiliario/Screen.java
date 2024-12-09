@@ -56,7 +56,7 @@ public class Screen extends Canvas {
 		} else if (gCtrl.getScreenSelected() == cnst.PROPERTIES) {
 			drawHub(screenData, graphics, player);
 			textHubProperty(graphics);
-			playerInfo (screenData, graphics, player);
+			playerInfo(screenData, graphics, player);
 			drawProperty(screenData, graphics, player, board);
 			sellingMode(screenData, graphics, gCtrl);
 			
@@ -131,18 +131,19 @@ public class Screen extends Canvas {
 		g.setColor (Color.BLACK);
 		g.setFont (fontSmall);
 		g.drawString("- D para rolar os dados", 20, 860);
-		g.drawString("- C para comprar terrenos e casas", 20, 890);
+		g.drawString("- C para comprar locais e casas", 20, 890);
 		g.drawString("- ENTER para passar o turno", 20, 920);
-		g.drawString("- ESC para pausar", 20, 950);
 	}
 
 	// controles disponiveis na tela PROPERTY
 	public void textHubProperty (Graphics g) {
 		g.setColor (Color.BLACK);
 		g.setFont (fontSmall);
-		g.drawString("- V para vender suas posses", 20, 860);
-		g.drawString("- H para hipotecar suas posses", 20, 890);
-		g.drawString("- ESC para pausar", 20, 920);
+		g.drawString("- N abre e fecha negociações com o banco", 20, 860);
+		g.drawString("- V para vender seus locais", 20, 890);
+		g.drawString("- H para hipotecar seus locais", 20, 920);
+		g.drawString("- C para vender suas casas", 20, 950);
+		g.drawString("use as setas", 20, 980);
 	}
 	
 	// informacoes do player na tela
@@ -153,16 +154,20 @@ public class Screen extends Canvas {
 			g.drawString("FALIU", 530, 250);
 			return;
 		}
-		
+	
 		g.setColor (Color.BLACK);
 		g.drawString("Dinheiro:", 530, 250);
 		g.drawString("Monopólios:", 530, 350);
 		g.drawString("Empresas:", 530, 450);
+		g.drawString("- ESPAÇO", 530, 590);
+		g.drawString("- ESC", 530, 690);
 		
 		g.setColor (Color.WHITE);
 		g.drawString(""+player.getMoney(), 530, 290);
 		g.drawString(""+player.getMonopolies(), 530, 390);
 		g.drawString(""+player.getNumCompanies(), 530, 490);
+		g.drawString("troca tela", 530, 630);
+		g.drawString("pause", 530, 730);
 	}
 	
 /*************************************************************************************************/ 
@@ -181,11 +186,21 @@ public class Screen extends Canvas {
 			if (square.getType() == cnst.PROPERTY) {
 				Property property = (Property) square;
 				g.drawImage(property.getSprite(), 770+198*(i%5), 102+(222*height), null);
+				if (property.getMortgage()) {
+					g.setColor(Color.RED);
+					g.setFont(fontMedium);
+					g.drawString("H", 869+198*(i%5), 213+(222*height));
+				}
 				
 			// imprime cartas de companhia
 			} else if (square.getType() == cnst.COMPANY) {
 				Company company = (Company) square;
 				g.drawImage(company.getSprite(), 770+198*(i%5), 102+(222*height), null);
+				if (company.getMortgage()) {
+					g.setColor(Color.RED);
+					g.setFont(fontMedium);
+					g.drawString("H", 869+198*(i%5), 213+(222*height));
+				}
 			}
 		}
 	}
@@ -301,17 +316,21 @@ public class Screen extends Canvas {
 		// se o quadrado for uma companhia imprime o sprite
 		} else if (square.getType() == cnst.COMPANY) {
 			Company company = (Company) square;
+			if (company.getOwner() == -1) {
+				g.drawString("sem proprietário", 970, 400);
+			} else {
 			// quem eh o dono da carta na tela
-			switch (company.getOwner()) {
-				case 0: str = "vermelho"; break;
-				case 1: str = "azul"; break;
-				case 2: str = "verde"; break;
-				case 3: str = "roxo"; break;
-				case 4: str = "amarelo"; break;
-				case 5: str = "laranja"; break;
-				default: break;
+				switch (company.getOwner()) {
+					case 0: str = "vermelho"; break;
+					case 1: str = "azul"; break;
+					case 2: str = "verde"; break;
+					case 3: str = "roxo"; break;
+					case 4: str = "amarelo"; break;
+					case 5: str = "laranja"; break;
+					default: break;
+				}
+				g.drawString("empresa do "+str, 970, 400);
 			}
-			g.drawString("empresa do "+str, 970, 400);
 			g.drawImage(company.getBigSprite(), 970, 440, null);
 			
 		// se o quadrado for um destino imprime o texto do destino
@@ -320,8 +339,8 @@ public class Screen extends Canvas {
 			g.drawString(destiny.texts[destiny.getValue()], 970, 400);
 
 		// recebe 200 passando pelo inicio
-		} else if (square.getIndex() == 9) {
-			g.drawString("vá para a prisão", 970, 400);
+		} else if (player.isInPrision()) {
+			g.drawString("prisão pra você ladrão", 970, 400);
 		
 		// loteria 
 		} else if (square.getIndex() == 10) {
@@ -329,7 +348,7 @@ public class Screen extends Canvas {
 		
 		// ferias
 		} else if (square.getIndex() == 18) {
-			g.drawString("descanse a próxima rodada", 970, 400);
+			g.drawString("é ferias, descanse", 970, 400);
 		
 		// impostos
 		} else if (square.getIndex() == 29) {
@@ -379,15 +398,15 @@ public class Screen extends Canvas {
 		// titulo
 		g.setColor (Color.RED);
 		g.setFont (fontBig);
-		g.drawString("Vitória", 740, 27);
+		g.drawString("Vitória", 740, 250);
 				
 		// opcoes de clique
 		g.setColor (Color.WHITE);
 		g.setFont(fontMedium);
-		g.drawString("Voltar", 1500, 800);
+		g.drawString("Voltar", 1500, 900);
 				
 		// foto do vencedor
-		g.drawImage(player.getSprite(), 665, 200, null);
+		g.drawImage(player.getSprite(), 610, 390, null);
 	}
 	
 }
