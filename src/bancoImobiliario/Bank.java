@@ -256,7 +256,7 @@ public class Bank {
 		//local não está mais hipotecado
 		local.setMortgage(false);
 	}
-	
+
 	/*************************************************************************************************/
 	
 	//player payer paga ao owner o valor por ter caido em um de seus locais
@@ -276,6 +276,6 @@ public class Bank {
 		}
 		
 		//realiza a troca de dinheiro entre os players
-		this.exchangeMoney(payer, owner, value);
+		this.exchangeMoney(owner, payer, value);
 	}
 }

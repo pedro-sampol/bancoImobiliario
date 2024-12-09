@@ -171,7 +171,7 @@ public class Commands implements KeyListener {
 	}
 	
 /*************************************************************************************************/
-	
+
 	// rola os dados e atualiza posicao do player
 	public void executeDice (KeyEvent e) {
 		Player p;
@@ -215,7 +215,6 @@ public class Commands implements KeyListener {
 				
 			}
 			
-			
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores iguais
 				gCtrl.setDiceState(true);						// o player joga de novo
 			}
@@ -243,6 +242,11 @@ public class Commands implements KeyListener {
 				gCtrl.setPlayerSelected(gCtrl.getPlayerIndex());
 				gCtrl.setDiceState(false);
 				buyHouse = true;
+				
+				// verifica fim de jogo
+				gCtrl.setGameWinner(pCtrl.winner(pCtrl, board));
+				if (gCtrl.getGameWinner() != -1) 
+					gCtrl.setScreenSelected(c.WIN);
 			}
 		}
 	}

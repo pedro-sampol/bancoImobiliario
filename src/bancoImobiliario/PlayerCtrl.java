@@ -48,10 +48,10 @@ public class PlayerCtrl {
 	public boolean playerWon(Player player, Board board) {
 		
 		//player ganhou o jogo por numero de monopolios ou monopolio de companhias
-				if(player.getMonopolies() >= 3 || player.getNumCompanies() == 5)
-					return true;
+		if(player.getMonopolies() >= 3 || player.getNumCompanies() == 5)
+			return true;
 				
-				return false;
+			return false;
 	}
 	
 	//verifica se algum player ganhou o jogo
