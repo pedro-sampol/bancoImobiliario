@@ -158,7 +158,7 @@ public class Save {
 		control.getPlayer(0).updateLoad("1632 882 0 2150 false 0 0 0 false 0 0 0");
 		control.getPlayer(1).updateLoad("1669 882 0 2150 false 0 0 0 false 0 0 0");
 		control.getPlayer(2).updateLoad("1632 919 0 2150 false 0 0 0 false 0 0 0");
-		control.getPlayer(3).updateLoad("1632 882 0 2150 false 0 0 0 false 0 0 0");
+		control.getPlayer(3).updateLoad("1669 919 0 2150 false 0 0 0 false 0 0 0");
 		control.getPlayer(4).updateLoad("1632 956 0 2150 false 0 0 0 false 0 0 0");
 		control.getPlayer(5).updateLoad("1669 956 0 2150 false 0 0 0 false 0 0 0");
 		
