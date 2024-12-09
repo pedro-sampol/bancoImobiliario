@@ -56,8 +56,10 @@ public class Bank {
 	
 	//vende uma casa de uma propriedade e entrega o dinheiro para o player
 	public void sellHouse(Player player, Property property) {
-		this.giveMoney(player, property.getHousePrice());
-		property.setNHouses(property.getNHouses() - 1);
+		if (property.getNHouses() > 0) {
+			this.giveMoney(player, property.getHousePrice());
+			property.setNHouses(property.getNHouses() - 1);
+		}
 	}
 	
 	//compra uma casa de uma propriedade e retira o dinheiro do player

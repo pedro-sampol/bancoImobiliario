@@ -45,7 +45,8 @@ public class Commands implements KeyListener {
 			executeDice(e);
 			endTurn(e);
 		} else if (gCtrl.getScreenSelected() == c.PROPERTIES) {
-			hubScreen(e);
+			if (!gCtrl.getEditProperty())
+				hubScreen(e);
 			swapSides(e);
 			sell(e);
 		} else if (gCtrl.getScreenSelected() == c.PAUSE) {
@@ -230,6 +231,13 @@ public class Commands implements KeyListener {
 			
 			// se o player ja rolou o dado ele pode passar o turno
 			if (gCtrl.diceUsed()) {
+				// verifica fim de jogo
+				gCtrl.setGameWinner(pCtrl.winner(pCtrl, board));
+				if (gCtrl.getGameWinner() != -1) {
+					gCtrl.setScreenSelected(c.WIN);
+					return;
+				}
+				
 				gCtrl.setPlayerIndex((gCtrl.getPlayerIndex()+1)%6);
 				next = pCtrl.getPlayer(gCtrl.getPlayerIndex());
 				
@@ -242,11 +250,6 @@ public class Commands implements KeyListener {
 				gCtrl.setPlayerSelected(gCtrl.getPlayerIndex());
 				gCtrl.setDiceState(false);
 				buyHouse = true;
-				
-				// verifica fim de jogo
-				gCtrl.setGameWinner(pCtrl.winner(pCtrl, board));
-				if (gCtrl.getGameWinner() != -1) 
-					gCtrl.setScreenSelected(c.WIN);
 			}
 		}
 	}
@@ -285,17 +288,50 @@ public class Commands implements KeyListener {
 
 	public void sell (KeyEvent e) {
 		Player p = pCtrl.getPlayer(gCtrl.getPlayerIndex());
+		int index = p.getOwned(gCtrl.getCardSelected());
+		Square s = board.getSquare(index);
 		
+		// ativar modo de venda
 		if (e.getKeyCode() == KeyEvent.VK_N) {
 			if (p.getNumProprieties() == 0) return;
 			gCtrl.flipEditProperty();
 			gCtrl.setCardSelected(0);
+			
+		// hipotecar
 		} else if (e.getKeyCode() == KeyEvent.VK_H) {
-			
+			if (gCtrl.getEditProperty()) {
+				Local local = (Local) s;
+				if (local.getMortgage()) {
+					bank.payMortgage(s, p);
+				} else {
+					bank.mortgage(s, p);
+				}
+			}
+	
+		// vender imovel
 		} else if (e.getKeyCode() == KeyEvent.VK_V) {
+			if (gCtrl.getEditProperty()) {
+				if (s.getType() == c.PROPERTY) {
+					bank.sellProperty(p, board, index);
+				} else if (s.getType() == c.COMPANY) {
+					Company company = (Company) s;
+					bank.sellCompany(p, company);
+				}
+				
+				if (p.getNumProprieties() == 0) {
+					gCtrl.flipEditProperty();
+					gCtrl.setCardSelected(0);
+				}
+			}
 			
+		// vender casa
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
-			
+			if (gCtrl.getEditProperty()) {
+				if (s.getType() == c.PROPERTY) {
+					Property property = (Property) s;
+					bank.sellHouse(p, property);
+				} 
+			}
 			
 		// movimenta para cima
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
