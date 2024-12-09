@@ -320,10 +320,22 @@ public class Commands implements KeyListener {
 		
 		// ativar modo de venda
 		if (e.getKeyCode() == KeyEvent.VK_N) {
-			if (p.getNumProprieties() == 0) return;
-			gCtrl.flipEditProperty();
-			gCtrl.setCardSelected(0);
+			if (p.getNumProprieties() == 0) {
+				if (gCtrl.isSellingLocked()) {
+					p.setBankrupt(true);
+				}
+				return;
+			}
 			
+			if (!gCtrl.getEditProperty()) {
+				gCtrl.setEditProperty(true);
+				gCtrl.setCardSelected(0);
+			} else if (!gCtrl.isSellingLocked() || p.getMoney() >= gCtrl.getAmountToUnlock()) {
+				gCtrl.flipEditProperty();
+				gCtrl.setCardSelected(0);
+				gCtrl.setAmountToUnlock(0);
+				gCtrl.setSellingLocked(false);
+			}
 		// hipotecar
 		} else if (e.getKeyCode() == KeyEvent.VK_H) {
 			if (gCtrl.getEditProperty()) {

@@ -8,6 +8,7 @@ public class GameCtrl {
 	private int playerIndex;		//indice do player atual
 	private int playersOn;			//numero de players no jogo
 	private boolean diceUsed;		//player ainda nao jogou os dados
+	private boolean sellingLocked;  //player precisa vender
 	
 	private int playerSelected;		//player selecionado atualmente
 	private int screenSelected;		//tela selecionada atualmente
@@ -17,11 +18,13 @@ public class GameCtrl {
 	private boolean editProperty;	//abre menu de vendas
 	private int cardSelected;		//carta selecionada no menu de vendas
 	private int gameWinner;			//indice do vencedor
+	private int amountToUnlock;     //quantidade para desbloquear a tela de vendas
 	
 	private boolean save;
 	private boolean load;
 	
 	public GameCtrl() {
+		sellingLocked = false;
 		currentState = 0;
 		diceUsed = false;
 		isGameOn = false;
@@ -36,6 +39,7 @@ public class GameCtrl {
 		lastScreen = 0;
 		cardSelected = 0;
 		editProperty = false;
+		amountToUnlock = 0;
 	}
 	
 	/*************************************************************************************************/
@@ -94,6 +98,10 @@ public class GameCtrl {
 		editProperty = !editProperty;
 	}
 	
+	public void setEditProperty(boolean b) {
+		editProperty = b;
+	}
+	
 	/*************************************************************************************************/
 	
 	public int getCardSelected () {
@@ -131,6 +139,9 @@ public class GameCtrl {
 	public boolean getSave() {
 		return save;
 	}
+	public boolean isSellingLocked() {
+		return sellingLocked;
+	}
 	
 	/*************************************************************************************************/
 
@@ -148,6 +159,9 @@ public class GameCtrl {
 	}
 	public int getLastScreen() {
 		return lastScreen;
+	}
+	public int getAmountToUnlock() {
+		return amountToUnlock;
 	}
 	
 	public void setPlayerSelected(int playerSelected) {
@@ -171,5 +185,16 @@ public class GameCtrl {
 	public void setSave(boolean state) {
 		save = state;
 	}
-	
+	public void setAmountToUnlock(int amount) {
+		amountToUnlock = amount;
+	}
+	public void setSellingLocked(boolean b) {
+		sellingLocked = b;
+	}
+	public void lockSelling(int amount) {
+		screenSelected = 3; //PROPERTIES
+		sellingLocked = true;
+		amountToUnlock = amount;
+		editProperty = true;
+	}
 }
