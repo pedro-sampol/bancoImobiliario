@@ -149,6 +149,8 @@ public class Save {
 			e.printStackTrace();
 		}
 	}
+
+	/*************************************************************************************************/
 	
 	public void resetGame(PlayerCtrl control, Board board, GameCtrl game) {
 		
