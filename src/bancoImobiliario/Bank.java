@@ -154,7 +154,7 @@ public class Bank {
 			
 			//player compra a company
 			player.newLocal(aux.getIndex());
-			player.setNumCompanies(player.getNumCompanies() - 1);
+			player.setNumCompanies(player.getNumCompanies() + 1);
 			
 			//player perde o dinheiro da company
 			this.takeMoney(player, aux.getValue());
@@ -220,6 +220,9 @@ public class Bank {
 			}
 			
 			player.setMonopoly(monopoly);
+			
+			System.out.println(player.getNumCompanies());
+			System.out.println(player.getMonopolies());
 		}
 	
 	/*************************************************************************************************/
