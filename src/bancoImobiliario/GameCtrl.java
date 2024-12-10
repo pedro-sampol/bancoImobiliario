@@ -174,11 +174,15 @@ public class GameCtrl {
 	public void setSellingLocked(boolean b) {
 		sellingLocked = b;
 	}
-	public void lockSelling(int amount) {
-		screenSelected = 3; //PROPERTIES
-		sellingLocked = true;
-		amountToUnlock = amount;
-		editProperty = true;
+	public void lockSelling(Player p, int amount) {
+		if (p.getNumCompanies() == 0 && p.getNumProprieties() == 0) {
+			p.setBankrupt(true);
+		} else {
+			screenSelected = 3; //PROPERTIES
+			sellingLocked = true;
+			amountToUnlock = amount;
+			editProperty = true;
+		}
 	}
 
 }
