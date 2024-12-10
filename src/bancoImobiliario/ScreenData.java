@@ -1,11 +1,16 @@
 package bancoImobiliario;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
 
 public class ScreenData extends Canvas {
 	
@@ -37,6 +42,12 @@ public class ScreenData extends Canvas {
 	// inicializa janela do jogo
 	public void initFrame () {
 		frame = new JFrame("Banco Imobiliario");
+		frame.setFocusable(true);
+		frame.addFocusListener(new FocusAdapter() {
+			public void focusLost (FocusEvent e) {
+				frame.requestFocusInWindow();
+			}
+		});
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
