@@ -93,7 +93,7 @@ public class Screen extends Canvas {
 		g.setFont(fontMedium);
 		g.drawString("Continuar Jogo Salvo", 200, 535);
 		g.drawString("Novo Jogo", 200, 647);
-		g.drawString("Regras", 200, 760);
+		g.drawString("Regras", 200, 760);	
 		
 		// bolinhas de selecao
 		g.setColor (Color.YELLOW);
@@ -213,6 +213,11 @@ public class Screen extends Canvas {
 			int length = (gCtrl.getCardSelected()%5);
 			g.setColor(Color.BLACK);
 			g.fillOval(869+(198*length), 213+(222*height), 30, 30);
+			
+			if (gCtrl.isSellingLocked()) {
+				g.setFont(fontSmall);
+				g.drawString("Dívida: "+gCtrl.getAmountToUnlock(), 1200, 50);
+			}
 		}
 		
 	}

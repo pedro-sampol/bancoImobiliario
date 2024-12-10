@@ -145,7 +145,7 @@ public class Commands implements KeyListener {
 	// e pausa do jogo, impossivel girar se estiver vendendo casas
 	public void swapSides (KeyEvent e) {
 		if (gCtrl.getEditProperty()) return;
-		
+	
 		// pausa com esc
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			gCtrl.setLastScreen(gCtrl.getScreenSelected());
@@ -183,11 +183,7 @@ public class Commands implements KeyListener {
 			// compra companhia
 			} else if (s.getType() == c.COMPANY) {
 				bank.buyLocal(p, board, p.getPosition(), gCtrl.getPlayerIndex());
-				
-			// compra saida da prisao
-			} else if (p.isInPrision()) {
-				prision.getOutwithBail(p, bank);
-			}
+			} 
 			buyAction = false;
 		}
 	}
