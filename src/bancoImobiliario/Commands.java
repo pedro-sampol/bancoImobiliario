@@ -212,7 +212,7 @@ public class Commands implements KeyListener {
 					Player owner = pCtrl.getPlayer(local.getOwner());
 					int value = bank.payRent(p, owner, local, dice);
 					bank.giveMoney(owner, value);
-					if (value != 0) gCtrl.lockSelling(value);
+					if (value != 0) gCtrl.lockSelling(p, value);
 				}
 			} else if (s.getType() == c.DESTINY) {
 				Destiny destiny = (Destiny) s;
@@ -221,7 +221,7 @@ public class Commands implements KeyListener {
 				if (value > 5) {
 					bank.giveMoney(p, destiny.getPayValue());
 				} else {
-					if(bank.takeMoney(p, -(destiny.getPayValue())) == 1) gCtrl.lockSelling(-(destiny.getPayValue()));
+					if(bank.takeMoney(p, -(destiny.getPayValue())) == 1) gCtrl.lockSelling(p, -(destiny.getPayValue()));
 				}
 			} else if (s.getIndex() == 9) { // casa de va para a prisao
 				prision.sendToPrision(p, gCtrl.getPlayerIndex());
@@ -229,7 +229,7 @@ public class Commands implements KeyListener {
 			} else if (s.getIndex() == 10) {													  // loteria
 				bank.giveMoney(p, 200);
 			} else if (s.getIndex() == 29) {													  // impostos
-				if(bank.takeMoney(p, 200) == 1) gCtrl.lockSelling(200);
+				if(bank.takeMoney(p, 200) == 1) gCtrl.lockSelling(p, 200);
 			}
 			
 			if (!dice.getIsEqual()) {							// se os dados tiveram valores iguais
