@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+957 78 19 112 false 0 0 0 false -1 0 
+1652 61 27 1103 false 0 4 1 false 0 0 6 4 31 16 
+1580 41 26 19 false 0 0 4 false 0 0 
+811 543 13 3015 false 0 3 1 false -1 0 14 32 20 
+1580 4 26 572 true 0 0 2 false -1 0 
+1580 956 1 8014 false 0 4 0 false -1 0 19 1 26 34 
+true 5 0
+false -1 0
+true 1
+true 1 0
+false -1 0
+false -1
+false -1 0
+false -1 0
+true 3
+=======
 848 595 12 2298 false 0 0 2 false 0 0 
 848 810 10 3205 false 0 0 2 false 0 0 
 1689 543 32 1974 false 0 2 0 false 0 0 7 6 
@@ -11,13 +28,25 @@ true 2 0
 true 2 0
 false -1
 false -1 0
+>>>>>>> main
 false -1 0
+true 1 5
+true 5 5
+true 3 5
 false -1
 false -1 0
 false -1 0
 false -1 0
+true 5 5
 false -1 0
+false -1 0
+true 1 0
+true 3 0
+true 5 5
 false -1
+<<<<<<< HEAD
+2
+=======
 false -1 0
 false -1 0
 false -1 0
@@ -29,3 +58,4 @@ false -1 0
 false -1 0
 false -1
 1
+>>>>>>> main
