@@ -337,9 +337,9 @@ public class Commands implements KeyListener {
 			} else if (!gCtrl.isSellingLocked() || p.getMoney() >= gCtrl.getAmountToUnlock()) {
 				gCtrl.flipEditProperty();
 				gCtrl.setCardSelected(0);
+				bank.takeMoney(p, gCtrl.getAmountToUnlock());
 				gCtrl.setAmountToUnlock(0);
 				gCtrl.setSellingLocked(false);
-				bank.takeMoney(p, gCtrl.getAmountToUnlock());
 			}
 		// hipotecar
 		} else if (e.getKeyCode() == KeyEvent.VK_H) {
@@ -363,6 +363,15 @@ public class Commands implements KeyListener {
 				}
 				
 				if (p.getNumProprieties() == 0) {
+					if (gCtrl.isSellingLocked()) {
+						if (p.getMoney() < gCtrl.getAmountToUnlock()) {
+							p.setBankrupt(true);
+						} else {
+							bank.takeMoney(p, gCtrl.getAmountToUnlock());
+						}
+					}
+					gCtrl.setAmountToUnlock(0);
+					gCtrl.setSellingLocked(false);
 					gCtrl.flipEditProperty();
 					gCtrl.setCardSelected(0);
 				}
