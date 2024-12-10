@@ -133,6 +133,7 @@ public class Screen extends Canvas {
 		g.drawString("- D para rolar os dados", 20, 860);
 		g.drawString("- C para comprar locais e casas", 20, 890);
 		g.drawString("- ENTER para passar o turno", 20, 920);
+		g.drawString("- P para sair da prisão", 20, 950);
 	}
 
 	// controles disponiveis na tela PROPERTY
