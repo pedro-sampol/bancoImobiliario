@@ -179,7 +179,7 @@ public class Commands implements KeyListener {
 					bank.buyLocal(p, board, p.getPosition(), gCtrl.getPlayerIndex());
 					buyHouse = false;
 				}
-				
+			
 			// compra companhia
 			} else if (s.getType() == c.COMPANY) {
 				bank.buyLocal(p, board, p.getPosition(), gCtrl.getPlayerIndex());

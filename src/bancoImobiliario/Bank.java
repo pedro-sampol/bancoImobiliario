@@ -126,7 +126,7 @@ public class Bank {
 
 			//player perde a company
 			player.removeLocal(aux.getIndex());
-			player.setNumCompanies(player.getNumCompanies() + 1);
+			player.setNumCompanies(player.getNumCompanies() - 1);
 			
 			//player ganha o dinheiro da company
 			this.giveMoney(player, aux.getValue());
